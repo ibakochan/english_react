@@ -40,7 +40,7 @@ class Classroom(models.Model):
     classroom_content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
     teacher = models.ManyToManyField(Teacher, blank=True, related_name='classrooms')
     students = models.ManyToManyField(Student, blank=True, related_name='classrooms')
-
+    character_voice = models.BooleanField(default=False)
 
     def set_password(self, raw_password):
         self.hashed_password = make_password(raw_password)
@@ -52,16 +52,20 @@ class Classroom(models.Model):
         return self.name
 
 class Test(models.Model):
+    CATEGORY_CHOICES = [
+        ('japanese', 'Japanese'),
+        ('english_5', 'English 5'),
+        ('english_6', 'English 6'),
+        ('phonics', 'Phonics'),
+        ('numbers', 'Numbers'),
+    ]
     classroom = models.ManyToManyField('Classroom', blank=True)
     name = models.CharField(max_length=200)
     test_picture = models.BinaryField(null=True, editable=True)
+    picture_url = models.URLField(max_length=500, null=True, blank=True)
     test_content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
     total_questions = models.PositiveIntegerField(default=0)
-    japanese = models.BooleanField(default=False)
-    english_5 = models.BooleanField(default=False)
-    english_6 = models.BooleanField(default=False)
-    phonics = models.BooleanField(default=False)
-    numbers = models.BooleanField(default=False)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='phonics')
     lesson_number = models.PositiveIntegerField(default=0)
 
     def __str__(self):
@@ -87,6 +91,10 @@ class Question(models.Model):
     second_letter = models.BooleanField(default=False)
     third_letter = models.BooleanField(default=False)
     last_letter = models.BooleanField(default=False)
+    double_object = models.BooleanField(default=False)
+    sound2 = models.BooleanField(default=False)
+    picture2 = models.BooleanField(default=False)
+    label = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

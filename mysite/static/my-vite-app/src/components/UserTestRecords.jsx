@@ -9,10 +9,11 @@ const UserTestRecords = () => {
   const [users, setUsers] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(['csrftoken']);
-  const [maxScores, setMaxscores] = useState([]);
+  const [maxScores, setMaxScores] = useState([]);
   const [sessionDetails, setSessionDetails] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [activeClassroomId, setActiveClassroomId] = useState(null);
   const [activeTestId, setActiveTestId] = useState(null);
   const [activeUserId, setActiveUserId] = useState(null);
@@ -21,25 +22,24 @@ const UserTestRecords = () => {
   const [activeUserToUpdate, setActiveUserToUpdate] = useState(null);
   const [formData, setFormData] = useState({});
 
-  const fetchClassrooms = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const classroomResponse = await axios.get('/api/classrooms/my-classroom/', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`
-        }
+
+  useEffect(() => {
+    axios.get('/api/classrooms/my-classroom-teacher/')
+      .then(response => {
+        setClassrooms(response.data);
+        const initialFormData = {};
+        response.data.forEach(classroom => {
+          initialFormData[classroom.id] = {
+            name: '',
+            test_picture: null,
+          };
+        });
+        setFormData(initialFormData);
+      })
+      .catch(error => {
+        console.error('Error fetching classrooms:', error);
       });
-      console.log('Fetched classrooms response:', classroomResponse);
-      console.log('Fetched classrooms data:', classroomResponse.data);
-      setClassrooms(classroomResponse.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching classrooms:', error.response ? error.response.data : error.message);
-      setError('Failed to fetch classrooms.');
-      setLoading(false);
-    }
-  };
+  }, []);
 
 
   const fetchTests = async (classroomId) => {
@@ -54,6 +54,32 @@ const UserTestRecords = () => {
       console.error('Error fetching tests:', error);
       setError('Failed to fetch tests.');
       setLoading(false);
+    }
+  };
+
+  const fetchTestsByCategory = async (category) => {
+    try {
+      const response = await axios.get(`/api/name-id-tests/by-category/?category=${category}`);
+        setTests(prevTests => ({
+          ...prevTests,
+          [`category_${category}`]: response.data,
+        }));
+    } catch (error) {
+      console.error(`Error fetching tests for category ${category}:`, error);
+    }
+  };
+
+  const toggleCategories = async (category) => {
+    if (activeCategory === category) {
+      setActiveCategory(null);
+    } else {
+      try {
+        setActiveCategory(category);
+        await fetchTestsByCategory(category);
+      } catch (error) {
+        console.error('Error fetching tests by category:', error);
+        setError('Failed to fetch tests by category.');
+      }
     }
   };
 
@@ -83,6 +109,10 @@ const UserTestRecords = () => {
     }
   };
 
+
+
+
+
   const toggleUserDetailsForUserDetailButton = async (classroomId) => {
     if (userDetailButtonActive) {
       setUserDetailButtonActive(null);
@@ -94,10 +124,10 @@ const UserTestRecords = () => {
   };
 
 
-  const fetchMaxScores = async (testId, userId) => {
+  const fetchMaxScores = async (testId) => {
     try {
       setError(null);
-      const maxScoresResponse = await axios.get(`/api/maxscore/by-test-and-user/${testId}/${userId}/`);
+      const maxScoresResponse = await axios.get(`/api/maxscore/by-classroom_and_test/${testId}/`);
       console.log('Fetched sessions:', maxScoresResponse.data);
       return maxScoresResponse.data;
     } catch (error) {
@@ -146,7 +176,6 @@ const UserTestRecords = () => {
       setUsers([]);
     } else {
       setActiveClassroomId(classroomId);
-      await fetchTests(classroomId);
       await fetchUsers(classroomId);
     }
   };
@@ -160,14 +189,17 @@ const UserTestRecords = () => {
       setActiveTestId(testId);
       setSessions([]);
       setActiveUserId(null);
-      const scores = await Promise.all(users.map(user =>
-        fetchMaxScores(testId, user.id).catch(error => {
-          console.error(`Error fetching max score for user ${user.id}:`, error);
-          return []; // Return an empty array in case of error
-        })
-      ));
+      try {
+        const scores = await fetchMaxScores(testId);
 
-      setMaxscores(scores.flat());
+        if (scores) {
+          setMaxScores(scores);
+        } else {
+          console.error('No scores found for category:', category);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
   };
 
@@ -238,15 +270,12 @@ const UserTestRecords = () => {
     return null;
   };
 
-  useEffect(() => {
-    fetchClassrooms(); // Fetch classrooms initially
-  }, []);
+
 
   return (
     <div>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-          <h2>Classroom Records</h2>
           <ul>
             {classrooms.map(classroom => (
               <div key={classroom.id}>
@@ -327,13 +356,52 @@ const UserTestRecords = () => {
                 )}
                 {activeClassroomId === classroom.id && (
                   <div className="classroom-details">
-                    {tests.map(test => (
+                  <button
+                    onClick={() => toggleCategories('japanese')}
+                    className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+                    style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+                  >日本語</button>
+                  <button
+                    onClick={() => toggleCategories('english_5')}
+                    className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+                    style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+                  >５年英語</button>
+                  <button
+                    onClick={() => toggleCategories('english_6')}
+                    className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+                    style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+                  >６年英語</button>
+                  <button
+                    onClick={() => toggleCategories('phonics')}
+                    className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+                    style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+                  >アルファベットとフォニックス</button>
+                  <button
+                    onClick={() => toggleCategories('numbers')}
+                    className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+                    style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+                  >数字</button>
+                　<p>
+                　<button
+      　            className={`btn btn-success mb-3 toggle-test-btn ${activeCategory !== null && activeTestId === null ? 'active' : 'd-none'}`}
+              　    style={{ height: '50px', width: '290px', padding: '10px', border: '5px solid black', position: 'relative', marginBottom: '10px' }}
+      　            onClick={() => toggleCategories(activeCategory)}
+              　   >
+          　        <span
+                  　  className="text-center text-white"
+      　              style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px' }}
+              　    >
+                  　{activeCategory}から戻る
+      　            </span>
+              　  </button>
+                 </p>
+                    {Object.values(tests).flat().sort((a, b) => a.lesson_number - b.lesson_number).map(test => (
                       <span key={test.id}>
                         {activeTestId === null || activeTestId === test.id ? (
                         <span style={{ marginRight: '10px' }}>
                         <button
-                          className={`btn btn-warning mb-3 toggle-test-btn ${activeTestId === test.id || activeTestId === null ? 'active' : 'd-none'}`}
-                          style={{ height: '200px', width: '200px', padding: '10px', border: '5px solid black', position: 'relative' }}
+                          className={`btn btn-warning mb-3 toggle-test-btn ${activeTestId === test.id || activeTestId === null && activeCategory === test.category ? 'active' : 'd-none'}`}
+                          style={{ height: '220px', width: '220px', padding: '10px', border: '5px solid black', position: 'relative' }}
                           onClick={() => toggleTestDetails(test.id)}
                         >
                           <span
@@ -342,8 +410,8 @@ const UserTestRecords = () => {
                           >
                             {test.name}
                           </span>
-                          {test.test_picture && (
-                            <img src={test.test_picture} alt="Question" width="150" height="150" />
+                          {test.picture_url && (
+                            <img src={test.picture_url} alt="Question" width="170" height="170" />
                           )}
                         </button>
                         </span>
@@ -362,7 +430,7 @@ const UserTestRecords = () => {
                                   <h5>出席番号: {user.student.student_number}</h5>
                                   {maxScores.map(score =>
                                     score.user === user.id && (
-                                      <h5 key={score.user}>最大記録：{score.score}/{score.total_questions}</h5>
+                                      <h5>最大記録：{score.score}/{score.total_questions}</h5>
                                     )
                                   )}
                                 </button>

@@ -13,8 +13,8 @@ from django.utils import timezone
 from rest_framework.decorators import action
 from django.contrib import messages
 import json
-from .lists import alphabet_sounds
-
+from .profile_assets import get_profile_assets, get_memories, get_total_questions, get_total_category_scores
+from django.db.models import Sum
 
 
 
@@ -45,16 +45,40 @@ class MaxScoreViewSet(viewsets.ModelViewSet):
     queryset = MaxScore.objects.all()
     serializer_class = MaxScoreSerializer
 
-    @action(detail=False, methods=['get'], url_path='by-test-and-user/(?P<test_id>[^/.]+)/(?P<user_id>[^/.]+)')
-    def get_maxscore_by_test_and_user(self, request, test_id=None, user_id=None):
-        # Find all session IDs related to the given test ID and user ID
-        maxscore_ids = MaxScore.objects.filter(test_id=test_id, user_id=user_id).values_list('id', flat=True).distinct()
+    @action(detail=False, methods=['get'], url_path='by-category-and-user/(?P<category>[^/.]+)/(?P<user_id>[^/.]+)')
+    def get_maxscore_by_category_and_user(self, request, category=None, user_id=None):
+        tests = Test.objects.filter(category=category)
 
-        # Fetch the sessions using these IDs
+        maxscore_ids = MaxScore.objects.filter(test__in=tests, user_id=user_id).values_list('id', flat=True).distinct()
+
         maxscore = MaxScore.objects.filter(id__in=maxscore_ids)
 
-        # Serialize the sessions
         serializer = MaxScoreSerializer(maxscore, many=True)
+
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='by-classroom_and_test/(?P<test_id>[^/.]+)')
+    def get_maxscore_by_classroom_and_test(self, request, test_id=None):
+        user = request.user
+        teacher = Teacher.objects.get(user=user)
+        classrooms = Classroom.objects.filter(teacher=teacher)
+
+        users = []
+
+        for classroom in classrooms:
+            students = classroom.students.all()
+            users.extend([student.user for student in students])
+        maxscores = MaxScore.objects.filter(user__in=users, test_id=test_id)
+
+        serializer = MaxScoreSerializer(maxscores, many=True)
+
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='by-test/(?P<test_id>[^/.]+)')
+    def get_maxscore_by_test(self, request, test_id=None):
+        maxscores = MaxScore.objects.filter(test_id=test_id, user_id=request.user.id)
+
+        serializer = MaxScoreSerializer(maxscores, many=True)
 
         return Response(serializer.data)
 
@@ -64,26 +88,20 @@ class OnlySessionsViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='by-test/(?P<test_id>[^/.]+)')
     def get_sessions_by_test(self, request, test_id=None):
-        # Find all session IDs related to the given test ID
         session_ids = TestRecords.objects.filter(test_id=test_id).values_list('account_sessions_id', flat=True).distinct()
 
-        # Fetch the sessions using these IDs
         sessions = Sessions.objects.filter(id__in=session_ids)
 
-        # Serialize the sessions
         serializer = OnlySessionsSerializer(sessions, many=True)
 
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'], url_path='by-test-and-user/(?P<test_id>[^/.]+)/(?P<user_id>[^/.]+)')
     def get_sessions_by_test_and_user(self, request, test_id=None, user_id=None):
-        # Find all session IDs related to the given test ID and user ID
         session_ids = TestRecords.objects.filter(test_id=test_id, user_id=user_id).values_list('account_sessions_id', flat=True).distinct()
 
-        # Fetch the sessions using these IDs
         sessions = Sessions.objects.filter(id__in=session_ids)
 
-        # Serialize the sessions
         serializer = OnlySessionsSerializer(sessions, many=True)
 
         return Response(serializer.data)
@@ -100,14 +118,22 @@ class TestQuestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='by-test/(?P<test_id>[^/.]+)')
     def get_questions_by_test(self, request, test_id=None):
-        # Fetch questions related to the given test ID
         questions = Question.objects.filter(test__id=test_id)
-        questions = list(questions)  # Convert queryset to list for randomization
+        questions = list(questions)
         shuffle(questions)
-        # Serialize the questions
         serializer = TestQuestionSerializer(questions, many=True)
 
         return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='one-question/(?P<test_id>[^/.]+)')
+    def get_one_question_by_test(self, request, test_id=None):
+        question = Question.objects.filter(test__id=test_id).order_by('id').first()
+
+        if question:
+            serializer = TestQuestionSerializer(question)
+            return Response(serializer.data)
+        else:
+            return Response({"detail": "No questions found for this test"}, status=404)
 
 class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()
@@ -115,12 +141,10 @@ class OptionViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='by-question/(?P<question_id>[^/.]+)')
     def get_options_by_question(self, request, question_id=None):
-        # Fetch options related to the given question ID
         options = Option.objects.filter(question__id=question_id)
-        options = list(options)  # Convert queryset to list for randomization
+        options = list(options)
         shuffle(options)
 
-        # Serialize the options
         serializer = OptionSerializer(options, many=True)
 
         return Response(serializer.data)
@@ -137,13 +161,14 @@ class NameIdTestViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='by-category')
     def by_category(self, request):
-        category = request.query_params.get('category', None)
-        if category:
-            tests = self.queryset.filter(**{category: True})
+        categories = request.query_params.getlist('category')
+        valid_categories = ['japanese', 'english_5', 'english_6', 'phonics', 'numbers']
+
+        if any(category in valid_categories for category in categories):
+            tests = self.queryset.filter(category__in=categories)
             serializer = self.get_serializer(tests, many=True)
             return Response(serializer.data)
-        return Response({"error": "Category not specified"}, status=400)
-
+        return Response({"error": "Invalid or unspecified categories"}, status=400)
 
 
 class ClassroomViewSet(viewsets.ModelViewSet):
@@ -202,12 +227,9 @@ class CustomUserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='by-classroom/(?P<classroom_id>[^/.]+)')
     def get_users_by_classroom(self, request, classroom_id=None):
-        # Check if a Student object exists for the current user
         if Student.objects.filter(user=request.user).exists():
-            # If it does, filter the queryset to include only the current user
             users = CustomUser.objects.filter(id=request.user.id)
         else:
-            # If not, return all users
             students = Student.objects.filter(classrooms__id=classroom_id)
             user_ids = students.values_list('user_id', flat=True)
             users = CustomUser.objects.filter(id__in=user_ids)
@@ -215,17 +237,37 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         serializer = CustomUserSerializer(users, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'], url_path='current-user')
+    def get_current_user_with_asset(self, request):
+        user = request.user
+        question_counts = get_total_questions()
+        total_category_scores = get_total_category_scores(user)
+        total_max_scores = user.total_max_scores
+        memories = get_memories(total_max_scores)
+        asset = get_profile_assets(total_max_scores)
+        user_data = self.get_serializer(user).data
+        user_data['question_counts'] = question_counts
+        user_data['profile_asset'] = asset
+        user_data['memories'] = memories
+        user_data['total_category_scores'] = total_category_scores
+
+        return Response(user_data)
 
 
 def remove_digits_from_end(string, num_digits):
-    """
-    Remove the specified number of digits from the end of the string.
-    """
     return string[:-num_digits]
 
 
 
+class ClassroomSilenceView(View):
+    def post(self, request):
+        teacher = Teacher.objects.get(user=request.user)
+        classroom = Classroom.objects.get(teacher=teacher)
 
+        classroom.character_voice = not classroom.character_voice
+        classroom.save()
+
+        return redirect('main:profile')
 
 class TestClassroomView(View):
     def post(self, request, pk):
@@ -236,8 +278,8 @@ class TestClassroomView(View):
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON'})
 
         connect_form = ConnectTestForm(data)
-        print(data)  # Log the JSON data
-        print(connect_form.errors)  # Log form errors
+        print(data)
+        print(connect_form.errors)
 
         if connect_form.is_valid():
             classroom_name = connect_form.cleaned_data.get('classroom_name')
@@ -302,8 +344,27 @@ class ProfilePageView(LoginRequiredMixin, View):
             join_form = ClassroomJoinForm()
 
         connect_form = ConnectTestForm()
+        total_max_scores = request.user.total_max_scores
+        profile_assets = get_profile_assets(total_max_scores)
+
+        classroom = None
+
+        try:
+            student = Student.objects.get(user=user)
+            classroom = Classroom.objects.filter(students=student).first()  # Get the first classroom or None
+            if not classroom:
+                raise Classroom.DoesNotExist("Student is not enrolled in any classroom")
+        except Student.DoesNotExist:
+            try:
+                teacher = Teacher.objects.get(user=user)
+                classroom = Classroom.objects.filter(teacher=teacher).first()  # Get the first classroom or None
+                if not classroom:
+                    raise Classroom.DoesNotExist("Teacher is not assigned to any classroom")
+            except Teacher.DoesNotExist:
+                classroom = None
 
         return render(request, self.template_name, {
+                'user': user,
                 'join_form': join_form,
                 'users': CustomUser.objects.all(),
                 'schools': School.objects.all(),
@@ -313,6 +374,11 @@ class ProfilePageView(LoginRequiredMixin, View):
                 'option_form': OptionCreateForm(),
                 'classroom_form': ClassroomCreateForm(),
                 'connect_form': connect_form,
+                'total_max_scores': total_max_scores,
+                'profile_image': profile_assets['image'],
+                'profile_text': profile_assets['text'],
+                'profile_audio': profile_assets['audio'],
+                'classroom': classroom,
             })
 
 
@@ -368,20 +434,17 @@ class TeacherSignUpView(View):
             school_name = form.cleaned_data.get('school_name')
             school_password = form.cleaned_data.get('school_password')
 
-            # Retrieve the school instance corresponding to the provided name and password
             try:
                 school = School.objects.get(school_name=school_name, school_password=school_password)
             except School.DoesNotExist:
                 error_message = "Invalid school name or password"
                 return render(request, self.template_name, {'form': form, 'error_message': error_message})
 
-            # Save the user
             user = form.save()
+            classroom = Classroom.objects.get(name='open_room')
+            teacher =Teacher.objects.create(user=user, school=school)
+            classroom.teacher.add(teacher)
 
-            # Create the Teacher object and associate it with the user and school
-            Teacher.objects.create(user=user, school=school)
-
-            # Log in the user and redirect to the home page
             login(request, user)
             return redirect('/')
 
@@ -394,7 +457,6 @@ class TeacherSignUpView(View):
 
 
 class AccountDeleteView(OwnerDeleteView):
-    # Using the OwnerDeleteView I got from dj4e to delete accounts.
 
     model = CustomUser
     template_name = 'main/test.html'
@@ -453,7 +515,6 @@ class TestCreateView(LoginRequiredMixin, View):
         return JsonResponse(response_data)
 
 class TestDeleteView(LoginRequiredMixin, View):
-    # For deleting items within the ToDoList.
 
     def post(self, request, pk):
         test = get_object_or_404(Test, pk=pk)
@@ -478,6 +539,10 @@ class QuestionCreateView(LoginRequiredMixin, View):
             question = form.save(commit=False)
             question.test = test
             question.save()
+            Option.objects.create(option_list=question.question_list, question=question, is_correct=True)
+            if question.write_answer == False:
+                for _ in range(3):
+                    Option.objects.create(option_list=question.question_list, question=question, is_correct=False)
 
             total_questions = Question.objects.filter(test=test).count()
             test.total_questions = total_questions
@@ -494,7 +559,6 @@ class QuestionCreateView(LoginRequiredMixin, View):
 
 
 class QuestionDeleteView(LoginRequiredMixin, View):
-    # For deleting items within the ToDoList.
 
     def post(self, request, pk):
         question = get_object_or_404(Question, pk=pk)
@@ -533,7 +597,6 @@ class OptionCreateView(LoginRequiredMixin, View):
             return JsonResponse(response_data, status=400)
 
 class OptionDeleteView(LoginRequiredMixin, View):
-    # For deleting items within the ToDoList.
 
     def post(self, request, pk):
         option = get_object_or_404(Option, pk=pk)
@@ -649,35 +712,54 @@ class TestAnswerView(View):
 
 class TestRecordView(View):
     def post(self, request, pk):
-        # Retrieve the Test instance
         test = get_object_or_404(Test, pk=pk)
         total_questions = test.total_questions
+        user = request.user
 
         TestRecordView.activation_counter += 1
         group_id = TestRecordView.activation_counter
         current_time = timezone.now().strftime('%Y-%m-%d %H:%M')
 
-        # Retrieve all UserTestSubmission instances related to the request user and the specified test
-        user_test_submissions = UserTestSubmission.objects.filter(user=request.user, test=test)
+        user_test_submissions = UserTestSubmission.objects.filter(user=user, test=test)
 
         total_score = sum(user_test_submission.score for user_test_submission in user_test_submissions)
         total_score = int(total_score)
         total_questions = 0
         for user_test_submission in user_test_submissions:
             total_questions += 1
-        account_sessions = Sessions.objects.create(number=test.pk, user=request.user, session_name=test.name, timestamp=current_time, total_recorded_score=total_score, total_questions=total_questions)
+        account_sessions = Sessions.objects.create(number=test.pk, user=user, session_name=test.name, timestamp=current_time, total_recorded_score=total_score, total_questions=total_questions)
         try:
-            maxscore = MaxScore.objects.get(user=request.user, test=test)
+            maxscore = MaxScore.objects.get(user=user, test=test)
             if maxscore.score < total_score:
                 maxscore.delete()
-                MaxScore.objects.create(user=request.user, test=test, score=total_score, total_questions=total_questions)
+                MaxScore.objects.create(user=user, test=test, score=total_score, total_questions=total_questions)
         except ObjectDoesNotExist:
-            MaxScore.objects.create(user=request.user, test=test, score=total_score, total_questions=total_questions)
+            MaxScore.objects.create(user=user, test=test, score=total_score, total_questions=total_questions)
         test_record_ids = []
 
-        # Iterate over each UserTestSubmission instance
+        total_max_scores = MaxScore.objects.filter(user=user).aggregate(total_score=Sum('score'))['total_score'] or 0
+        user.total_max_scores = total_max_scores
+        user.save()
+
+        tests = Test.objects.filter(category=test.category)
+        total_category_score = MaxScore.objects.filter(test__in=tests, user=user).aggregate(total_score=Sum('score'))['total_score'] or 0
+
+        if test.category == 'japanese':
+            user.total_japanese_score = total_category_score
+        elif test.category == 'english_5':
+            user.total_english_5_score = total_category_score
+        elif test.category == 'english_6':
+            user.total_english_6_score = total_category_score
+        elif test.category == 'phonics':
+            user.total_phonics_score = total_category_score
+        elif test.category == 'numbers':
+            user.total_numbers_score = total_category_score
+
+        user.save()
+
+
+
         for user_test_submission in user_test_submissions:
-            # Access question name and selected option from UserTestSubmission
             try:
                 question_name = str(user_test_submission.selected_option.question.name)
             except:
@@ -686,12 +768,11 @@ class TestRecordView(View):
                 selected_option_name = str(user_test_submission.selected_option.name)
             except:
                 selected_option_name = ''
-            recorded_score = int(user_test_submission.score)  # Convert score to an integer
+            recorded_score = int(user_test_submission.score)
             question = user_test_submission.question
 
-            # Create a TestRecord instance
             test_record = TestRecords.objects.create(
-                user=request.user,  # Set the user directly from request.user
+                user=user,
                 test=test,
                 question=question,
                 question_name=question_name,
@@ -701,41 +782,76 @@ class TestRecordView(View):
                 account_sessions=account_sessions
             )
 
-            # Append the created TestRecord ID to the list
             test_record_ids.append(test_record.id)
 
 
-        # Create a TestRecord instance to store the total score for the test
         total_score_record = TestRecords.objects.create(
-            user=request.user,
+            user=user,
             test=test,
             total_recorded_score=total_score,
             group_id=group_id,
             account_sessions=account_sessions
         )
 
-        # Append the created TestRecord ID to the list
         test_record_ids.append(total_score_record.id)
-        # Delete all existing UserTestSubmission instances related to the request user and the specified test
         user_test_submissions.delete()
 
-        # Prepare JSON response data
         response_data = {
             'success': True,
             'message': f'Total score: {total_score}/{total_questions}!',
             'test_record_ids': test_record_ids
         }
 
-        # Return JSON response
         return JsonResponse(response_data)
 TestRecordView.activation_counter = 0
 
 
+
+class ScoreRecordView(View):
+    def post(self, request, pk):
+        json_data = json.loads(request.body)
+        score = json_data.get('score')
+        test = get_object_or_404(Test, pk=pk)
+        total_questions = test.total_questions
+        user = request.user
+
+        total_questions = Question.objects.filter(test=test).count()
+        try:
+            maxscore = MaxScore.objects.get(user=user, test=test)
+            if maxscore.score < score:
+                maxscore.delete()
+                MaxScore.objects.create(user=user, test=test, score=score, total_questions=total_questions)
+        except ObjectDoesNotExist:
+            MaxScore.objects.create(user=user, test=test, score=score, total_questions=total_questions)
+
+        total_max_scores = MaxScore.objects.filter(user=user).aggregate(total_score=Sum('score'))['total_score'] or 0
+        user.total_max_scores = total_max_scores
+        user.save()
+
+        tests = Test.objects.filter(category=test.category)
+        total_category_score = MaxScore.objects.filter(test__in=tests, user=user).aggregate(total_score=Sum('score'))['total_score'] or 0
+
+        if test.category == 'japanese':
+            user.total_japanese_score = total_category_score
+        elif test.category == 'english_5':
+            user.total_english_5_score = total_category_score
+        elif test.category == 'english_6':
+            user.total_english_6_score = total_category_score
+        elif test.category == 'phonics':
+            user.total_phonics_score = total_category_score
+        elif test.category == 'numbers':
+            user.total_numbers_score = total_category_score
+
+        user.save()
+
+
+
+        response_data = {'success': True, 'message': f'点数: {score}/{total_questions}!'}
+
+        return JsonResponse(response_data)
+
 class TestsubmissionsDeleteView(View):
     def post(self, request):
-        # Retrieve the Test instance
-
-        # Retrieve all UserTestSubmission instances related to the request user and the specified test
         user_test_submissions = UserTestSubmission.objects.filter(user=request.user)
 
 
@@ -747,5 +863,4 @@ class TestsubmissionsDeleteView(View):
             'success': True,
         }
 
-        # Return JSON response
         return JsonResponse(response_data)

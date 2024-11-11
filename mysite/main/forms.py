@@ -6,7 +6,7 @@ from main.humanize import naturalsize
 from django.forms import DateInput
 from django.core.exceptions import ValidationError
 from django.forms import CharField
-from .lists import alphabet_sounds, small_alphabet_sounds, jlpt_n5_vocabulary, phonics1, lesson4_list, lesson4_grade6_dict
+from .lists import alphabet_sounds2, japanese_numbers, grade_6_lesson_6, alphabet_sounds, one_twenty, one_hundred, eleven_ninety, one_thousand, one_quadrillion, thousand_quadrillion, grade_6_lesson_5, grade_5_lesson_5, grade_5_lesson_6, small_alphabet_sounds, alphabet_phonics, jlpt_n5_vocabulary, phonics1, phonics_2, lesson4_list, lesson4_grade6_dict
 
 class ClassroomJoinForm(forms.Form):
     classroom_name = forms.CharField(
@@ -136,7 +136,7 @@ class TestCreateForm(forms.ModelForm):
 
     class Meta:
         model = Test
-        fields = ['name', 'test_picture']
+        fields = ['name', 'test_picture', 'category', 'picture_url', 'lesson_number']
 
         #Using widgets again for some style.
     widgets = {
@@ -187,7 +187,21 @@ class QuestionCreateForm(forms.ModelForm):
         ('jlpt_n5_vocabulary', 'Jlpt_n5_vocabulary'),
         ('phonics1', 'Phonics1'),
         ('lesson4_list', 'Lesson4_list'),
-        ('lesson4_grade6_dict', 'Lesson4_grade6_dict')
+        ('lesson4_grade6_dict', 'Lesson4_grade6_dict'),
+        ('alphabet_phonics', 'Alphabet_phonics'),
+        ('phonics_2', 'Phonics_2'),
+        ('grade_6_lesson_5', 'grade_6_lesson_5'),
+        ('grade_5_lesson_5', 'grade_5_lesson_5'),
+        ('grade_5_lesson_6', 'grade_5_lesson_6'),
+        ('grade_6_lesson_6', 'grade_6_lesson_6'),
+        ('one_twenty', 'One Twenty'),
+        ('one_hundred', 'One Hundred'),
+        ('eleven_ninety', 'Eleven Ninety'),
+        ('one_thousand', 'One Thousand'),
+        ('one_quadrillion', 'One Quadrillion'),
+        ('thousand_quadrillion', 'Thousand Quadrillion'),
+        ('japanese_numbers', 'Japanese_Numbers'),
+        ('alphabet_sounds2', 'Alphabet Sounds2'),
     ]
     list_selection = forms.ChoiceField(choices=list_choices, required=False, label='Select List')
 
@@ -195,9 +209,8 @@ class QuestionCreateForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ['name', 'write_answer', 'question_picture', 'question_sound', 'question_list', 'list_selection', 'first_letter', 'second_letter', 'third_letter', 'last_letter'  ]
+        fields = ['name', 'double_object', 'write_answer', 'question_picture', 'question_sound', 'question_list', 'list_selection', 'first_letter', 'second_letter', 'third_letter', 'last_letter', 'sound2', 'picture2', 'label']
 
-        #Using widgets again for some style.
     widgets = {
         'name': forms.TextInput(attrs={'class': 'form-control'}),
     }
@@ -246,7 +259,34 @@ class QuestionCreateForm(forms.ModelForm):
                 instance.question_list = lesson4_list
             elif selected_list == 'lesson4_grade6_dict':
                 instance.question_list = lesson4_grade6_dict
-
+            elif selected_list == 'alphabet_phonics':
+                instance.question_list = alphabet_phonics
+            elif selected_list == 'phonics_2':
+                instance.question_list = phonics_2
+            elif selected_list == 'grade_6_lesson_5':
+                instance.question_list = grade_6_lesson_5
+            elif selected_list == 'grade_6_lesson_6':
+                instance.question_list = grade_6_lesson_6
+            elif selected_list == 'grade_5_lesson_5':
+                instance.question_list = grade_5_lesson_5
+            elif selected_list == 'grade_5_lesson_6':
+                instance.question_list = grade_5_lesson_6
+            elif selected_list == 'one_twenty':
+                instance.question_list = one_twenty
+            elif selected_list == 'one_hundred':
+                instance.question_list = one_hundred
+            elif selected_list == 'eleven_ninety':
+                instance.question_list = eleven_ninety
+            elif selected_list == 'one_thousand':
+                instance.question_list = one_thousand
+            elif selected_list == 'one_quadrillion':
+                instance.question_list = one_quadrillion
+            elif selected_list == 'thousand_quadrillion':
+                instance.question_list = thousand_quadrillion
+            elif selected_list == 'japanese_numbers':
+                instance.question_list = japanese_numbers
+            elif selected_list == 'alphabet_sounds2':
+                instance.question_list = alphabet_sounds2
 
         if commit:
             instance.save()

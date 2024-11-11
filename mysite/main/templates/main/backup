@@ -1,770 +1,789 @@
-{% load static %}
-{% load my_tags %}
-<html lang="en-JP">
-<link href="{% static 'main/test.css' %}" rel="stylesheet">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <script>
-    // Define a global variable for the static file URL
-    window.staticFileUrl = "{% static 'main/WhatsApp画像 2024-02-14 13.27.37_9343389c.jpg' %}";
-    window.staticFileUrl1 = "{% static 'main/openart-12ba3e00450f41cc899c83c6a484c79f_raw.jpg' %}";
-    window.staticFileUrl2 = "{% static 'main/openart-42849cd925af4fdba5bc73bf93394019_raw.jpg' %}";
-    window.staticFileUrl3 = "{% static 'main/openart-5eda95374c2140e3a6dad00334c41fef_raw.jpg' %}";
-    window.staticFileUrl4 = "{% static 'main/openart-6cf0de3a89b84f87983d9234bf1fa9d5_raw.jpg' %}";
-  </script>
-    <script>
-        window.correctAudioUrls = [
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (17).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (18).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (19).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (20).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (21).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (22).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (23).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (24).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (25).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (25).mp3' %}"
-        ];
-        window.wrongAudioUrls = [
-            "{% static 'main/soundfiles/sound13.mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (27).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (28).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (29).mp3' %}"
-        ];
-    </script>
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap';
+import { useCookies } from 'react-cookie';
+import { FaPlay, FaArrowLeft } from 'react-icons/fa';
 
-<body style="background-image: url('{% static 'main/WhatsApp画像 2024-02-14 13.27.37_9343389c.jpg' %}'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; margin: 0; padding: 0;">
-<div class="container-fluid" style="padding: 0;">
-    <div id="tests" class="col-12" style="width: 100%; padding: 0; margin: 0;"></div>
-    <div class="row">
-        <div>
-        <div class="card mb-4">
-        <div class="card-body">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="{% url 'accounts:logout' %}?next={% url 'accounts:login' %}?next={% url 'main:profile' %}" class="w-50 pl-3 pb-4 text-white">
-            <button type="button" class="btn btn-success mb-3" style="width: 200px; border: 5px solid black;">
-            Logout
-            </button>
-            </a>
-            </div>
-            <div id="user-test-records"></div>
-            <div id="messages">
-              {% if messages %}
-                <ul class="messages">
-                  {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            </div>
-            {% if join_form %}
-            <form id="join-classroom-form" method="post" action="{% url 'main:join_classroom' %}">
-                {% csrf_token %}
-                {{ join_form.as_p }}
-                <button type="submit" class="btn btn-primary">Join</button>
-            </form>
-            {% endif %}
+const Test = () => {
+  const [classrooms, setClassrooms] = useState([]);
+  const [tests, setTests] = useState([]);
+  const [testQuestions, setTestQuestions] = useState({ questions: [] });
+  const [questions, setQuestions] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [maxScores, setMaxScores] = useState([]);
+  const [userInputs, setUserInputs] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [activeTestId, setActiveTestId] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isCorrect, setIsCorrect] = useState(null);
+  const [currentCorrectAudioIndex, setCurrentCorrectAudioIndex] = useState(0);
+  const [currentWrongAudioIndex, setCurrentWrongAudioIndex] = useState(0);
+  const [recordMessage, setRecordMessage] = useState('');
+  const [cookies, setCookie, removeCookie] = useCookies(['csrftoken']);
+  const [correctAnswerKey, setCorrectAnswerKey] = useState('');
+  const [correctWord, setCorrectWord] = useState('');
+  const [correctSound, setCorrectSound] = useState('');
+  const [correctPicture, setCorrectPicture] = useState('');
+  const [randomizedValues, setRandomizedValues] = useState({});
+  const [randomizedOptions, setRandomizedOptions] = useState({});
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+  const [isRecordDisabled, setIsRecordDisabled] = useState(false);
+  const [isPlayDisabled, setIsPlayDisabled] = useState(false);
+  const [volume, setVolume] = useState(0.7);
+  const [isPractice, setIsPractice] = useState(false);
+
+  const correctAudioUrls = window.correctAudioUrls;
+  const wrongAudioUrls = window.wrongAudioUrls;
+
+  const fetchCurrentUser = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get('/api/users/current-user', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`
+        }
+      });
+      console.log('Fetched current user:', response.data);
+      setCurrentUser(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching current user:', error);
+      setError('Failed to fetch current user.');
+      setLoading(false);
+    }
+  };
 
 
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
 
 
+  const fetchMaxScores = async (category, userId) => {
+    try {
+      setError(null);
+      const maxScoresResponse = await axios.get(`/api/maxscore/by-category-and-user/${category}/${userId}/`);
+      console.log('Fetched sessions:', maxScoresResponse.data);
+      return maxScoresResponse.data;
+    } catch (error) {
+      console.error('Error fetching maxScores:', error);
+      setError('Failed to fetch maxScores.');
+    }
+  };
 
-
-
-
-
-
-
-
-
-
-            {% if request.user.teacher %}
-            <div class="container mt-5" id="classroomList">
-                        <div>
-                                <h5 class="card-title">Create Classroom</h5>
-                                <form class="createClassroomForm" method="post" action="{% url 'main:classroom_create' %}" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {% for field in classroom_form %}
-                                        <div class="form-group">
-                                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                            {{ field }}
-                                        </div>
-                                    {% endfor %}
-                                    <button type="submit" class="btn btn-success" style="width: 200px; border: 5px solid black;">Create Classroom</button>
-                                </form>
-                        </div>
-                        {% for classroom in classrooms %}
-                            <button id="toggleFormBtn" class="btn btn-warning mb-3" style="width: 200px; border: 5px solid black;" data-toggle="collapse" data-target="#testcreateForm">Create a new test!</button>
-                            <div class="collapse" id="testcreateForm">
-                                        <h5 class="card-title">Create Test</h5>
-                                        <form class="createTestForm" method="post" action="{% url 'main:test_create' classroom.pk %}" enctype="multipart/form-data">
-                                            {% csrf_token %}
-                                            {% for field in test_form %}
-                                                <div class="form-group">
-                                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                    {{ field }}
-                                                </div>
-                                            {% endfor %}
-                                            <button type="submit" class="btn btn-success" style="width: 200px; border: 5px solid black;">Create</button>
-                                        </form>
-                            </div>
-                            <h3>Current tests!</h3>
-                            {% for test in tests %}
-                            <button id="toggleFormBtn" style="width: 200px; border: 5px solid black;" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#{{ test.pk }}Content">{{ test.name }}</button>
-                            <button id="toggleFormBtn" style="width: 200px; border: 5px solid black;" class="btn btn-primary mb-3" data-toggle="collapse" data-target="#{{ test.pk }}update_Content">Update {{ test.name }}</button>
-                            <div class="collapse" id="{{ test.pk }}update_Content">
-                            <form id="add-test-form" method="post" action="{% url 'main:test-classroom' test.pk %}">
-                                {% csrf_token %}
-                                {{ connect_form.as_p }}
-                                <button type="submit" class="btn btn-primary">Join</button>
-                            </form>
-                            </div>
-                            <div class="collapse" id="{{ test.pk }}Content">
-                                {% if test.test_picture %}
-                                <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{% url 'main:test_picture' test.id %}" alt="Lesson">
-                                {% endif %}
-                                    <h5 class="card-title">Create Question</h5>
-                                    <form class="createQuestionForm" method="post" action="{% url 'main:question_create' test.pk %}" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                        {% for field in question_form %}
-                                            <div class="form-group">
-                                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                {{ field }}
-                                            </div>
-                                        {% endfor %}
-                                        <button type="submit" class="btn btn-success" style="width: 200px; border: 5px solid black;">Create Question</button>
-                                    </form>
-                            <h3>Current Questions!</h3>
-                            <div class="question-container{{ test.pk }}"></div>
-                            {% for question in questions %}
-                            {% if question.test == test %}
-                                <div class="question_deletion" style="display: flex; align-items: center;">
-                                <button id="toggleFormBtn" class="btn btn-primary mb-3" style="width: 200px; border: 5px solid black;" data-toggle="collapse" data-target="#{{ test.name }}{{ question.pk }}Content">{{ question.name }}</button>
-                                <form method="post" action="{% url 'main:question_delete' question.pk %}" class="question-delete-form">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger" style="width: 100px; border: 5px solid black; margin-left: 50px;">Delete</button>
-                                </form>
-                                </div>
-                                <div class="collapse" id="{{ test.name }}{{ question.pk }}Content">
-                                {% if question.question_picture %}
-                                <img style="width:100px;height:100px;margin-top: 8px; border:3px solid black;" src="{% url 'main:question_picture' question.id %}" alt="Lesson">
-                                {% endif %}
-                                    <h5 class="card-title">Create Option</h5>
-                                    <form class="createOptionForm" method="post" action="{% url 'main:option_create' question.pk %}" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                        {% for field in option_form %}
-                                            <div class="form-group">
-                                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                    {{ field }}
-                                            </div>
-                                        {% endfor %}
-                                        <button type="submit" class="btn btn-success" style="width: 200px; border: 5px solid black;">Create Option</button>
-                                    </form>
-                                    <h3>Current options</h3>
-                                    <div class="option-container">
-                                    {% for option in options %}
-                                    {% if option.question == question %}
-                                    <div class="option_deletion" style="display: flex; align-items: center;">
-                                    <button class="btn btn-success mb-3" style="width: 200px; border: 5px solid black;">{{ option.name }}</button>
-                                    <form method="post" action="{% url 'main:option_delete' option.pk %}" class="option-delete-form">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger" style="width: 100px; margin-left: 50px; border: 5px solid black; margin-top: auto;">Delete</button>
-                                    </form>
-                                    </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                    </div>
-                                <h3 style="display: flex; align-items: center;">Remaining questions!</h3>
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                            <h3 style="display: flex; align-items: center;">Remaining tests!</h3>
-                            </div>
-                            {% endfor %}
-                        {% endfor %}
-            </div>
-            {% endif %}
-        {% if request.user.is_superuser %}
-        <form class="createClassroomForm" method="post" action="{% url 'main:school_create' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for field in school_form %}
-            <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                  {{ field }}
-            </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success" style="width: 200px; border: 5px solid black;">Create school</button>
-        </form>
-        {% endif %}
-        </div>
-        </div>
-        </div>
-    </div>
-</div>
-</div>
-</body>
-<script type="module" src="{% static 'my-vite-app/dist/assets/index-CKlsHde8.js' %}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle play audio button click
-    document.querySelectorAll('.play-audio-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const audioUrl = this.getAttribute('data-audio-url');
-            const audioElement = this.nextElementSibling;
-
-            if (audioElement && audioElement.tagName === 'AUDIO') {
-                const sourceElement = audioElement.querySelector('source');
-                sourceElement.src = audioUrl;
-                audioElement.style.display = 'block';
-                audioElement.load();
-                audioElement.play();
-                this.style.display = 'none';
-            }
+  useEffect(() => {
+    axios.get('/api/classrooms/my-classroom/')
+      .then(response => {
+        setClassrooms(response.data);
+        const initialFormData = {};
+        response.data.forEach(classroom => {
+          initialFormData[classroom.id] = {
+            name: classroom.name,
+            test_picture: null,
+          };
         });
-    });
-});
-</script>
+        setFormData(initialFormData);
+      })
+      .catch(error => {
+        console.error('Error fetching classrooms:', error);
+      });
+  }, []);
+
+
+  const fetchTestsByClassroom = (classroomId) => {
+    axios.get(`/api/name-id-tests/`)
+      .then(response => {
+        setTests(prevTests => ({
+          ...prevTests,
+          [classroomId]: response.data,
+        }));
+      })
+      .catch(error => {
+        console.error(`Error fetching tests for classroom ${classroomId}:`, error);
+      });
+  };
+
+  const fetchTestsByCategory = async (category) => {
+    try {
+      const response = await axios.get(`/api/name-id-tests/by-category/?category=${category}`);
+      setTests(prevTests => ({
+        ...prevTests,
+        [`category_${category}`]: response.data,
+      }));
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching tests for category ${category}:`, error);
+    }
+  };
 
 
 
+  const fetchQuestionsByTest = async (testId) => {
+    try {
+      const response = await axios.get(`/api/test-questions/one-question/${testId}/`);
+      setQuestions(response.data);
+    } catch (error) {
+      console.error(`Error fetching question for test ${testId}:`, error);
+    }
+  };
+
+
+  const fetchTestQuestionsAndOptions = async (testId) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const testQuestionsResponse = await axios.get(`/api/test-questions/by-test/${testId}/`);
+      const questions = testQuestionsResponse.data;
+
+
+      setTestQuestions({ questions });
+      setLoading(false);
+
+      const randomizedValues = questions.reduce((acc, question) => {
+        const keys = Object.keys(question.question_list);
+
+        const unusedKeys = keys.filter(key => !Object.values(acc).some(item => item.randomAlphabet === key));
+
+        const randomKey = unusedKeys.length > 0
+          ? unusedKeys[Math.floor(Math.random() * unusedKeys.length)]
+          : keys[Math.floor(Math.random() * keys.length)];
+
+        const randomValue = question.question_list[randomKey];
+
+
+        let randomAlphabetSliced = null;
+        if (question.first_letter) {
+          randomAlphabetSliced = `_${randomKey.slice(1)}`;
+        } else if (question.second_letter) {
+          randomAlphabetSliced = `${randomKey[0]}_${randomKey.slice(2)}`;
+        } else if (question.third_letter) {
+          randomAlphabetSliced = `${randomKey.slice(0, 2)}_${randomKey.slice(3)}`;
+        } else if (question.last_letter) {
+          randomAlphabetSliced = `${randomKey.slice(0, randomKey.length - 1)}_`;
+        }
+
+
+        acc[question.id] = {
+          randomAlphabetSliced : randomAlphabetSliced,
+          randomAlphabet: randomKey || null,
+          randomUrl: randomValue || null,
+          randomWord: randomValue.word || null,
+          randomPicture: randomValue.picture || null,
+          randomSound: randomValue.sound || null,
+          randomSound2: randomValue.sound2 || null,
+        };
+
+        return acc;
+      }, {});
 
 
 
+      setRandomizedValues(randomizedValues);
 
+      const randomizedOptions = questions.reduce((acc, question) => {
+        const options = question.options;
+        const optionKeys = options ? Object.keys(options[0].option_list) : [];
+        const selectedKeys = new Set();
 
+        const randomizedOptionsForQuestion = options.map((option) => {
+          let randomOptionKey;
+          do {
+            randomOptionKey = optionKeys[Math.floor(Math.random() * optionKeys.length)];
+          } while (randomOptionKey === randomizedValues[question.id].randomAlphabet || selectedKeys.has(randomOptionKey));
 
-
-
-
-<script>
-$(document).ready(function() {
-    // Arrays of audio file URLs for wrong and correct answers
-    var wrongAudioUrls = [
-        "{% static 'main/soundfiles/sound13.mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (27).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (28).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (29).mp3' %}"
-    ];
-    var correctAudioUrls = [
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (17).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (18).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (19).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (20).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (21).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (22).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (23).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (24).mp3' %}",
-        "{% static 'main/soundfiles/Record (online-voice-recorder.com) (25).mp3' %}"
-    ];
-    var currentWrongAudioIndex = 0;
-    var currentCorrectAudioIndex = 0;
-
-    $('.test-form').submit(function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        var form = $(this);
-
-        $.ajax({
-            type: form.attr('method'),
-            url: form.attr('action'),
-            data: form.serialize(),
-            success: function(response) {
-                // Hide content within hide-button div
-                $('.hide-button').hide();
-
-                // Display message
-                $('.message').text(response.message);
-
-                // Remove any existing icons
-                $('.icon').remove();
-
-                $('.continue-button').remove();
-
-                form[0].reset();
-
-                var audioUrl, audioElement;
-                if (response.message === 'Correct answer') {
-                    // Append green check mark icon
-                    $('.message').after('<span class="icon check-mark text-success" style="font-size: 90px">&#x2713;</span>');
-
-                    // Reset wrong answer audio index to start from 0
-                    currentWrongAudioIndex = 0;
-
-                    // Get the current audio URL for correct answer and create an audio element
-                    audioUrl = correctAudioUrls[currentCorrectAudioIndex];
-                    audioElement = new Audio(audioUrl);
-
-                    // Play the audio
-                    audioElement.volume = 1.0; // Default volume
-                    audioElement.play();
-
-                    // Increment the index for the next audio file
-                    currentCorrectAudioIndex = (currentCorrectAudioIndex + 1) % correctAudioUrls.length;
-                } else {
-                    // Append red cross mark icon
-                    $('.message').after('<span class="icon cross-mark text-danger" style="font-size: 90px">&#x2717;</span>');
-
-                    // Reset correct answer audio index to start from 0
-                    currentCorrectAudioIndex = 0;
-
-                    // Get the current audio URL for wrong answer and create an audio element
-                    audioUrl = wrongAudioUrls[currentWrongAudioIndex];
-                    audioElement = new Audio(audioUrl);
-
-                    // Play the audio
-                    audioElement.volume = 1.0; // Default volume
-                    audioElement.play();
-
-                    // Increment the index for the next audio file
-                    currentWrongAudioIndex = (currentWrongAudioIndex + 1) % wrongAudioUrls.length;
-                }
-
-                // Append continue button under the icon
-                $('.icon').after('<button class="continue-button" id="continue-button">Continue</button>');
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-                $('.message').text('An error occurred while processing your request.');
-            }
+          selectedKeys.add(randomOptionKey);
+          return { ...option, randomOptionKey };
         });
-    });
 
-    // Handle continue button click
-    $(document).on('click', '.continue-button', function() {
-        // Show content within hide-button div
-        $('.hide-button').show();
-        // Remove continue button
-        $('.message').empty();
-        $('.icon').remove();
-        $(this).remove();
-    });
-});
-</script>
+        acc[question.id] = randomizedOptionsForQuestion;
+        return acc;
+      }, {});
 
+      setRandomizedOptions(randomizedOptions);
 
+    } catch (error) {
+      console.error('Error fetching test questions and options:', error);
+      setError('Failed to fetch test questions and options.');
+      setLoading(false);
+    }
+  };
 
-<script>
-function shuffleQuestions(testId) {
-    var testContent = document.getElementById('test' + testId + 'Content');
-    var allQuestions = testContent.querySelectorAll('.question');
-    var shuffledQuestions = Array.from(allQuestions).sort(function() {
-        return 0.5 - Math.random();
-    });
+  const recordTestScore = async (testId) => {
+    setIsRecordDisabled(true);
+    try {
+      const csrfToken = cookies.csrftoken;
+      const response = await axios.post(`/test/${testId}/record/`, null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          'X-CSRFToken': csrfToken
+        }
+      });
+      const message = response.data.message;
+      setRecordMessage(message);
+      setShowModal(true);
+      await fetchCurrentUser();
 
-    // Hide all questions
-    allQuestions.forEach(function(question) {
-        question.style.display = 'none';
-    });
+    } catch (error) {
+      console.error('Error recording test score:', error);
+      setError('Failed to record test score.');
+      setIsRecordDisabled(false);
+    }
+  };
 
-    // Display shuffled questions
-    shuffledQuestions.forEach(function(question) {
-        question.style.display = 'block';
-    });
-}
-</script>
+  const deleteSubmissions = async () => {
+    try {
+      const csrfToken = cookies.csrftoken;
+      await axios.post('/submissions/delete/', null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          'X-CSRFToken': csrfToken
+        }
+      });
+    } catch (error) {
+      console.error('Error deleting submissions:', error);
+      setError('Failed to delete submissions.');
+    }
+  };
 
+  const toggleQuestionDetails = async (testId) => {
+    await deleteSubmissions();
+    setIsRecordDisabled(false);
 
-<script>
-
-function submitForm(questionIndex) {
-    var currentQuestion = document.getElementById('question' + questionIndex);
-    currentQuestion.style.display = 'none';
-
-    var testContent = currentQuestion.closest('.collapse');
-    var allQuestions = testContent.querySelectorAll('.question');
-    var questionIds = Array.from(allQuestions).map(function(question) {
-        return parseInt(question.id.replace('question', ''), 10);
-    });
-
-    // Find the index of the current question's ID in the sorted array
-    var currentIndex = questionIds.indexOf(questionIndex);
-
-    // Find the next question with a higher ID
-    var nextQuestionId = questionIds.find(function(id, index) {
-        return index > currentIndex;
-    });
-
-    if (nextQuestionId) {
-        var nextQuestion = document.getElementById('question' + nextQuestionId);
-        nextQuestion.style.display = 'block';
+    if (activeTestId === testId) {
+      setActiveTestId(null);
     } else {
-        // If there's no next question within the same test, proceed to the next test
-        var nextTestContent = testContent.nextElementSibling;
-        if (nextTestContent) {
-            nextTestContent.classList.add('show');
-            var firstQuestionOfNextTest = nextTestContent.querySelector('.question');
-            if (firstQuestionOfNextTest) {
-                firstQuestionOfNextTest.style.display = 'block';
-            }
+      try {
+        setActiveTestId(testId);
+        if (isPractice) {
+          await fetchQuestionsByTest(testId);
+        } else {
+          setActiveQuestionIndex(0);
+          await fetchTestQuestionsAndOptions(testId);
         }
+      } catch (error) {
+        console.error('Error fetching test questions and options:', error);
+        setError('Failed to fetch test questions and options.');
+      }
+    }
+  };
+
+  const toggleCategories = async (category) => {
+    if (activeCategory === category) {
+      setActiveCategory(null);
+    } else {
+      try {
+        setActiveCategory(category);
+        const fetchedTests = await fetchTestsByCategory(category);
+
+      try {
+        const scores = await fetchMaxScores(category, currentUser.id);
+
+        if (scores) {
+          setMaxScores(scores);
+        } else {
+          console.error('No scores found for category:', category);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      } catch (error) {
+        console.error('Error fetching tests by category:', error);
+        setError('Failed to fetch tests by category.');
+      }
+    }
+  };
+
+  const handlePracticeChange = (e) => {
+    setIsPractice(e.target.checked);
+  };
+
+  const handleSubmit = async (e, sound2, questionId, question, optionId, randomAlphabet, randomAlphabetSliced, randomUrl, randomWord, randomPicture, randomSound, randomSound2) => {
+    e.preventDefault();
+
+    setCorrectWord(randomWord);
+    setCorrectSound(sound2 ? randomSound2 : (randomSound !== null ? randomSound : randomUrl));
+    setCorrectPicture(randomPicture);
+    let selectedOption = e.target[`selected_option_${questionId}`].value;
+
+    if (selectedOption === randomAlphabet) {
+      selectedOption = optionId;
+    } else if (isNaN(selectedOption)) {
+      selectedOption = '10000000000000000';
     }
 
-    return false;
-}
 
-</script>
+    const csrfToken = cookies.csrftoken;
+    setIsSubmitDisabled(true);
 
+    try {
+      const response = await axios.post(
+        `/test/${activeTestId}/question/${questionId}/submit/`,
+        { selected_option: selectedOption },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            'X-CSRFToken': csrfToken
+          }
+        }
+      );
 
+      const message = response.data.message;
+      setModalMessage(message);
+      setShowModal(true);
+      setCorrectAnswerKey(randomAlphabet);
+      setTimeout(() => setIsSubmitDisabled(false), 1000);
 
-
-<script>
-$(document).ready(function() {
-    $('.record-form').submit(function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        var form = $(this);
-        var button = form.find('button');
-        var message = form.find('.record-message'); // Find the message element within the form container
-
-        // Disable the button and add disabled class
-        button.prop('disabled', true).addClass('disabled');
-
-        $.ajax({
-            type: form.attr('method'),
-            url: form.attr('action'),
-            data: form.serialize(),
-            success: function(response) {
-                // Display message
-                message.text(response.message); // Set the text of the message element within the form container to the message from the response
-                message.show();
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-                message.text('An error occurred while processing your request.');
-                message.show();
-            },
+      let audioUrl, audioElement;
+      if (message === 'Correct answer') {
+        setIsCorrect(true);
+        setCurrentWrongAudioIndex(0);
+        audioUrl = currentCorrectAudioIndex >= 9
+          ? correctAudioUrls[9]
+          : correctAudioUrls[currentCorrectAudioIndex];
+        audioElement = new Audio(audioUrl);
+        setCurrentCorrectAudioIndex((prevIndex) => {
+          const newIndex = (prevIndex + 1);
+          return newIndex;
         });
-    });
-});
-</script>
+      } else {
+        setIsCorrect(false);
+        setCurrentCorrectAudioIndex(0);
+        audioUrl = wrongAudioUrls[currentWrongAudioIndex];
+        audioElement = new Audio(audioUrl);
+        setCurrentWrongAudioIndex((prevIndex) => {
+          const newIndex = (prevIndex + 1) < wrongAudioUrls.length ? (prevIndex + 1) : prevIndex;
+          return newIndex;
+        });
+      }
 
-<script>
-$(document).ready(function() {
-    // Function to enable the record-message button
-    function enableRecordButton(testPk) {
-        var recordButton = $('[data-test-id="' + testPk + 'Record Answers"]');
-        recordButton.prop('disabled', false).removeClass('disabled').text("Record answers!"); // Update text of the record-message button
+      audioElement.volume = volume;
+      audioElement.play();
+
+      setActiveQuestionIndex((prevIndex) => prevIndex + 1);
+    } catch (error) {
+      console.error('Error submitting answer:', error);
+      setIsSubmitDisabled(false);
     }
-
-    // Event listener for the do-test button
-    $('.do-test').click(function() {
-        var testPk = $(this).attr('id').replace('toggleFormBtn', ''); // Extract test pk from button id
-        enableRecordButton(testPk); // Call the function to enable the record-message button
-    });
-});
-
-</script>
-
-
-
-
-
-
-<script>
-$(document).ready(function() {
-    // Add click event listener to the button
-    $('.do-test').click(function(event) {
-        event.preventDefault(); // Prevent the default button click behavior
-
-
-        $.ajax({
-            type: 'POST',
-            url: $('#deleteSubmissionsForm').attr('action'), // Get the form's action URL
-            data: $('#deleteSubmissionsForm').serialize(), // Serialize the form data
-            success: function(data) {
-                // Handle success response
-                console.log('Submissions deleted successfully!');
-            },
-            error: function(xhr, status, error) {
-                // Handle error response
-                console.error(xhr.responseText);
-            }
-        });
-    });
-});
-</script>
-
-
-
-<script>
-    $(document).ready(function() {
-        $('.do-test').click(function() {
-            var colDiv = $('#change');
-            var btnId = $(this).attr('id');
-            var testId = btnId.replace('toggleFormBtn', '');
-            var contentId = '#test' + testId + 'Content';
-            if (colDiv.hasClass('col-md-6')) {
-                colDiv.removeClass('col-md-6').addClass('col-md-12');
-            } else {
-                colDiv.removeClass('col-md-12').addClass('col-md-6');
-            }
-            $(contentId).collapse('toggle');
-        });
-    });
-</script>
-
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var toggleButtons = document.querySelectorAll('.do-test');
-
-        toggleButtons.forEach(function(toggleButton) {
-            toggleButton.addEventListener('click', function() {
-                var targetArea = document.getElementById('hiding'); // Select the area with the ID 'hiding'
-                if (targetArea.style.display === 'none') {
-                    targetArea.style.display = 'block';
-                } else {
-                    targetArea.style.display = 'none';
-                }
-            });
-        });
-    });
-</script>
-
-
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var testButtons = document.querySelectorAll('.do-test');
-        testButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var testContent = button.nextElementSibling;
-                var firstQuestion = testContent.querySelector('.question');
-                firstQuestion.style.display = 'block';
-                var otherQuestions = testContent.querySelectorAll('.question:not(#' + firstQuestion.id + ')');
-                otherQuestions.forEach(function(question) {
-                    question.style.display = 'none';
-                });
-            });
-        });
-    });
-</script>
-
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var testButtons = document.querySelectorAll('.do-test');
-        testButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                testButtons.forEach(function(otherButton) {
-                    if (otherButton !== button) {
-                        if (otherButton.style.display === 'none') {
-                            otherButton.style.display = 'block';
-                        } else {
-                            otherButton.style.display = 'none';
-                        }
-                    }
-                });
-            });
-        });
-    });
-</script>
-
-
-
-
-
-
-
-
-
-<script>
-$('.createQuestionForm').submit(function (e) {
-    e.preventDefault();
-
-    var form = $(this);
-    var formData = new FormData(form[0]);
-
-    formData.delete('csrfmiddlewaretoken');
-    var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
-    formData.append('csrfmiddlewaretoken', csrfToken);
-
-    var url = form.attr('action');
-
-    $.ajax({
-        type: form.attr('method'),
-        url: url,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            console.log(data);
-
-            if (data.success) {
-                var questionContainer = $('.question-container[data-test="' + data.test_pk + '"]');
-
-                var newQuestionButton =
-                        '<div class="question_deletion" style="display: flex; align-items: center;">' +
-                        '<button class="btn btn-primary mb-3" style="width: 200px; border: 5px solid black;" data-toggle="collapse" data-target="#' + data.test_name + data.pk + 'Content">' +
-                        'Newly Created Question: ' + data.name +
-                        '</button>' +
-                        '<form method="post" action="{% url 'main:question_delete' 0 %}" class="question-delete-form">' +
-                        '{% csrf_token %}' +
-                        '<button type="submit" class="btn btn-danger" style="width: 100px; border: 5px solid black; margin-left: 50px;">Delete</button>' +
-                        '</form>' +
-                        '</div>' +
-                        '<div class="collapse" id="' + data.test_name + data.pk + 'Content">' +
-                        '<h5 class="card-title">Create Option</h5>' +
-                        '<form class="createOptionForm" method="post" action="{% url 'main:option_create' 0 %}" enctype="multipart/form-data">' +
-                        '{% csrf_token %}' +
-                        '<input type="hidden" name="question_pk" value="' + data.pk + '">' + // Include question PK in the form
-                        '{% for field in option_form %}' +
-                        '<div class="form-group">' +
-                        '<label for="{{ field.id_for_label }}">{{ field.label }}</label>' +
-                        '{{ field }}' +
-                        '</div>' +
-                        '{% endfor %}' +
-                        '<button type="submit" class="btn btn-success" style="width: 200px; border: 5px solid black;">Create Option</button>' +
-                        '</form>' +
-                        '<h3>Current options</h3>' +
-                        '<div class="option-container"></div>' +
-                        '</div>' +
-                        '<h3 style="display: flex; align-items: center;">Remaining questions!</h3>';
-
-
-                newQuestionButton = newQuestionButton.replace('{% url 'main:option_create' 0 %}', '/option/' + data.pk + '/create/')
-                                                     .replace('{% url 'main:question_delete' 0 %}', '/question/' + data.pk + '/delete/');
-
-
-
-                $('.question-container' + data.test_pk).prepend(newQuestionButton);
-
-                // Add an event listener if needed
-                newQuestionButton.on('click', function () {
-                    // Handle button click event if needed
-                });
-
-                form.trigger('reset');
-            } else {
-                // Handle errors if necessary
-            }
-        },
-        error: function (xhr, status, error) {
-            console.log('Error:', xhr.responseJSON);
-            alert('An error occurred: ' + xhr.statusText);
-        }
-    });
-});
-</script>
-
-<script>
-$(document).on('submit', '.question-delete-form', function (e) {
-    e.preventDefault();
-
-    var form = $(this);
-    var formData = new FormData(form[0]);
-
-    var url = form.attr('action');
-
-    $.ajax({
-        type: form.attr('method'),
-        url: url,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            console.log(data);
-
-            form.closest('.question_deletion').remove();
-        },
-        error: function (data) {
-            console.log('Error:', data.responseJSON);
-        }
-    });
-});
-</script>
-
-
-<script>
-$(document).on('submit', '.createOptionForm', function (e) {
-    e.preventDefault();
-
-    var form = $(this);
-    var formData = new FormData(form[0]);
-
-    formData.delete('csrfmiddlewaretoken');
-    var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
-    formData.append('csrfmiddlewaretoken', csrfToken);
-
-    var url = form.attr('action');
-
-    $.ajax({
-        type: form.attr('method'),
-        url: url,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            console.log(data);
-
-            if (data.success) {
-                var optionContainer = form.siblings('.option-container'); // Selecting the container directly
-
-
-
-                // Append the newly created option to the option container
-                var newOption =
-                        '<div class="option_deletion" style="display: flex; align-items: center;">' +
-                        '<button class="btn btn-success mb-3" style="width: 200px; border: 5px solid black;">' + data.name + '</button>' +
-                        '<form method="post" action="{% url 'main:option_delete' 0 %}" class="option-delete-form">' +
-                        '{% csrf_token %}' +
-                        '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrfToken + '">' +
-                        '<input type="hidden" name="option_pk" value="' + data.pk + '">' +
-                        '<button type="submit" class="btn btn-danger" style="width: 100px; margin-left: 50px; border: 5px solid black;">Delete</button>' +
-                        '</form>' +
-                        '</div>';
-
-                newOption = newOption.replace('{% url 'main:option_delete' 0 %}', '/option/' + data.pk + '/delete/');
-
-                optionContainer.append(newOption);
-                form.trigger('reset');
-            } else {
-                // Handle errors if necessary
-            }
-        },
-        error: function (xhr, status, error) {
-            console.log('Error:', xhr.responseJSON);
-            alert('An error occurred: ' + xhr.statusText);
-        }
-    });
-});
-</script>
-
-
-
-<script>
-$(document).on('submit', '.option-delete-form', function (e) {
-    e.preventDefault();
-
-    var form = $(this);
-    var formData = new FormData(form[0]);
-
-    var url = form.attr('action');
-
-    $.ajax({
-        type: form.attr('method'),
-        url: url,
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            console.log(data);
-
-            form.closest('.option_deletion').remove();
-        },
-        error: function (data) {
-            console.log('Error:', data.responseJSON);
-        }
-    });
-});
-</script>
-
-
-
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setModalMessage('');
+    setRecordMessage('');
+  };
+
+const handlePlay = (audioUrl, button) => {
+    if (button.disabled) return;
+
+    button.disabled = true;
+
+    const audio = new Audio(audioUrl);
+    audio.play();
+
+    audio.onended = () => {
+        button.disabled = false;
+    };
+};
+
+
+
+
+
+
+  const renderForm = (sound2, question, randomAlphabet, randomAlphabetSliced, selectedKeys, randomUrl, randomWord, randomPicture, randomSound, randomSound2) => {
+    const options = randomizedOptions[question.id];
+    if (!options) return null;
+    const optionId = options.length === 1 ? options[0].id : null;
+
+    return (
+      <form className="test-form" onSubmit={(e) => handleSubmit(e, sound2, question.id, question, optionId, randomAlphabet, randomAlphabetSliced, randomUrl, randomWord, randomPicture, randomSound, randomSound2)}>
+        <div className="container-fluid">
+          <div className="row">
+            {options.map(option => {
+              return (
+                <div key={option.id} className={!question.write_answer ? "col-md-6" : ""}>
+                  {question.write_answer ? (
+                    <>
+                    {(question.first_letter || question.second_letter || question.third_letter || question.last_letter) ? (
+                      <div>
+                        <span style={{ fontSize: '50px' }}>{randomAlphabetSliced}</span>
+                        <p>書いてある文字と足りない文字を全部書いて上の言葉を完成させてください</p>
+                      </div>
+                    ) : null}
+                    <input
+                      type="text"
+                      id={`selected_option_${question.id}_${option.id}`}
+                      name={`selected_option_${question.id}`}
+                      style={{ width: '300px', height: '50px', marginTop: '20px' }}
+                    />
+                    </>
+                  ) : (
+                    <>
+                      {option.option_list[option.randomOptionKey]?.picture ? (
+                        <img
+                          style={{ width: '150px', height: '120px', marginTop: '8px', border: '3px solid black' }}
+                          src={option.is_correct ? randomPicture : option.option_list[option.randomOptionKey].picture}
+                          alt="Option"
+                        />
+                      ): null}
+                      <label htmlFor={`selected_option_${question.id}_${option.id}`}   style={{ fontSize: '25px', marginBottom: '10px'}}>
+                        <input
+                          type="radio"
+                          id={`selected_option_${question.id}_${option.id}`}
+                          name={`selected_option_${question.id}`}
+                          value={option.id}
+                          style={{ height: '25px', width: '25px', marginRight: '10px', flexShrink: 0 }}
+                        />
+                        <span style={{ flex: 1 }}>
+                        {(option.option_list[option.randomOptionKey]?.word === undefined && !randomPicture) ? (
+                          option.is_correct ? randomAlphabet : option.randomOptionKey ? option.randomOptionKey : option.name
+                        ): (option.option_list[option.randomOptionKey]?.word !== undefined && !randomPicture ? (option.is_correct ? randomWord : option.option_list[option.randomOptionKey].word) : null
+                        )}
+                        </span>
+                      </label>
+                      {option.option_list[option.randomOptionKey].word && randomPicture ? (
+                        <h4>{option.is_correct ? randomWord : option.option_list[option.randomOptionKey].word}</h4>
+                      ): null}
+                      {option.option_picture && (
+                        <img
+                          style={{ width: '100px', height: '100px', marginTop: '8px', border: '3px solid black' }}
+                          src={Object.keys(option.option_list).length === 0 ? option.option_picture : null}
+                          alt="Option"
+                        />
+                      )}
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <button
+          id="submit-btn"
+          type="submit"
+          className="btn btn-primary"
+          style={{
+            border: '4px solid #343a40',
+            width: '400px',
+            height: '80px',
+            marginTop: '50px'
+          }}
+          disabled={isSubmitDisabled}
+        >
+          回答する
+        </button>
+      </form>
+    );
+  };
+
+
+  return (
+    <div>
+      <div className="quiz-container d-flex justify-content-center align-items-center" id="quiz" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
+      {!activeCategory && (
+      <figure style={{ margin: 0 }}>
+      {currentUser?.student && (
+                <h1 style={{ fontWeight: 'bold' }}>{currentUser.username}</h1>
+      )}
+      <img
+                src={currentUser?.profile_asset?.image}
+                alt="Level Image"
+                style={{ height: '220px', width: '220px', border: '5px solid black' }}
+                onClick={() => document.getElementById('audio').play()}
+      />
+      <figcaption style={{ fontSize: '30px', marginTop: '5px' }}>
+                君は{currentUser?.profile_asset?.text}
+      </figcaption>
+      <figcaption style={{ fontSize: '45px', marginTop: '5px' }}>
+                <strong>最大記録トータル＝{currentUser?.total_max_scores}</strong>
+      </figcaption>
+      <audio id="audio" src={currentUser?.profile_asset?.audio} />
+      </figure>
+      )}
+        <div className="quiz-header" style={{ height: 'auto', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div>
+          <button
+            onClick={() => toggleCategories('japanese')}
+            className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+            style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+          >日本語<h5 className="text-white">トータル：{currentUser?.total_japanese_score}/{currentUser?.question_counts.total_japanese_questions}</h5></button>
+          <button
+            onClick={() => toggleCategories('english_5')}
+            className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+            style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+          >５年英語<h5 className="text-white">トータル：{currentUser?.total_english_5_score}/{currentUser?.question_counts.total_english_5_questions}</h5></button>
+          <button
+            onClick={() => toggleCategories('english_6')}
+            className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+            style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+          >６年英語<h5 className="text-white">トータル：{currentUser?.total_english_6_score}/{currentUser?.question_counts.total_english_6_questions}</h5></button>
+          <button
+            onClick={() => toggleCategories('phonics')}
+            className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+            style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+          >アルファベットとフォニックス<h5 className="text-white">トータル：{currentUser?.total_phonics_score}/{currentUser?.question_counts.total_phonics_questions}</h5></button>
+          <button
+            onClick={() => toggleCategories('numbers')}
+            className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+            style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+          >数字<h5 className="text-white">トータル：{currentUser?.total_numbers_score}/{currentUser?.question_counts.total_numbers_questions}</h5></button>
+          <button
+            className={`btn btn-success mb-3 toggle-test-btn ${activeCategory !== null && activeTestId === null ? 'active' : 'd-none'}`}
+            style={{ height: '50px', width: '290px', padding: '10px', border: '5px solid black', position: 'relative', marginBottom: '10px' }}
+            onClick={() => toggleCategories(activeCategory)}
+          >
+            <span
+              className="text-center text-white"
+              style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px' }}
+            >
+            <FaArrowLeft style={{ marginRight: '10px' }} /> 戻る！
+            </span>
+          </button>
+            {loading && <p>Loading...</p>}
+            {error && <p>{error}</p>}
+            {classrooms.map(classroom => (
+              <div key={classroom.id}>
+                <div className="test-buttons-container" style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {Object.values(tests).flat().sort((a, b) => a.lesson_number - b.lesson_number).map(test => (
+                    <span key={test.id} style={{ marginRight: '10px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
+                    {activeTestId !== null ? (
+                        <h2>
+                        <button
+                          className={`btn btn-warning mb-3 toggle-test-btn ${activeTestId === test.id || activeTestId === null ? 'active' : 'd-none'}`}
+                          style={{ height: '50px', width: '290px', padding: '10px', border: '5px solid black', position: 'relative', marginBottom: '10px' }}
+                          onClick={() => toggleQuestionDetails(test.id)}
+                        >
+                          <span
+                            className="text-center text-white"
+                            style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px' }}
+                          >
+                          <FaArrowLeft style={{ marginRight: '10px' }} /> 戻る!
+                          </span>
+                        </button>
+                        </h2>
+                    ) : (
+                      <button
+                        className={`btn btn-warning mb-3 toggle-test-btn ${activeCategory === test.category && activeTestId === null ? 'active' : 'd-none'}`}
+                        style={{ height: '240px', width: '240px', padding: '10px', border: '5px solid black' }}
+                        onClick={() => toggleQuestionDetails(test.id)}
+                      >
+                        <span
+                          className="text-center text-white"
+                          style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px', justifyContent: 'center' }}
+                        >
+                      　　{test.name}
+                        </span>
+                        {test.picture_url && (
+                          <img src={test.picture_url} alt="Question" width="170" height="170" />
+                        )}
+                        <div>
+                              {maxScores.map(maxScore => {
+                                if (maxScore.test === test.id) {
+                                  return (
+                                    <h5 key={maxScore.id} className="text-white">
+                                      最高記録：{maxScore.score}/{maxScore.total_questions}
+                                    </h5>
+                                  );
+                                }
+                                return null;
+                              })}
+                        </div>
+                      </button>
+                    )}
+                    </div>
+                    </span>
+                ))}
+
+                {activeTestId && (
+                  <div className="test-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
+                  {isPractice && questions && (
+                    <div key={questions.id} style={{ display: 'flex', flexWrap: 'wrap' }}>
+                      {(() => {
+                        const keys = Object.keys(questions.question_list);
+
+                        return keys.map((key) => {
+                          const value = questions.question_list[key];
+
+                          return (
+                            <div key={key} style={{ margin: '10px' }}>
+                            <button
+                              className="btn btn-info"
+                              style={{ height: value.picture ? '170px' : '70px', width: value.picture ? '170px' : 'auto', padding: '10px', border: '5px solid black', position: 'relative', backgroundColor: 'lightblue' }}
+                              onClick={(e) => handlePlay(questions.sound2 ? value.sound2 : value.sound ? value.sound : value, e.target)}
+                              disabled={isPlayDisabled}
+                            >
+                              {((value.picture && value.word) || (!value.picture && !value.word)) && (
+                              <span
+                                className={`${value.picture ? 'text-center' : ''} text-white`}
+                                style={!value.picture ? { fontSize: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' } : { background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px', justifyContent: 'center', fontSize: '15px' }}
+                              >
+                                {value.word ? value.word : key}
+                              </span>
+                              )}
+                              {value.picture ? <img src={value.picture} alt={`Picture of ${value.word || key}`} width="120" height="120" /> : null}
+                            </button>
+                            </div>
+                          );
+                        });
+                      })()}
+                    </div>
+                  )}
+                    <ul>
+                      {!isPractice && testQuestions.questions.map((question, index) => {
+                        const { randomAlphabetSliced, randomAlphabet, randomUrl, randomWord, randomPicture, randomSound, randomSound2} = randomizedValues[question.id] || {};
+                        let selectedKeys = [];
+                        const isAudio = typeof randomUrl === 'string' && (randomUrl.includes('Record') || randomUrl.includes('mp3'));
+                        const isPicture = typeof randomUrl === 'string' && randomUrl.includes('image');
+                        const sound2 = question.sound2
+                        return (
+                          <li key={question.id} className={index === activeQuestionIndex ? 'active' : 'd-none'}>
+                          {isPicture ? (
+                            <img src={randomUrl} alt="Question" width="200" height="150" />
+                          ) : isAudio ? (
+                                <button
+                                    className="btn btn-success"
+                                    style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px' }}
+                                    onClick={(e) => handlePlay(randomUrl, e.target)}
+                                    disabled={isPlayDisabled}
+                                >
+                                    音声 <FaPlay style={{ marginLeft: '10px' }} />
+                                </button>
+                          ) : randomSound ? (
+                                <button
+                                    className="btn btn-success"
+                                    style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px' }}
+                                    onClick={(e) => handlePlay(sound2 ? randomSound2 : randomSound, e.target)}
+                                    disabled={isPlayDisabled}
+                                >
+                                    音声 <FaPlay style={{ marginLeft: '10px' }} />
+                                </button>
+                          ) : (
+                            <p style={{ fontSize: '50px' }}>{randomUrl}</p>
+                          )}
+                            {renderForm(sound2, question, randomAlphabet, randomAlphabetSliced, selectedKeys, randomUrl, randomWord, randomPicture, randomSound, randomSound2)}
+                          </li>
+                        );
+                      })}
+                      {testQuestions.questions.length > 0 && !testQuestions.questions.some((_, index) => index === activeQuestionIndex) && (
+                          <p>
+                          <button
+                              className="btn btn-primary mb-3"
+                              style={{ width: '200px', height: '50px', margin: '10px' }}
+                              onClick={() => recordTestScore(activeTestId)}
+                              disabled={isRecordDisabled}
+                          >
+                          点数を記録する
+                          </button>
+                          </p>
+                      )}
+                    </ul>
+                  </div>
+                )}
+                </div>
+              </div>
+            ))}
+          <div className="volume-control">
+            <label htmlFor="volume-slider" style={{ fontSize: '20px' }}>
+              イバルの声の音量調整
+            </label>
+            <input
+              id="volume-slider"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={(e) => setVolume(parseFloat(e.target.value))}
+              style={{ width: '200px' }}
+            />
+          </div>
+          <div className={`${activeTestId === null ? 'active' : 'd-none'}`}>
+            <span style={{ width: '20px', height: '20px' }}>練習：</span>
+            <input
+              type="checkbox"
+              style={{ width: '20px', height: '20px' }}
+              checked={isPractice}
+              onChange={handlePracticeChange}
+            />
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <Modal show={showModal} onHide={closeModal} centered>
+        <Modal.Header
+          style={{
+            backgroundImage:
+                currentCorrectAudioIndex >= 9 || recordMessage
+                ? `url(${window.staticFileUrl})`
+                : currentCorrectAudioIndex === 1 || currentCorrectAudioIndex === 2 || currentCorrectAudioIndex === 3
+                ? `url(${window.staticFileUrl3})`
+                : currentCorrectAudioIndex === 4
+                ? `url(${window.staticFileUrl1})`
+                : currentWrongAudioIndex
+                ? `url(${window.staticFileUrl4})`
+                : `url(${window.staticFileUrl2})`,
+
+
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            height: '40vh'
+          }}
+        >
+        </Modal.Header>
+        <Modal.Body>
+            {recordMessage ? (
+                <div className="d-flex align-items-center justify-content-center">
+                    <h2 className="message">{recordMessage}</h2>
+                </div>
+            ) : (
+                <>
+                <div className="d-flex align-items-center">
+                    {isCorrect === true ? (
+                        <>
+                            <span style={{ fontSize: '50px' }}>正解！</span>
+                            <span className="text-success" style={{ fontSize: '50px' }}>&#x2713;</span>
+                        </>
+                    ) : isCorrect === false ? (
+                        <div>
+                            <span style={{ fontSize: '50px' }}>あまい！</span>
+                            <span className="text-danger" style={{ fontSize: '50px' }}>&#x2717;</span>
+                            {correctSound && (
+                              <p>
+                                <button
+                                    className="btn btn-success"
+                                    style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                    onClick={(e) => handlePlay(correctSound, e.target)}
+                                    disabled={isPlayDisabled}
+                                >
+                                    音声 <FaPlay style={{ marginLeft: '10px' }} />
+                                </button>
+                              </p>
+                            )}
+                            <h1>正解は：{correctWord !== null ? correctWord : correctAnswerKey}</h1>
+                        </div>
+                    ) : null}
+                </div>
+                <h1>連続正解: {currentCorrectAudioIndex}</h1>
+                </>
+            )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>
+            Next!
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+};
+
+export default Test;

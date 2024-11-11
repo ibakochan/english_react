@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
-from main.models import Teacher, Student, School
+from main.models import Teacher, Student, School, Classroom
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.crypto import get_random_string
 
@@ -70,10 +70,12 @@ class StudentSignUpForm(forms.ModelForm):
         user = super().save(commit=False)
         random_password = get_random_string(8)
         user.set_password(random_password)
+        classroom = Classroom.objects.get(name='open_room')
         if commit:
             user.save()
             student_number = self.cleaned_data.get('student_number')
-            Student.objects.create(user=user, student_number=student_number)
+            student = Student.objects.create(user=user, student_number=student_number)
+            classroom.students.add(student)
         return user
 
     def clean(self):

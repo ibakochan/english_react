@@ -44,8 +44,10 @@ urlpatterns = [
     path('option/picture/<int:pk>/', views.option_stream_file, name='option_picture'),
     path('test/<int:test_id>/question/<int:question_id>/submit/', views.TestAnswerView.as_view(), name='test_submit'),
     path('test/<int:pk>/record/', views.TestRecordView.as_view(), name='test_record'),
+    path('score/<int:pk>/record/', views.ScoreRecordView.as_view(), name='record_score'),
     path('question/<int:pk>/delete/', views.QuestionDeleteView.as_view(), name='question_delete'),
     path('option/<int:pk>/delete/', views.OptionDeleteView.as_view(), name='option_delete'),
     path('submissions/delete/', views.TestsubmissionsDeleteView.as_view(), name='submissions_delete'),
     path('test-classroom/<int:pk>/', views.TestClassroomView.as_view(), name='test-classroom'),
+    path('character_silence/', views.ClassroomSilenceView.as_view(), name='character_voice'),
 ]

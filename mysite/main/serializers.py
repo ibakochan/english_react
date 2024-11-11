@@ -53,6 +53,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class TestQuestionSerializer(serializers.ModelSerializer):
     question_picture = serializers.SerializerMethodField()
     question_sound = serializers.SerializerMethodField()
+    options = serializers.SerializerMethodField()
 
     class Meta:
         model = Question
@@ -70,6 +71,11 @@ class TestQuestionSerializer(serializers.ModelSerializer):
             return f"https://englishgamesreact.pythonanywhere.com/question/sound/{question_id}/"
         return None
 
+    def get_options(self, obj):
+        options = obj.option_set.all()
+        serializer = OptionSerializer(options, many=True)
+        return serializer.data
+
 
 
 
@@ -78,7 +84,7 @@ class TestByClassroomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Test
-        fields = ['name', 'id', 'test_picture', 'classroom']
+        fields = ['name', 'id', 'test_picture', 'picture_url', 'classroom', 'lesson_number', 'category']
 
     def get_test_picture(self, obj):
         if obj.test_picture:
@@ -132,7 +138,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'id', 'teacher', 'student']
+        fields = ['username', 'id', 'total_max_scores', 'total_japanese_score', 'total_english_5_score', 'total_english_6_score', 'total_phonics_score', 'total_numbers_score', 'teacher', 'student']
 
 
 

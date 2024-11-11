@@ -6,26 +6,44 @@ from .models import CustomUser
 from main.models import Student
 from django.contrib.auth import login
 from .forms import CustomAuthenticationForm
+from django.views.decorators.cache import never_cache
+from django.utils.decorators import method_decorator
 
 class CustomLoginView(View):
     form_class = CustomAuthenticationForm
     template_name = 'login.html'
 
+    @method_decorator(never_cache)
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request, data=request.POST)
+
         if form.is_valid():
             username = form.cleaned_data.get('username')
-            user = CustomUser.objects.get(username=username)
-            if user.is_superuser:
-                form.add_error(None, "Superusers are not allowed to log in.")
+
+            try:
+                user = CustomUser.objects.get(username=username)
+            except CustomUser.DoesNotExist:
+                form.add_error(None, "ユーザーネーム間違ってる")
                 return render(request, self.template_name, {'form': form})
+
+            if user.is_superuser:
+                form.add_error(None, "Superusers are not allowed to log in here.")
+                return render(request, self.template_name, {'form': form})
+
             login(request, user)
             return redirect('main:profile')
+
         return render(request, self.template_name, {'form': form})
+
+
+
+
+
+
 
 class StudentUpdateView(View):
     def post(self, request, *args, **kwargs):

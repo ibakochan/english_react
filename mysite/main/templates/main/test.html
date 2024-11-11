@@ -5,7 +5,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <script>
     // Define a global variable for the static file URL
-    window.staticFileUrl = "{% static 'main/WhatsApp画像 2024-02-14 13.27.37_9343389c.jpg' %}";
+    window.staticFileUrl = "{% static 'main/WhatsApp画像 2024-02-14 13.27.37_9343389c.jpg' %}"
     window.staticFileUrl1 = "{% static 'main/openart-12ba3e00450f41cc899c83c6a484c79f_raw.jpg' %}";
     window.staticFileUrl2 = "{% static 'main/openart-42849cd925af4fdba5bc73bf93394019_raw.jpg' %}";
     window.staticFileUrl3 = "{% static 'main/openart-5eda95374c2140e3a6dad00334c41fef_raw.jpg' %}";
@@ -32,19 +32,26 @@
         ];
     </script>
 
-<body style="background-image: url('{% static 'main/WhatsApp画像 2024-02-14 13.27.37_9343389c.jpg' %}'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; margin: 0; padding: 0;">
+<body style="background-image: url('https://storage.googleapis.com/profile_assets/WhatsApp%E7%94%BB%E5%83%8F%202024-02-14%2013.27.37_9343389c%20(2).jpg'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; margin: 0; padding: 0;">
 <div class="container-fluid" style="padding: 0;">
     <div id="tests" class="col-12" style="width: 100%; padding: 0; margin: 0;"></div>
     <div class="row w-100" style="width: 100%; padding: 0; margin: 0;">
         <div class="card w-100 border-dark">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-            <a href="{% url 'accounts:logout' %}?next={% url 'accounts:login' %}?next={% url 'main:profile' %}" class="w-50 pl-3 pb-4 text-white">
-            <button type="button" class="btn btn-success" style="width: 200px; border: 5px solid black;">
-            ログアウト
+        <div style="display: flex; flex-direction: column; align-items: start;">
+        {% if user.teacher %}
+        <form action="{% url 'main:character_voice' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary" style="width: 250px; height: 50px;">
+                {% if not classroom.character_voice %}
+                教室キャラ声をOFFにする
+                {% else %}
+                教室キャラ声ONにする
+                {% endif %}
             </button>
-            </a>
-            </div>
+        </form>
+        {% endif %}
+        </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
             <div id="messages">
               {% if messages %}
                 <ul class="messages">
@@ -55,6 +62,10 @@
               {% endif %}
             </div>
             </div>
+            {% if not classroom.character_voice %}
+            <audio id="audio" src="{{ profile_audio }}" preload="auto"></audio>
+            {% endif %}
+
             <div id="user-test-records"></div>
             {% if join_form %}
             <form id="join-classroom-form" method="post" action="{% url 'main:join_classroom' %}">
@@ -81,13 +92,23 @@
             {% endif %}
 
 
+        {% if user.teacher %}
+        <h1 style="font-weight: bold;">{{ user }}</h1>
+        {% endif %}
+        <div>
+            <button type="submit" style="width: 200px; border: 4px solid black;" class="btn btn-primary" data-toggle="collapse" data-target="#logoutOptions">
+                ログアウト
+            </button>
 
-
-
-
-
-
-
+            <div class="collapse mt-3" id="logoutOptions">
+                <p class="text-danger fw-bold">必要なければログアウトしないでください</p>
+                <a href="{% url 'accounts:logout' %}?next={% url 'accounts:login' %}?next={% url 'main:profile' %}">
+                    <button type="submit" style="width: 200px; border: 4px solid black;" class="btn btn-danger">
+                        ログアウト
+                    </button>
+                </a>
+            </div>
+        </div>
 
 
 
@@ -110,7 +131,7 @@
     </div>
 </div>
 </body>
-<script type="module" src="{% static 'my-vite-app/dist/assets/index-Ddk4aAgh.js' %}"></script>
+<script type="module" src="{% static 'my-vite-app/dist/assets/index-CCICZosM.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>

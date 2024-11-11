@@ -16,16 +16,20 @@ const TestCreate = () => {
   const [responseMessage, setResponseMessage] = useState('');
   const [isCorrect, setIsCorrect] = useState(false);
   const [writeAnswer, setWriteAnswer] = useState(false);
+  const [doubleObject, setDoubleObject] = useState(false);
   const [firstLetter, setFirstLetter] = useState(false);
   const [secondLetter, setSecondLetter] = useState(false);
   const [thirdLetter, setThirdLetter] = useState(false);
   const [lastLetter, setLastLetter] = useState(false);
+  const [questionSound2, setQuestionSound2] = useState(false);
+  const [questionLabel, setQuestionLabel] = useState(false);
+  const [questionPicture2, setQuestionPicture2] = useState(false);
 
   useEffect(() => {
   }, [options]);
 
+
   useEffect(() => {
-    // Fetch classrooms
     axios.get('/api/classrooms/my-classroom-teacher/')
       .then(response => {
         setClassrooms(response.data);
@@ -44,6 +48,7 @@ const TestCreate = () => {
         console.error('Error fetching classrooms:', error);
       });
   }, []);
+
 
   const fetchTestsByClassroom = (classroomId) => {
     axios.get(`/api/name-id-tests/by-classroom/${classroomId}`)
@@ -112,6 +117,8 @@ const TestCreate = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+
+
   const handleTestCreateFileChange = (e) => {
     setFormData({ ...formData, test_picture: e.target.files[0] });
   };
@@ -120,6 +127,9 @@ const TestCreate = () => {
       e.preventDefault();
       const data = new FormData();
       data.append('name', formData.name);
+      data.append('category', formData.category);
+      data.append('lesson_number', formData.lesson_number);
+      data.append('picture_url', formData.picture_url);
       if (formData.test_picture) {
           data.append('test_picture', formData.test_picture);
       }
@@ -198,6 +208,24 @@ const TestCreate = () => {
     setWriteAnswer(e.target.checked);
   };
 
+  const handleDoubleObjectChange = (e) => {
+    setDoubleObject(e.target.checked);
+  };
+
+  const handleQuestionSound2Change = (e) => {
+    setQuestionSound2(e.target.checked);
+  };
+
+  const handleQuestionLabelChange = (e) => {
+    setQuestionLabel(e.target.checked);
+  };
+
+  const handleQuestionPicture2Change = (e) => {
+    setQuestionPicture2(e.target.checked);
+  };
+
+
+
   const handleFirstLetterChange = (e) => {
     setFirstLetter(e.target.checked);
   };
@@ -227,10 +255,14 @@ const TestCreate = () => {
     }
     data.append('list_selection', formData.list_selection);
     data.append('write_answer', writeAnswer);
+    data.append('double_object', doubleObject);
     data.append('first_letter', firstLetter);
     data.append('second_letter', secondLetter);
     data.append('third_letter', thirdLetter);
     data.append('last_letter', lastLetter);
+    data.append('sound2', questionSound2)
+    data.append('label', questionLabel)
+    data.append('picture2', questionPicture2)
 
 
     try {
@@ -410,11 +442,35 @@ const TestCreate = () => {
               className="form-control"
             />
             <input
+              type="text"
+              name="picture_url"
+              value={formData.picture_url}
+              onChange={handleTestCreateInputChange}
+              placeholder="picture url"
+              className="form-control"
+            />
+            <input
+              type="number"
+              name="lesson_number"
+              value={formData.lesson_number}
+              onChange={handleTestCreateInputChange}
+              placeholder="lesson number"
+              className="form-control"
+            />
+            <input
               type="file"
               name="test_picture"
               onChange={handleTestCreateFileChange}
               className="form-control"
             />
+            <select name="category" value={formData.category} onChange={handleTestCreateInputChange} className="form-control">
+                <option value="">Select Category</option>
+                <option value="japanese">Japanese</option>
+                <option value="english_5">English_5</option>
+                <option value="english_6">English_6</option>
+                <option value="phonics">Phonics</option>
+                <option value="numbers">Numbers</option>
+            </select>
             <button type="submit" style={{ width: '200px', border: '4px solid dark' }} className="btn btn-primary">Submit</button>
           </form>
           {responseMessage && <p>{responseMessage}</p>}
@@ -481,10 +537,24 @@ const TestCreate = () => {
                         <option value="">Select List</option>
                         <option value="alphabet_sounds">Alphabet Sounds</option>
                         <option value="small_alphabet_sounds">Small Alphabet Sounds</option>
+                        <option value="alphabet_phonics">alphabet_phonics</option>
                         <option value="jlpt_n5_vocabulary">Jlpt_n5_vocabulary</option>
                         <option value="phonics1">Phonics1</option>
+                        <option value="phonics_2">Phonics_2</option>
                         <option value="lesson4_list">Lesson4_list</option>
                         <option value="lesson4_grade6_dict">Lesson4_grade6_dict</option>
+                        <option value="grade_6_lesson_5">Grade_6_lesson_5</option>
+                        <option value="grade_5_lesson_5">Grade_5_lesson_5</option>
+                        <option value="grade_6_lesson_6">Grade_6_lesson_6</option>
+                        <option value="grade_5_lesson_6">Grade_5_lesson_6</option>
+                        <option value="one_twenty">One Twenty</option>
+                        <option value="one_hundred">One Hundred</option>
+                        <option value="eleven_ninety">Eleven Ninety</option>
+                        <option value="one_thousand">One Thousand</option>
+                        <option value="one_quadrillion">One Quadrillion</option>
+                        <option value="thousand_quadrillion">Thousand Quadrillion</option>
+                        <option value="japanese_numbers">Japanese Numbers</option>
+                        <option value="alphabet_sounds2">Alphabet Sounds2</option>
                     </select>
                     <input
                       type="file"
@@ -507,6 +577,16 @@ const TestCreate = () => {
                       className="form-check-input"
                     />
                     <label className="form-check-label">Write Answer</label>
+                    </div>
+                    <div className="form-check">
+                    <input
+                      type="checkbox"
+                      name="double_object"
+                      checked={doubleObject}
+                      onChange={handleDoubleObjectChange}
+                      className="form-check-input"
+                    />
+                    <label className="form-check-label">Double Object</label>
                     </div>
                     <div className="form-check">
                       <input
@@ -547,6 +627,36 @@ const TestCreate = () => {
                         className="form-check-input"
                       />
                       <label className="form-check-label">Last Letter</label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        name="sound2"
+                        checked={questionSound2}
+                        onChange={handleQuestionSound2Change}
+                        className="form-check-input"
+                      />
+                      <label className="form-check-label">Sound2</label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        name="label"
+                        checked={questionLabel}
+                        onChange={handleQuestionLabelChange}
+                        className="form-check-input"
+                      />
+                      <label className="form-check-label">Label</label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        name="picture2"
+                        checked={questionPicture2}
+                        onChange={handleQuestionPicture2Change}
+                        className="form-check-input"
+                      />
+                      <label className="form-check-label">Picture2</label>
                     </div>
                     <button type="submit" style={{ width: '200px', border: '4px solid dark' }} className="btn btn-primary">Submit</button>
                   </form>

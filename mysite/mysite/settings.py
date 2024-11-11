@@ -84,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'mysite.settings.SSLRedirectMiddleware',
+    'accounts.middleware.RedirectAuthenticatedUserMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'

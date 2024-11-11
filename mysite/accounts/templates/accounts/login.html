@@ -28,6 +28,11 @@
           <div class="card p-4">
             <div class="card-body">
               <h1>ログイン</h1>
+              {% if form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      {{ form.non_field_errors }}
+                  </div>
+              {% endif %}
               <div class="input-group mb-3">
                 <span class="input-group-addon"><i class="fa fa-user"></i>ユーザネーム：</span>
                 {{ form.username }}
@@ -40,6 +45,9 @@
                   <button type="button" class="btn btn-link px-0"></button>
                 </div>
               </div>
+              　<h4>ユーザーネーム忘れたら<span style="font-size: 2rem; color: red; font-weight: bold;">&#x2193;</span></h4>
+                <p>ユーザーネーム入力のところ押したら前ログインした時のユーザーネームはでてくるかもしれない。</p>
+                <p>出てこなかったら先生に聞いたらユーザーネームを生徒管理ボタン押して出席番号で調べれる。</p>
             </div>
           </div>
 

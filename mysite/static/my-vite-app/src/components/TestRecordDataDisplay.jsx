@@ -20,7 +20,6 @@ const TestRecordsDisplay = () => {
   return (
     <div>
       {loading && <p>Loading...</p>}
-      <h2>Test Records</h2>
       <button className="btn btn-primary" onClick={fetchData}>Load Test Records</button>
       <ul>
         {testRecords.map(record => (
