@@ -14,6 +14,7 @@ router.register(r'sessions', views.SessionsViewSet)
 router.register(r'only-sessions', views.OnlySessionsViewSet, basename='only-sessions')
 router.register(r'users', views.CustomUserViewSet)
 router.register(r'maxscore', views.MaxScoreViewSet)
+router.register(r'classroomrequest', views.ClassroomRequestViewSet)
 
 
 
@@ -25,11 +26,13 @@ def is_superuser(user):
 app_name='main'
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('save_tests/', views.UpdateAllTestsView.as_view(), name='save_test'),
     path('signup/student/', views.StudentSignUpView.as_view(), name='student_signup'),
     path('signup/teacher/', views.TeacherSignUpView.as_view(), name='teacher_signup'),
     path('', views.ProfilePageView.as_view(), name='profile'),
+    path('classroom_accept/<int:pk>/', views.ClassroomAcceptView.as_view(), name='classroom_accept'),
     path('join_classroom/', views.ClassroomJoinView.as_view(), name='join_classroom'),
-    path('delete/<int:pk>/', views.AccountDeleteView.as_view(), name='delete_account'),
+    path('remove/account/<int:pk>/', views.AccountDeleteView.as_view(), name='delete_account'),
     path('school/create/', views.SchoolCreateView.as_view(), name='school_create'),
     path('classroom/create/', views.ClassroomCreateView.as_view(), name='classroom_create'),
     path('test/<int:pk>/create/', views.TestCreateView.as_view(), name='test_create'),

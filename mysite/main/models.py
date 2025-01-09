@@ -20,10 +20,11 @@ class School(models.Model):
 
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.user.username
+
 
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -51,6 +52,13 @@ class Classroom(models.Model):
     def __str__(self):
         return self.name
 
+class ClassroomRequest(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, null=True)
+    is_accepted = models.BooleanField(default=False)
+    unchangeable = models.BooleanField(default=False)
+
+
 class Test(models.Model):
     CATEGORY_CHOICES = [
         ('japanese', 'Japanese'),
@@ -58,18 +66,27 @@ class Test(models.Model):
         ('english_6', 'English 6'),
         ('phonics', 'Phonics'),
         ('numbers', 'Numbers'),
+        ('eiken', 'Eiken'),
     ]
     classroom = models.ManyToManyField('Classroom', blank=True)
     name = models.CharField(max_length=200)
-    test_picture = models.BinaryField(null=True, editable=True)
     picture_url = models.URLField(max_length=500, null=True, blank=True)
-    test_content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
+    sound_url = models.URLField(max_length=500, null=True, blank=True)
     total_questions = models.PositiveIntegerField(default=0)
+    score_multiplier = models.PositiveIntegerField(default=1)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='phonics')
     lesson_number = models.PositiveIntegerField(default=0)
+    description = models.TextField(blank=True)
+    number_of_questions = models.PositiveIntegerField(default=10)
+    total_score = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.total_score = self.number_of_questions * self.score_multiplier
+        super().save(*args, **kwargs)
+
 
 class MaxScore(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True)
@@ -81,6 +98,7 @@ class MaxScore(models.Model):
 class Question(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=500)
+    description = models.BooleanField(default=False)
     question_picture = models.BinaryField(null=True, editable=True)
     question_content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
     question_sound = models.BinaryField(null=True, editable=True)
@@ -93,8 +111,12 @@ class Question(models.Model):
     last_letter = models.BooleanField(default=False)
     double_object = models.BooleanField(default=False)
     sound2 = models.BooleanField(default=False)
+    sound3 = models.BooleanField(default=False)
+    sound4 = models.BooleanField(default=False)
     picture2 = models.BooleanField(default=False)
+    word2 = models.BooleanField(default=False)
     label = models.BooleanField(default=False)
+    japanese_option = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

@@ -7,7 +7,7 @@ const TestCreate = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [classrooms, setClassrooms] = useState([]);
-  const [tests, setTests] = useState({});
+  const [tests, setTests] = useState([]);
   const [testQuestions, setTestQuestions] = useState({});
   const [options, setOptions] = useState({});
   const [cookies] = useCookies(['csrftoken']);
@@ -16,14 +16,19 @@ const TestCreate = () => {
   const [responseMessage, setResponseMessage] = useState('');
   const [isCorrect, setIsCorrect] = useState(false);
   const [writeAnswer, setWriteAnswer] = useState(false);
+  const [japaneseOption, setJapaneseOption] = useState(false);
+  const [description, setDescription] = useState(false);
   const [doubleObject, setDoubleObject] = useState(false);
   const [firstLetter, setFirstLetter] = useState(false);
   const [secondLetter, setSecondLetter] = useState(false);
   const [thirdLetter, setThirdLetter] = useState(false);
   const [lastLetter, setLastLetter] = useState(false);
   const [questionSound2, setQuestionSound2] = useState(false);
+  const [questionSound3, setQuestionSound3] = useState(false);
+  const [questionSound4, setQuestionSound4] = useState(false);
   const [questionLabel, setQuestionLabel] = useState(false);
   const [questionPicture2, setQuestionPicture2] = useState(false);
+  const [questionWord2, setQuestionWord2] = useState(false);
 
   useEffect(() => {
   }, [options]);
@@ -37,7 +42,6 @@ const TestCreate = () => {
         response.data.forEach(classroom => {
           initialFormData[classroom.id] = {
             name: '',
-            test_picture: null,
           };
           // Fetch tests for each classroom
           fetchTestsByClassroom(classroom.id);
@@ -50,16 +54,14 @@ const TestCreate = () => {
   }, []);
 
 
-  const fetchTestsByClassroom = (classroomId) => {
-    axios.get(`/api/name-id-tests/by-classroom/${classroomId}`)
-      .then(response => {
-        setTests(prevTests => ({
-          ...prevTests,
-          [classroomId]: response.data,
-        }));
+  const fetchTestsByClassroom = () => {
+    axios
+      .get('/api/name-id-tests/')
+      .then((response) => {
+        setTests(response.data);
       })
-      .catch(error => {
-        console.error(`Error fetching tests for classroom ${classroomId}:`, error);
+      .catch((error) => {
+        console.error('Error fetching tests:', error);
       });
   };
 
@@ -119,9 +121,7 @@ const TestCreate = () => {
 
 
 
-  const handleTestCreateFileChange = (e) => {
-    setFormData({ ...formData, test_picture: e.target.files[0] });
-  };
+
 
   const handleTestCreateSubmit = async (classroomId, e) => {
       e.preventDefault();
@@ -130,9 +130,8 @@ const TestCreate = () => {
       data.append('category', formData.category);
       data.append('lesson_number', formData.lesson_number);
       data.append('picture_url', formData.picture_url);
-      if (formData.test_picture) {
-          data.append('test_picture', formData.test_picture);
-      }
+      data.append('sound_url', formData.sound_url || "");
+      data.append('score_multiplier', formData.score_multiplier);
 
       try {
           const response = await fetch(`/test/${classroomId}/create/`, {
@@ -149,14 +148,11 @@ const TestCreate = () => {
 
           const result = await response.json();
           setResponseMessage(result.message);
-          setTests(prevTests => {
-              const newTests = {...prevTests};
-              if (!newTests[classroomId]) {
-                  newTests[classroomId] = [];
-              }
-              newTests[classroomId].unshift({id: result.id, name: result.name}); // Add the new test at the beginning of the array
-              return newTests;
-          });
+          setTests(prevTests => [
+              { id: result.id, name: result.name, classroomId },
+              ...prevTests
+          ]);
+
 
       } catch (error) {
           console.error('There was a problem with the fetch operation:', error);
@@ -180,14 +176,11 @@ const TestCreate = () => {
 
       const result = await response.json();
 
-      // Update the tests state to remove the deleted test
-      setTests(prevTests => {
-        const newTests = {...prevTests};
-        for (let classroomId in newTests) {
-          newTests[classroomId] = newTests[classroomId].filter(test => test.id !== testId);
-        }
-        return newTests;
-      });
+      setTests(prevTests =>
+          prevTests.filter(test => test.id !== testId)
+      );
+
+
 
     } catch (error) {
       console.error(`There was a problem with the delete operation:`, error);
@@ -208,6 +201,14 @@ const TestCreate = () => {
     setWriteAnswer(e.target.checked);
   };
 
+  const handleJapaneseOptionChange = (e) => {
+    setJapaneseOption(e.target.checked);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.checked);
+  };
+
   const handleDoubleObjectChange = (e) => {
     setDoubleObject(e.target.checked);
   };
@@ -216,12 +217,24 @@ const TestCreate = () => {
     setQuestionSound2(e.target.checked);
   };
 
+  const handleQuestionSound3Change = (e) => {
+    setQuestionSound3(e.target.checked);
+  };
+
+  const handleQuestionSound4Change = (e) => {
+    setQuestionSound4(e.target.checked);
+  };
+
   const handleQuestionLabelChange = (e) => {
     setQuestionLabel(e.target.checked);
   };
 
   const handleQuestionPicture2Change = (e) => {
     setQuestionPicture2(e.target.checked);
+  };
+
+  const handleQuestionWord2Change = (e) => {
+    setQuestionWord2(e.target.checked);
   };
 
 
@@ -254,15 +267,20 @@ const TestCreate = () => {
       data.append('question_sound', formData.question_sound);
     }
     data.append('list_selection', formData.list_selection);
+    data.append('japanese_option', japaneseOption);
     data.append('write_answer', writeAnswer);
+    data.append('description', description);
     data.append('double_object', doubleObject);
     data.append('first_letter', firstLetter);
     data.append('second_letter', secondLetter);
     data.append('third_letter', thirdLetter);
     data.append('last_letter', lastLetter);
     data.append('sound2', questionSound2)
+    data.append('sound3', questionSound3)
+    data.append('sound4', questionSound4)
     data.append('label', questionLabel)
     data.append('picture2', questionPicture2)
+    data.append('word2', questionWord2)
 
 
     try {
@@ -286,7 +304,7 @@ const TestCreate = () => {
           if (!newQuestions[testId]) {
               newQuestions[testId] = [];
           }
-          newQuestions[testId].unshift({id: result.id, name: result.name}); // Add the new question at the beginning of the array
+          newQuestions[testId].unshift({id: result.id, name: result.name});
           return newQuestions;
       });
 
@@ -450,6 +468,14 @@ const TestCreate = () => {
               className="form-control"
             />
             <input
+              type="text"
+              name="sound_url"
+              value={formData.sound_url}
+              onChange={handleTestCreateInputChange}
+              placeholder="sound url"
+              className="form-control"
+            />
+            <input
               type="number"
               name="lesson_number"
               value={formData.lesson_number}
@@ -458,9 +484,11 @@ const TestCreate = () => {
               className="form-control"
             />
             <input
-              type="file"
-              name="test_picture"
-              onChange={handleTestCreateFileChange}
+              type="number"
+              name="score_multiplier"
+              value={formData.score_multiplier}
+              onChange={handleTestCreateInputChange}
+              placeholder="score multiplier"
               className="form-control"
             />
             <select name="category" value={formData.category} onChange={handleTestCreateInputChange} className="form-control">
@@ -470,12 +498,13 @@ const TestCreate = () => {
                 <option value="english_6">English_6</option>
                 <option value="phonics">Phonics</option>
                 <option value="numbers">Numbers</option>
+                <option value="eiken">Eiken</option>
             </select>
             <button type="submit" style={{ width: '200px', border: '4px solid dark' }} className="btn btn-primary">Submit</button>
           </form>
           {responseMessage && <p>{responseMessage}</p>}
           <div className="test-buttons-container">
-            {tests[classroom.id] && tests[classroom.id].map(test => (
+            {tests.map(test => (
               <span key={test.id}>
                 {activeTestId === null || activeTestId === test.id ? (
                 <span>
@@ -535,18 +564,33 @@ const TestCreate = () => {
                     />
                     <select name="list_selection" value={formData.list_selection} onChange={handleTestCreateInputChange} className="form-control">
                         <option value="">Select List</option>
-                        <option value="alphabet_sounds">Alphabet Sounds</option>
                         <option value="small_alphabet_sounds">Small Alphabet Sounds</option>
                         <option value="alphabet_phonics">alphabet_phonics</option>
                         <option value="jlpt_n5_vocabulary">Jlpt_n5_vocabulary</option>
                         <option value="phonics1">Phonics1</option>
+                        <option value="phonics3">Phonics3</option>
                         <option value="phonics_2">Phonics_2</option>
                         <option value="lesson4_list">Lesson4_list</option>
                         <option value="lesson4_grade6_dict">Lesson4_grade6_dict</option>
+                        <option value="grade6_lesson1">Grade6_lesson1</option>
+                        <option value="grade6_lesson2">Grade6_lesson2</option>
+                        <option value="grade6_lesson3">Grade6_lesson3</option>
                         <option value="grade_6_lesson_5">Grade_6_lesson_5</option>
+                        <option value="grade5_lesson1_names">Grade5_lesson1_names</option>
+                        <option value="grade5_lesson1_words">Grade5_lesson1_words</option>
+                        <option value="grade5_lesson1_sentence">Grade5_lesson1_sentence</option>
+                        <option value="grade5_lesson2">Grade5_lesson2</option>
+                        <option value="grade5_lesson3">Grade5_lesson3</option>
+                        <option value="grade5_lesson7">Grade5_lesson7</option>
+                        <option value="grade5_lesson8">Grade5_lesson8</option>
                         <option value="grade_5_lesson_5">Grade_5_lesson_5</option>
                         <option value="grade_6_lesson_6">Grade_6_lesson_6</option>
                         <option value="grade_5_lesson_6">Grade_5_lesson_6</option>
+                        <option value="grade_6_lesson_7">Grade_6_lesson_7</option>
+                        <option value="grade_6_lesson_8">Grade_6_lesson_8</option>
+                        <option value="months">Months</option>
+                        <option value="dates">Dates</option>
+                        <option value="days">Days</option>
                         <option value="one_twenty">One Twenty</option>
                         <option value="one_hundred">One Hundred</option>
                         <option value="eleven_ninety">Eleven Ninety</option>
@@ -555,6 +599,13 @@ const TestCreate = () => {
                         <option value="thousand_quadrillion">Thousand Quadrillion</option>
                         <option value="japanese_numbers">Japanese Numbers</option>
                         <option value="alphabet_sounds2">Alphabet Sounds2</option>
+                        <option value="alphabet_sounds3">Alphabet Sounds3</option>
+                        <option value="alphabet_sounds3">Alphabet Sounds3</option>
+                        <option value="eiken5_vocab">Eiken5 Vocab</option>
+                        <option value="eiken5_vocab_practice">Eiken5 Vocab Practice</option>
+                        <option value="eiken5_grammar_practice">Eiken5 Grammar Practice</option>
+                        <option value="eiken5_conversation_vocab_practice">Eiken5 Conversation Vocab Practice</option>
+
                     </select>
                     <input
                       type="file"
@@ -568,6 +619,26 @@ const TestCreate = () => {
                       onChange={handleQuestionSoundFileChange}
                       className="form-control"
                     />
+                    <div className="form-check">
+                    <input
+                      type="checkbox"
+                      name="description"
+                      checked={description}
+                      onChange={handleDescriptionChange}
+                      className="form-check-input"
+                    />
+                    <label className="form-check-label">Description</label>
+                    </div>
+                    <div className="form-check">
+                    <input
+                      type="checkbox"
+                      name="japanese_option"
+                      checked={japaneseOption}
+                      onChange={handleJapaneseOptionChange}
+                      className="form-check-input"
+                    />
+                    <label className="form-check-label">Japanese Option</label>
+                    </div>
                     <div className="form-check">
                     <input
                       type="checkbox"
@@ -641,6 +712,26 @@ const TestCreate = () => {
                     <div className="form-check">
                       <input
                         type="checkbox"
+                        name="sound3"
+                        checked={questionSound3}
+                        onChange={handleQuestionSound3Change}
+                        className="form-check-input"
+                      />
+                      <label className="form-check-label">Sound3</label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        name="sound4"
+                        checked={questionSound4}
+                        onChange={handleQuestionSound4Change}
+                        className="form-check-input"
+                      />
+                      <label className="form-check-label">Sound4</label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
                         name="label"
                         checked={questionLabel}
                         onChange={handleQuestionLabelChange}
@@ -657,6 +748,16 @@ const TestCreate = () => {
                         className="form-check-input"
                       />
                       <label className="form-check-label">Picture2</label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        name="word2"
+                        checked={questionWord2}
+                        onChange={handleQuestionWord2Change}
+                        className="form-check-input"
+                      />
+                      <label className="form-check-label">Word2</label>
                     </div>
                     <button type="submit" style={{ width: '200px', border: '4px solid dark' }} className="btn btn-primary">Submit</button>
                   </form>

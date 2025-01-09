@@ -6,6 +6,9 @@ import { FaPlay, FaArrowLeft } from 'react-icons/fa';
 
 const Test = () => {
   const [classrooms, setClassrooms] = useState([]);
+  const [classroomRequests, setClassroomRequests] = useState([]);
+  const [classroom, setClassroom] = useState(null);
+  const [shuffledKeys, setShuffledKeys] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [scoreCounter, setScoreCounter] = useState(0);
@@ -19,11 +22,16 @@ const Test = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [activeTestId, setActiveTestId] = useState(null);
+  const [activeTestName, setActiveTestName] = useState('');
+  const [activeTestDescription, setActiveTestDescription] = useState('');
+  const [activeTestDescriptionSound, setActiveTestDescriptionSound] = useState('');
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeMemories, setActiveMemories] = useState(false);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [isEnglish, setIsEnglish] = useState(null);
   const [currentCorrectAudioIndex, setCurrentCorrectAudioIndex] = useState(0);
   const [currentWrongAudioIndex, setCurrentWrongAudioIndex] = useState(0);
   const [recordMessage, setRecordMessage] = useState('');
@@ -42,8 +50,45 @@ const Test = () => {
 
   const correctAudioUrls = window.correctAudioUrls;
   const wrongAudioUrls = window.wrongAudioUrls;
+  const correctEnglishAudioUrls = window.correctEnglishAudioUrls;
+  const wrongEnglishAudioUrls = window.wrongEnglishAudioUrls;
+
+  const formatText = (text) => {
+    if (text.includes('B:')) {
+      const parts = text.split('B:');
+      return (
+        <>
+          <p>{parts[0]}</p>
+          <p>B:{parts[1]}</p>
+        </>
+      );
+    } else {
+      return <p>{text}</p>;
+    }
+  };
 
 
+  const openModal = () => {
+    if (isPractice) {
+      setActiveTestDescription('')
+      setActiveTestDescriptionSound('')
+    }
+    if (isPractice || activeQuestionIndex === 0) {
+      setActiveTestId(null);
+    } else {
+      setModalIsOpen(true);
+    }
+  };
+
+  const closeReturnModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleBackClick = () => {
+    closeReturnModal();
+    recordScore(activeTestId);
+    toggleQuestionDetails(activeTestId);
+  };
 
   const fetchCurrentUser = async () => {
     try {
@@ -86,11 +131,11 @@ const Test = () => {
     axios.get('/api/classrooms/my-classroom/')
       .then(response => {
         setClassrooms(response.data);
+        setClassroom(response.data[0]);
         const initialFormData = {};
         response.data.forEach(classroom => {
           initialFormData[classroom.id] = {
             name: classroom.name,
-            test_picture: null,
           };
         });
         setFormData(initialFormData);
@@ -99,6 +144,21 @@ const Test = () => {
         console.error('Error fetching classrooms:', error);
       });
   }, []);
+
+  useEffect(() => {
+      const fetchClassroomRequests = async () => {
+          if (classroom) {
+              try {
+                  const response = await axios.get(`/api/classroomrequest/by-classroom/${classroom.id}/`);
+                  setClassroomRequests(response.data);
+              } catch (error) {
+                  console.error('Error fetching classroom requests:', error);
+              }
+          }
+      };
+
+      fetchClassroomRequests();
+  }, [classroom]);
 
 
   const fetchTestsByClassroom = (classroomId) => {
@@ -148,13 +208,27 @@ const Test = () => {
   };
 
 
-  const fetchTestQuestionsAndOptions = async (testId) => {
+
+
+  const fetchTestQuestionsAndOptions = async (testId, numberOfQuestions) => {
     try {
       setLoading(true);
       setError(null);
 
       const testQuestionsResponse = await axios.get(`/api/test-questions/by-test/${testId}/`);
-      const questions = testQuestionsResponse.data;
+      const fetchedQuestions = testQuestionsResponse.data;
+      const questions = fetchedQuestions.flatMap((question) =>
+        Array(numberOfQuestions).fill(null).map((_, index) => ({ ...question, duplicateId: `${question.id}-${index}` }))
+      );
+
+      const oneQuestion = questions[0];
+      setQuestions(oneQuestion);
+
+      if (oneQuestion && oneQuestion.question_list) {
+        const keys = Object.keys(oneQuestion.question_list);
+        const shuffled = shuffleArray([...keys]);
+        setShuffledKeys(shuffled);
+      }
 
 
       setTestQuestions({ questions });
@@ -163,6 +237,7 @@ const Test = () => {
 
       const randomizedValues = questions.reduce((acc, question) => {
         const keys = Object.keys(question.question_list);
+        const shuffledKeys = shuffleArray([...keys]);
 
         const unusedKeys = keys.filter(key => !Object.values(acc).some(item => item.randomAlphabet === key));
 
@@ -184,15 +259,27 @@ const Test = () => {
           randomAlphabetSliced = `${randomKey.slice(0, randomKey.length - 1)}_`;
         }
 
+        const isArray = Array.isArray(randomValue)
+        const isArrayfour = Array.isArray(randomValue) && randomValue.length >= 4
 
-        acc[question.id] = {
+        acc[question.duplicateId] = {
           randomAlphabetSliced : randomAlphabetSliced,
           randomAlphabet: randomKey || null,
-          randomUrl: randomValue || null,
-          randomWord: randomValue.word || null,
+          randomUrl: !isArray ? randomValue : null,
+          randomTranslation: isArray ? randomValue[0] : null,
+          randomEikenUrl: isArray ? randomValue[1] : null,
+          randomWrongOne: isArrayfour ? randomValue[0] : null,
+          randomWrongTwo: isArrayfour ? randomValue[1] : null,
+          randomWrongThree: isArrayfour ? randomValue[2] : null,
+          randomCorrect: isArrayfour ? randomValue[3] : null,
+          randomNumbers: randomValue.numbers || null,
+          randomWord: randomValue.word ? (Array.isArray(randomValue.word) ? randomValue.word[0] : randomValue.word) : randomValue.word || null,
+          randomWord2: randomValue.word2 || null,
+          randomJapanese: randomValue.japanese || null,
           randomPicture: randomValue.picture || null,
           randomSound: randomValue.sound || null,
           randomSound2: randomValue.sound2 || null,
+          randomSound3: randomValue.sound3 || null,
           randomLabel: randomValue.label || null,
         };
 
@@ -206,20 +293,20 @@ const Test = () => {
       const randomizedOptions = questions.reduce((acc, question) => {
         const options = question.options;
         const shuffledOptions = shuffleArray([...options]);
-        const optionKeys = options ? Object.keys(options[0].option_list) : [];
+        const optionKeys = Object.keys(question.question_list)
         const selectedKeys = new Set();
 
         const randomizedOptionsForQuestion = shuffledOptions.map((option) => {
           let randomOptionKey;
           do {
             randomOptionKey = optionKeys[Math.floor(Math.random() * optionKeys.length)];
-          } while (randomOptionKey === randomizedValues[question.id].randomAlphabet || selectedKeys.has(randomOptionKey));
+          } while (randomOptionKey === randomizedValues[question.duplicateId].randomAlphabet || selectedKeys.has(randomOptionKey));
 
           selectedKeys.add(randomOptionKey);
           return { ...option, randomOptionKey };
         });
 
-        acc[question.id] = randomizedOptionsForQuestion;
+        acc[question.duplicateId] = randomizedOptionsForQuestion;
         return acc;
       }, {});
 
@@ -261,6 +348,27 @@ const Test = () => {
     }
   };
 
+  const toggleAccept = async (requestId) => {
+    try {
+      const csrfToken = cookies.csrftoken;
+      await axios.post(`/classroom_accept/${requestId}/`, null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          'X-CSRFToken': csrfToken
+        }
+      });
+      setClassroomRequests(prevRequests =>
+          prevRequests.map(request =>
+              request.id === requestId ? { ...request, is_accepted: !request.is_accepted } : request
+          )
+      );
+
+    } catch (error) {
+      console.error('Error deleting submissions:', error);
+      setError('Failed to delete submissions.');
+    }
+  };
+
   const deleteSubmissions = async () => {
     try {
       const csrfToken = cookies.csrftoken;
@@ -282,19 +390,31 @@ const Test = () => {
   };
 
 
-  const toggleQuestionDetails = async (testId) => {
+  const toggleQuestionDetails = async (testId, testDescription, testDescriptionSound, numberOfQuestions, testName) => {
     setScoreCounter(0)
+
+    if (isPractice) {
+      if (activeTestDescription === testDescription && activeTestDescriptionSound === testDescriptionSound) {
+        setActiveTestDescription('')
+        setActiveTestDescriptionSound('')
+      } else {
+        setActiveTestDescription(testDescription)
+        setActiveTestDescriptionSound(testDescriptionSound)
+      }
+    }
 
     if (activeTestId === testId) {
       setActiveTestId(null);
+      setActiveTestName('');
     } else {
       try {
         setActiveTestId(testId);
+        setActiveTestName(testName);
         if (isPractice) {
           await fetchQuestionsByTest(testId);
         } else {
           setActiveQuestionIndex(0);
-          await fetchTestQuestionsAndOptions(testId);
+          await fetchTestQuestionsAndOptions(testId, numberOfQuestions);
         }
       } catch (error) {
         console.error('Error fetching test questions and options:', error);
@@ -333,13 +453,17 @@ const Test = () => {
     setIsPractice(e.target.checked);
   };
 
-  const handleSubmit = async (e, sound2, questionId, question, optionId, randomAlphabet, randomAlphabetSliced, randomUrl, randomWord, randomPicture, randomSound, randomSound2, randomLabel) => {
+  const handleLanguageChange = (e) => {
+    setIsEnglish(e.target.checked);
+  };
+
+  const handleSubmit = async (e, sound2, sound3, word2, questionId, question, optionId, randomAlphabet, randomAlphabetSliced, randomUrl, randomWrongOne, randomWrongTwo, randomWrongThree, randomCorrect, randomEikenUrl, randomTranslation, randomNumbers, randomWord, randomWord2, randomJapanese, randomPicture, randomSound, randomSound2, randomSound3, randomLabel) => {
     e.preventDefault();
 
-    setCorrectWord(randomWord);
-    setCorrectSound(sound2 ? randomSound2 : (randomSound !== null ? randomSound : randomUrl));
+    setCorrectWord(randomNumbers ? randomNumbers : randomWord);
+    setCorrectSound(sound3 ? randomSound3 : sound2 ? randomSound2 : randomSound !== null ? randomSound : randomEikenUrl !== 't' ? randomEikenUrl : randomUrl);
     setCorrectPicture(randomPicture);
-    setCorrectLabel(randomLabel);
+    setCorrectLabel(word2 ? randomWord2 : randomLabel);
 
 
     setSelectedOption(null)
@@ -355,8 +479,8 @@ const Test = () => {
       setIsCorrect(true);
       setCurrentWrongAudioIndex(0);
       audioUrl = currentCorrectAudioIndex >= 9
-        ? correctAudioUrls[9]
-        : correctAudioUrls[currentCorrectAudioIndex];
+        ? (isEnglish ? correctEnglishAudioUrls[8] : correctAudioUrls[8])
+        : (isEnglish ? correctEnglishAudioUrls[currentCorrectAudioIndex] : correctAudioUrls[currentCorrectAudioIndex]);
       audioElement = new Audio(audioUrl);
       setCurrentCorrectAudioIndex((prevIndex) => {
         const newIndex = (prevIndex + 1);
@@ -365,7 +489,7 @@ const Test = () => {
     } else {
       setIsCorrect(false);
       setCurrentCorrectAudioIndex(0);
-      audioUrl = wrongAudioUrls[currentWrongAudioIndex];
+      audioUrl = (isEnglish ? wrongEnglishAudioUrls[currentWrongAudioIndex] : wrongAudioUrls[currentWrongAudioIndex]);
       audioElement = new Audio(audioUrl);
       setCurrentWrongAudioIndex((prevIndex) => {
         const newIndex = (prevIndex + 1) < wrongAudioUrls.length ? (prevIndex + 1) : prevIndex;
@@ -389,26 +513,26 @@ const Test = () => {
   };
 
 
-const handlePlay = (audioUrl, button) => {
-    if (button.disabled) return;
+  const handlePlay = (audioUrl, button) => {
+      if (button.disabled) return;
 
-    button.disabled = true;
+      button.disabled = true;
 
-    const audio = new Audio(audioUrl);
-    audio.play();
+      const audio = new Audio(audioUrl);
+      audio.play();
 
-    audio.onended = () => {
-        button.disabled = false;
-    };
-};
-
-
+      audio.onended = () => {
+          button.disabled = false;
+      };
+  };
 
 
 
 
-  const renderForm = (sound2, question, randomAlphabet, randomAlphabetSliced, selectedKeys, randomUrl, randomWord, randomPicture, randomSound, randomSound2, randomLabel) => {
-    const options = randomizedOptions[question.id];
+
+
+  const renderForm = (sound2, sound3, word2, question, randomAlphabet, randomAlphabetSliced, selectedKeys, randomUrl, randomWrongOne, randomWrongTwo, randomWrongThree, randomCorrect, randomEikenUrl, randomTranslation, randomNumbers, randomWord, randomWord2, randomJapanese, randomPicture, randomSound, randomSound2, randomSound3, randomLabel) => {
+    const options = randomizedOptions[question.duplicateId];
     if (!options) return null;
     const optionId = options.length === 1 ? options[0].id : null;
 
@@ -416,7 +540,7 @@ const handlePlay = (audioUrl, button) => {
       <form className="test-form"
       onSubmit={(e) => {
         if (selectedOption !== null || inputValue.trim() !== '') {
-          handleSubmit(e, sound2, question.id, question, optionId, randomAlphabet, randomAlphabetSliced, randomUrl, randomWord, randomPicture, randomSound, randomSound2, randomLabel);
+          handleSubmit(e, sound2, sound3, word2, question.id, question, optionId, randomAlphabet, randomAlphabetSliced, randomUrl, randomWrongOne, randomWrongTwo, randomWrongThree, randomCorrect, randomEikenUrl, randomTranslation, randomNumbers, randomWord, randomWord2, randomJapanese, randomPicture, randomSound, randomSound2, randomSound3, randomLabel);
         } else {
           e.preventDefault();
         }
@@ -435,18 +559,23 @@ const handlePlay = (audioUrl, button) => {
                         <p>書いてある文字と足りない文字を全部書いて上の言葉を完成させてください</p>
                       </div>
                     ) : null}
+                    {question.description && (
+                      <h4>{question.name}</h4>
+                    )}
                     <input
                       type="text"
                       id={`selected_option_${question.id}_${option.id}`}
                       name={`selected_option_${question.id}`}
-                      style={{ width: '300px', height: '50px', marginTop: '20px' }}
+                      style={{ width: '400px', height: '50px', marginTop: '20px' }}
                       value={inputValue}
                       onChange={(e) => {
                         const value = e.target.value;
                         setInputValue(value);
-                        if (!randomLabel && value === randomAlphabet) {
+                        if (!randomLabel && !question.word2 && value === randomAlphabet) {
                           setCorrectOption(true);
                         } else if (randomLabel && value === randomLabel) {
+                          setCorrectOption(true);
+                        } else if (question.word2 && value === randomWord2 ) {
                           setCorrectOption(true);
                         } else {
                           setCorrectOption(false);
@@ -456,10 +585,10 @@ const handlePlay = (audioUrl, button) => {
                     </>
                   ) : (
                     <>
-                      {option.option_list[option.randomOptionKey]?.picture && !question.label ? (
+                      {question.question_list[option.randomOptionKey]?.picture && !question.label ? (
                         <img
                           style={{ width: '150px', height: '120px', marginTop: '8px', border: '3px solid black' }}
-                          src={option.is_correct ? randomPicture : option.option_list[option.randomOptionKey].picture}
+                          src={option.is_correct ? randomPicture : question.question_list[option.randomOptionKey].picture}
                           alt="Option"
                         />
                       ): null}
@@ -476,20 +605,23 @@ const handlePlay = (audioUrl, button) => {
                           }}
                           checked={selectedOption === option.id}
                         />
-                        <span style={{ flex: 1 }}>
-                        {(option.option_list[option.randomOptionKey]?.word === undefined && !randomPicture) ? (
-                          option.is_correct ? randomAlphabet : option.randomOptionKey ? option.randomOptionKey : option.name
-                        ): (option.option_list[option.randomOptionKey]?.word !== undefined && !randomPicture ? (option.is_correct ? randomWord : option.option_list[option.randomOptionKey].word) : null
+                        <span style={{ flex: 1 }} onClick={(e) => randomEikenUrl && !randomWrongThree ? handlePlay(option.is_correct ? randomEikenUrl : questions.question_list[option.randomOptionKey][1], e.target) : null}>
+                        {(question.question_list[option.randomOptionKey]?.word === undefined && !randomPicture) ? (
+                          option.is_correct ? (randomCorrect ? randomCorrect : randomAlphabet) : randomWrongThree ? (option.id == question.options[1].id ? randomWrongOne : option.id == question.options[2].id ? randomWrongTwo : randomWrongThree) : option.randomOptionKey ? option.randomOptionKey : option.name
+                        ): (question.question_list[option.randomOptionKey]?.word !== undefined && !randomPicture ? (option.is_correct ? (randomNumbers !== undefined ? randomNumbers : randomWord) : (randomNumbers !== undefined ? question.question_list[option.randomOptionKey].numbers : question.question_list[option.randomOptionKey].word)) : null
+                        )}
+                        {question.japanese_option && (
+                          option.is_correct? randomJapanese : question.question_list[option.randomOptionKey]?.japanese
                         )}
                         </span>
                       </label>
-                      {option.option_list[option.randomOptionKey].word && randomPicture ? (
-                        <h4>{question.label ? (option.is_correct? randomLabel : option.option_list[option.randomOptionKey].label) : option.is_correct ? randomWord : option.option_list[option.randomOptionKey].word}</h4>
+                      {question.question_list[option.randomOptionKey].word && randomPicture ? (
+                        <h4>{question.label ? (option.is_correct? randomLabel : (question.question_list[option.randomOptionKey].label === randomLabel) ? "1000 Yen" : question.question_list[option.randomOptionKey].label) : option.is_correct ? randomWord : question.question_list[option.randomOptionKey].word}</h4>
                       ): null}
                       {option.option_picture && (
                         <img
                           style={{ width: '100px', height: '100px', marginTop: '8px', border: '3px solid black' }}
-                          src={Object.keys(option.option_list).length === 0 ? option.option_picture : null}
+                          src={Object.keys(question.question_list).length === 0 ? option.option_picture : null}
                           alt="Option"
                         />
                       )}
@@ -508,10 +640,10 @@ const handlePlay = (audioUrl, button) => {
             border: '4px solid #343a40',
             width: '400px',
             height: '80px',
-            marginTop: '50px'
+            marginTop: '20px'
           }}
         >
-          回答する
+          {isEnglish ? "Answer" : "回答する"}
         </button>
       </form>
     );
@@ -532,13 +664,26 @@ const handlePlay = (audioUrl, button) => {
                 style={{ height: '220px', width: '220px', border: '5px solid black' }}
                 onClick={() => document.getElementById('audio').play()}
       />
+      <img
+                src={currentUser?.pets?.image}
+                alt="Level Image"
+                style={{ height: '150px', width: '150px', border: '5px solid black' }}
+                onClick={() => document.getElementById('pet_audio').play()}
+      />
       <figcaption style={{ fontSize: '30px', marginTop: '5px' }}>
-                君は{currentUser?.profile_asset?.text}
+            {isEnglish ? 'you ' : '君は'}{isEnglish ? currentUser?.profile_asset?.english_text : currentUser?.profile_asset?.text}
+      </figcaption>
+      <figcaption style={{ fontSize: '30px', marginTop: '5px' }}>
+            {isEnglish ? 'your pet is ' : '君のペットは'}{isEnglish ? currentUser?.pets?.english_text : currentUser?.pets?.text}
       </figcaption>
       <figcaption style={{ fontSize: '45px', marginTop: '5px' }}>
-                <strong>最大記録トータル＝{currentUser?.total_max_scores}</strong>
+                <strong>{isEnglish ? 'Total max scores=' : '最大記録トータル＝'}{currentUser?.total_max_scores}</strong>
       </figcaption>
-      <audio id="audio" src={currentUser?.profile_asset?.audio} />
+      <figcaption style={{ fontSize: '45px', marginTop: '5px' }}>
+          {isEnglish ? "classroom: " : "教室："}{classroom?.name}
+      </figcaption>
+      {!classroom?.character_voice ? (<audio id="audio" src={isEnglish ? currentUser?.profile_asset?.english_audio : currentUser?.profile_asset?.audio} />) : (null)}
+      {!classroom?.character_voice ? (<audio id="pet_audio" src={currentUser?.pets?.audio} />) : (null)}
       </figure>
       )}
         <div className="quiz-header" style={{ height: 'auto', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -548,8 +693,9 @@ const handlePlay = (audioUrl, button) => {
             onClick={() => toggleMemories()}
             className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
             style={{ height: !activeMemories ? '100px' : '50px', width: !activeMemories ? '220px' : '290px', padding: '10px', border: '5px solid black' }}
-          ><h5 className="text-white">{!activeMemories ? '思い出を見る' : '戻る！'}</h5></button>
+          ><h5 className="text-white">{!activeMemories ? (isEnglish ? 'Memories' : '思い出を見る') : (isEnglish ? 'Go back' : '戻る！')}</h5></button>
           </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {activeMemories && (
             Object.keys(currentUser?.memories || {}).map((key) => (
               <span key={key}>
@@ -559,37 +705,43 @@ const handlePlay = (audioUrl, button) => {
                   style={{ height: '220px', width: '220px', border: '5px solid black' }}
                   onClick={() => document.getElementById(`audio-${key}`).play()}
                 />
-                <audio id={`audio-${key}`} src={currentUser?.memories[key].audio} />
+                {!classroom?.character_voice ? (<audio id={`audio-${key}`} src={isEnglish ? currentUser?.memories[key].english_audio : currentUser?.memories[key].audio} />) : (null)}
               </span>
             ))
           )}
+          </div>
           {!activeMemories && (
           <>
-          <button
+          {currentUser?.username === 'Sarah' ? <button
             onClick={() => toggleCategories('japanese')}
             className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
             style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
-          >日本語<h5 className="text-white">トータル：{currentUser?.total_category_scores.total_japanese_scores}/{currentUser?.question_counts.total_japanese_questions}</h5></button>
+          >{isEnglish ? 'Japanese' : '日本語'}<h5 className="text-white">{isEnglish ? 'Total Score:' : 'トータル：'}{currentUser?.total_category_scores.total_japanese_scores}/{currentUser?.question_counts.total_japanese_questions}</h5></button> : ''}
           <button
             onClick={() => toggleCategories('english_5')}
             className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
             style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
-          >５年英語<h5 className="text-white">トータル：{currentUser?.total_category_scores.total_english_5_scores}/{currentUser?.question_counts.total_english_5_questions}</h5></button>
+          >{isEnglish? '5th grade English' : '５年英語'}<h5 className="text-white">{isEnglish ? 'Total Score:' : 'トータル：'}{currentUser?.total_category_scores.total_english_5_scores}/{currentUser?.question_counts.total_english_5_questions}</h5></button>
           <button
             onClick={() => toggleCategories('english_6')}
             className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
             style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
-          >６年英語<h5 className="text-white">トータル：{currentUser?.total_category_scores.total_english_6_scores}/{currentUser?.question_counts.total_english_6_questions}</h5></button>
+          >{isEnglish ? '6th grade English' : '６年英語'}<h5 className="text-white">{isEnglish ? 'Total Score:' : 'トータル：'}{currentUser?.total_category_scores.total_english_6_scores}/{currentUser?.question_counts.total_english_6_questions}</h5></button>
           <button
             onClick={() => toggleCategories('phonics')}
             className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
             style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
-          >アルファベットとフォニックス<h5 className="text-white">トータル：{currentUser?.total_category_scores.total_phonics_scores}/{currentUser?.question_counts.total_phonics_questions}</h5></button>
+          >{isEnglish ? 'Alphabet and phonics' : 'アルファベットとフォニックス'}<h5 className="text-white">{isEnglish ? 'Total Score:' : 'トータル：'}{currentUser?.total_category_scores.total_phonics_scores}/{currentUser?.question_counts.total_phonics_questions}</h5></button>
           <button
             onClick={() => toggleCategories('numbers')}
             className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
             style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
-          >数字<h5 className="text-white">トータル：{currentUser?.total_category_scores.total_numbers_scores}/{currentUser?.question_counts.total_numbers_questions}</h5></button>
+          >{isEnglish ? 'Numbers/days/months' : '数字/曜日/月'}<h5 className="text-white">{isEnglish ? 'Total Score:' : 'トータル：'}{currentUser?.total_category_scores.total_numbers_scores}/{currentUser?.question_counts.total_numbers_questions}</h5></button>
+          <button
+            onClick={() => toggleCategories('eiken')}
+            className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+            style={{ height: '100px', width: '220px', padding: '10px', border: '5px solid black' }}
+          >{isEnglish? 'Eiken' : '英検'}<h5 className="text-white">{isEnglish ? 'Total Score:' : 'トータル：'}{currentUser?.total_category_scores.total_eiken_scores}/{currentUser?.question_counts.total_eiken_questions}</h5></button>
           <button
             className={`btn btn-success mb-3 toggle-test-btn ${activeCategory !== null && activeTestId === null ? 'active' : 'd-none'}`}
             style={{ height: '50px', width: '290px', padding: '10px', border: '5px solid black', position: 'relative', marginBottom: '10px' }}
@@ -599,7 +751,7 @@ const handlePlay = (audioUrl, button) => {
               className="text-center text-white"
               style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px' }}
             >
-            <FaArrowLeft style={{ marginRight: '10px' }} /> 戻る！
+            <FaArrowLeft style={{ marginRight: '10px' }} /> {isEnglish ? 'Go back!' : '戻る！'}
             </span>
           </button>
           </>
@@ -608,30 +760,29 @@ const handlePlay = (audioUrl, button) => {
             {error && <p>{error}</p>}
             {classrooms.map(classroom => (
               <div key={classroom.id}>
-                <div className="test-buttons-container" style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div className="test-buttons-container" style={{ display: !activeTestId ? 'flex' : undefined, flexWrap: !activeTestId ? 'wrap' : undefined }}>
                 {Object.values(tests).flat().sort((a, b) => a.lesson_number - b.lesson_number).map(test => (
-                    <span key={test.id} style={{ marginRight: '10px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
+                    <span key={test.id}>
                     {activeTestId !== null ? (
-                        <h2>
+                        <>
                         <button
-                          className={`btn btn-warning mb-3 toggle-test-btn ${activeTestId === test.id || activeTestId === null ? 'active' : 'd-none'}`}
-                          style={{ height: '50px', width: '290px', padding: '10px', border: '5px solid black', position: 'relative', marginBottom: '10px' }}
-                          onClick={() => toggleQuestionDetails(test.id)}
+                          className={`btn btn-warning toggle-test-btn ${activeTestId === test.id || activeTestId === null ? 'active' : 'd-none'}`}
+                          style={{ height: '50px', width: '400px', border: '5px solid black', marginBottom: '20px' }}
+                          onClick={openModal}
                         >
                           <span
                             className="text-center text-white"
                             style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px' }}
                           >
-                          <FaArrowLeft style={{ marginRight: '10px' }} /> 戻る!
+                          <FaArrowLeft style={{ marginRight: '10px' }} /> {activeQuestionIndex !== 0 ? (isEnglish ? 'Record score and ' : '点数記録して') : ''}{isEnglish ? 'Go back from ' : ''}{test.name}{!isEnglish ? 'から戻る!' : ''}
                           </span>
                         </button>
-                        </h2>
+                        </>
                     ) : (
                       <button
-                        className={`btn btn-warning mb-3 toggle-test-btn ${activeCategory === test.category && activeTestId === null ? 'active' : 'd-none'}`}
-                        style={{ height: '240px', width: '240px', padding: '10px', border: '5px solid black' }}
-                        onClick={() => toggleQuestionDetails(test.id)}
+                        className={`btn btn-warning toggle-test-btn ${activeCategory === test.category && activeTestId === null ? 'active' : 'd-none'}`}
+                        style={{ height: '240px', width: '240px', border: '5px solid black' }}
+                        onClick={() => toggleQuestionDetails(test.id, test.description, test.sound_url, test.number_of_questions, test.name)}
                       >
                         <span
                           className="text-center text-white"
@@ -643,26 +794,35 @@ const handlePlay = (audioUrl, button) => {
                           <img src={test.picture_url} alt="Question" width="170" height="170" />
                         )}
                         <div>
-                              {maxScores.map(maxScore => {
-                                if (maxScore.test === test.id) {
-                                  return (
+                            {maxScores.some(maxScore => maxScore.test === test.id)
+                              ? maxScores.map(maxScore =>
+                                  maxScore.test === test.id ? (
                                     <h5 key={maxScore.id} className="text-white">
-                                      最高記録：{maxScore.score}/{maxScore.total_questions}
+                                      {isEnglish ? "High score: " : "最高記録："}{maxScore.score}/{test.total_score}
                                     </h5>
-                                  );
-                                }
-                                return null;
-                              })}
+                                  ) : null
+                                )
+                              : <h5 className="text-white">{isEnglish ? "Still " : "まだ"}0/{test.total_score}</h5>
+                            }
                         </div>
                       </button>
                     )}
-                    </div>
                     </span>
                 ))}
 
                 {activeTestId && (
+                  <>
+                  <div>
+                      {activeTestDescription.split('\n').map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))}
+                      {activeTestDescriptionSound ? (<audio controls> <source src={activeTestDescriptionSound} type="audio/mpeg" /> Your browser does not support the audio element. </audio>) : null}
+                　</div>
                   <div className="test-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
-                  {isPractice && questions && (
+                  {isPractice && questions && ((activeCategory === 'eiken' && activeTestName === '英検５-語彙') || activeCategory !== 'eiken') && (
                     <div key={questions.id} style={{ display: 'flex', flexWrap: 'wrap' }}>
                       {(() => {
                         const keys = Object.keys(questions.question_list);
@@ -671,19 +831,19 @@ const handlePlay = (audioUrl, button) => {
                           const value = questions.question_list[key];
 
                           return (
-                            <div key={key} style={{ margin: '10px' }}>
+                            <div key={key} style={value.picture ? { margin: '10px' } : { flex: '1 1 50%', padding: '10px' }}>
                             <button
                               className="btn btn-info"
                               style={{ height: value.picture ? '170px' : '70px', width: value.picture ? '170px' : 'auto', padding: '10px', border: '5px solid black', position: 'relative', backgroundColor: 'lightblue' }}
-                              onClick={(e) => handlePlay(questions.sound2 ? value.sound2 : value.sound ? value.sound : value, e.target)}
+                              onClick={(e) => handlePlay(value[1] !== 't' && value[1] !== undefined ? value[1] : questions.sound3? value.sound3 : questions.sound2 ? value.sound2 : value.sound ? value.sound : value, e.target)}
                               disabled={isPlayDisabled}
                             >
                               {((value.picture && value.word) || (!value.picture && !value.word)) && (
                               <span
                                 className={`${value.picture ? 'text-center' : ''} text-white`}
-                                style={!value.picture ? { fontSize: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' } : { background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px', justifyContent: 'center', fontSize: '15px' }}
+                                style={!value.picture ? { fontSize: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' } : { background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px', justifyContent: 'center', fontSize: '15px' }}
                               >
-                                {value.label ? value.label : value.word ? value.word : key}
+                                {value.numbers ? value.numbers : value.label ? value.label : value.word ? value.word : key}{value[0] !== undefined ? ` = ${value[0]}` : ""}
                               </span>
                               )}
                               {value.picture ? <img src={value.picture} alt={`Picture of ${value.word || key}`} width="120" height="120" /> : null}
@@ -694,64 +854,116 @@ const handlePlay = (audioUrl, button) => {
                       })()}
                     </div>
                   )}
+                  {!isPractice && questions && questions.sound3 && (
+                    <div key={questions.id} style={{ display: 'flex', flexWrap: 'wrap' }}>
+                      {(() => {
+                        const keys = Object.keys(questions.question_list);
+
+                        return shuffledKeys.map((key) => {
+                          const value = questions.question_list[key];
+                          return (
+                            <div key={key}>
+                              <div
+                                className={`${value.picture ? 'text-center' : ''} text-white`}
+                                style={!value.picture ? { fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' } : { background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', justifyContent: 'center', fontSize: '15px', lineHeight: '1' }}
+                              >
+                                {value.label ? value.label : value.word ? value.word : key}
+                              </div>
+                              {value.picture ? <img src={value.picture} alt={`Picture of ${value.word || key}`} width="100" height="100" /> : null}
+                            </div>
+                          );
+                        });
+                      })()}
+                    </div>
+                  )}
                     <ul>
                       {!isPractice && testQuestions.questions.map((question, index) => {
-                        const { randomAlphabetSliced, randomAlphabet, randomUrl, randomWord, randomPicture, randomSound, randomSound2, randomLabel} = randomizedValues[question.id] || {};
+                        const { randomAlphabetSliced, randomAlphabet, randomUrl, randomWrongOne, randomWrongTwo, randomWrongThree, randomCorrect, randomEikenUrl, randomTranslation, randomNumbers, randomWord, randomWord2, randomJapanese, randomPicture, randomSound, randomSound2, randomSound3, randomLabel} = randomizedValues[question.duplicateId] || {};
                         let selectedKeys = [];
                         const isAudio = typeof randomUrl === 'string' && (randomUrl.includes('Record') || randomUrl.includes('mp3'));
                         const isPicture = typeof randomUrl === 'string' && randomUrl.includes('image');
                         const sound2 = question.sound2
+                        const sound3 = question.sound3
+                        const word2 = question.word2
+                        const keys = Object.keys(question.question_list);
+                        const shuffledKeys = shuffleArray([...keys]);
+                        const shuffledValues = shuffledKeys.map((key) => question.question_list[key]);
                         return (
-                          <li key={question.id} className={index === activeQuestionIndex ? 'active' : 'd-none'}>
-                          {isPicture ? (
-                            <img src={randomUrl} alt="Question" width="200" height="150" />
-                          ) : question.label ? (
-                            <>
-                            <img src={randomPicture} alt="Question" width="200" height="150" />
-                            <h5>{randomWord}</h5>
-                            <button
+                          <>
+                          <div key={question.id} className={index === activeQuestionIndex ? 'active' : 'd-none'}>
+                            {!sound3 ? (
+                              isPicture ? (
+                                <img src={randomUrl} alt="Question" width="200" height="150" />
+                              ) : question.label ? (
+                                <>
+                                  <img src={randomPicture} alt="Question" width="200" height="150" />
+                                  <h5>{randomWord}</h5>
+                                  <button
+                                    className="btn btn-success"
+                                    style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px' }}
+                                    onClick={(e) => handlePlay(randomSound2, e.target)}
+                                    disabled={isPlayDisabled}
+                                  >
+                                    {isEnglish ? "Play sound" : "音声"} <FaPlay style={{ marginLeft: '10px' }} />
+                                  </button>
+                                </>
+                              ) : isAudio ? (
+                                <button
+                                  className="btn btn-success"
+                                  style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px' }}
+                                  onClick={(e) => handlePlay(randomUrl, e.target)}
+                                  disabled={isPlayDisabled}
+                                >
+                                  {isEnglish ? "Play sound" : "音声"} <FaPlay style={{ marginLeft: '10px' }} />
+                                </button>
+                              ) : randomSound ? (
+                                <button
+                                  className="btn btn-success"
+                                  style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px' }}
+                                  onClick={(e) => handlePlay(sound2 ? randomSound2 : randomSound, e.target)}
+                                  disabled={isPlayDisabled}
+                                >
+                                  {isEnglish ? "Play sound" : "音声"} <FaPlay style={{ marginLeft: '10px' }} />
+                                </button>
+                              ) : (
+                                <p style={{ fontSize: '50px' }}>{randomUrl}</p>
+                              )
+                            ) : null}
+                            <h4 style={{ whiteSpace: 'pre' }}>{randomCorrect ? formatText(randomAlphabet) : randomTranslation}</h4>
+                            {sound3 && (
+                              <button
                                 className="btn btn-success"
                                 style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px' }}
-                                onClick={(e) => handlePlay(randomSound2, e.target)}
+                                onClick={(e) => handlePlay(sound3 ? randomSound3 : sound2 ? randomSound2 : randomSound, e.target)}
                                 disabled={isPlayDisabled}
-                            >
-                                音声 <FaPlay style={{ marginLeft: '10px' }} />
-                            </button>
-                            </>
-                          ) : isAudio ? (
-                                <button
-                                    className="btn btn-success"
-                                    style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px' }}
-                                    onClick={(e) => handlePlay(randomUrl, e.target)}
-                                    disabled={isPlayDisabled}
-                                >
-                                    音声 <FaPlay style={{ marginLeft: '10px' }} />
-                                </button>
-                          ) : randomSound ? (
-                                <button
-                                    className="btn btn-success"
-                                    style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px' }}
-                                    onClick={(e) => handlePlay(sound2 ? randomSound2 : randomSound, e.target)}
-                                    disabled={isPlayDisabled}
-                                >
-                                    音声 <FaPlay style={{ marginLeft: '10px' }} />
-                                </button>
-                          ) : (
-                            <p style={{ fontSize: '50px' }}>{randomUrl}</p>
-                          )}
-                            {renderForm(sound2, question, randomAlphabet, randomAlphabetSliced, selectedKeys, randomUrl, randomWord, randomPicture, randomSound, randomSound2, randomLabel)}
-                          </li>
+                              >
+                                {isEnglish ? "Play sound" : "音声"} <FaPlay style={{ marginLeft: '10px' }} />
+                              </button>
+                            )}
+                            {randomNumbers && (
+                            <h4>{randomWord}</h4>
+                            )}
+                            {question.japanese_option && (
+                              <h4>{randomWord}</h4>
+                            )}
+                            {question.description && !question.write_answer && (
+                              <h4>{question.name}</h4>
+                            )}
+                            {renderForm(sound2, sound3, word2, question, randomAlphabet, randomAlphabetSliced, selectedKeys, randomUrl, randomWrongOne, randomWrongTwo, randomWrongThree, randomCorrect, randomEikenUrl, randomTranslation, randomNumbers, randomWord, randomWord2, randomJapanese, randomPicture, randomSound, randomSound2, randomSound3, randomLabel)}
+                          </div>
+                          </>
                         );
                       })}
                     </ul>
                   </div>
+                  </>
                 )}
                 </div>
               </div>
             ))}
           <div className="volume-control">
             <label htmlFor="volume-slider" style={{ fontSize: '20px' }}>
-              イバルの声の音量調整
+              {isEnglish ? "Adjust Ivar's reaction voice volume" : "イバルの反応の声音量調整"}
             </label>
             <input
               id="volume-slider"
@@ -765,7 +977,7 @@ const handlePlay = (audioUrl, button) => {
             />
           </div>
           <div className={`${activeTestId === null ? 'active' : 'd-none'}`}>
-            <span style={{ width: '20px', height: '20px' }}>練習：</span>
+            <span style={{ width: '20px', height: '20px' }}>{isEnglish ? 'Practice' : '練習'} ：</span>
             <input
               type="checkbox"
               style={{ width: '20px', height: '20px' }}
@@ -773,6 +985,29 @@ const handlePlay = (audioUrl, button) => {
               onChange={handlePracticeChange}
             />
           </div>
+          <div className={`${activeTestId === null ? 'active' : 'd-none'}`}>
+            <span style={{ width: '20px', height: '20px' }}>{isEnglish ? '英語' : 'English'}：</span>
+            <input
+              type="checkbox"
+              style={{ width: '20px', height: '20px' }}
+              checked={isEnglish}
+              onChange={handleLanguageChange}
+            />
+          </div>
+          {classroomRequests.map((request) => (
+              <button
+                className="btn btn-success"
+                style={{ height: '50px', width: '250px', border: '5px solid black', color: 'white', fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                onClick={() => toggleAccept(request.id)}
+                key={request.id}>
+                  {request.teacher.user.username}
+                  {request.is_accepted ? (
+                      <span className="text-success" style={{ fontSize: '50px' }}>&#x2713;</span>
+                  ) : (
+                      <span className="text-danger" style={{ fontSize: '50px' }}>&#x2717;</span>
+                  )}
+              </button>
+          ))}
           </div>
         </div>
       </div>
@@ -782,14 +1017,14 @@ const handlePlay = (audioUrl, button) => {
           style={{
             backgroundImage:
                 currentCorrectAudioIndex >= 9 || recordMessage
-                ? `url(${window.staticFileUrl})`
+                ? `url("https://storage.googleapis.com/ivar_reactions/WhatsApp画像%202024-02-14%2013.27.37_9343389c%20(3).jpg")`
                 : currentCorrectAudioIndex === 1 || currentCorrectAudioIndex === 2 || currentCorrectAudioIndex === 3
-                ? `url(${window.staticFileUrl3})`
+                ? `url("https://storage.googleapis.com/ivar_reactions/openart-5eda95374c2140e3a6dad00334c41fef_raw%20(3).jpg")`
                 : currentCorrectAudioIndex === 4
-                ? `url(${window.staticFileUrl1})`
+                ? `url("https://storage.googleapis.com/ivar_reactions/openart-12ba3e00450f41cc899c83c6a484c79f_raw%20(4).jpg")`
                 : currentWrongAudioIndex
-                ? `url(${window.staticFileUrl4})`
-                : `url(${window.staticFileUrl2})`,
+                ? `url("https://storage.googleapis.com/ivar_reactions/openart-6cf0de3a89b84f87983d9234bf1fa9d5_raw%20(2).jpg")`
+                : `url("https://storage.googleapis.com/ivar_reactions/openart-42849cd925af4fdba5bc73bf93394019_raw%20(7).jpg")`,
 
 
             backgroundSize: 'contain',
@@ -809,12 +1044,12 @@ const handlePlay = (audioUrl, button) => {
                 <div className="d-flex align-items-center">
                     {isCorrect === true ? (
                         <>
-                            <span style={{ fontSize: '50px' }}>正解！</span>
+                            <span style={{ fontSize: '50px' }}>{isEnglish ? "Correct!" : "正解！"}</span>
                             <span className="text-success" style={{ fontSize: '50px' }}>&#x2713;</span>
                         </>
                     ) : isCorrect === false ? (
                         <div>
-                            <span style={{ fontSize: '50px' }}>あまい！</span>
+                            <span style={{ fontSize: '50px' }}>{isEnglish ? "Naive!" : "あまい！"}</span>
                             <span className="text-danger" style={{ fontSize: '50px' }}>&#x2717;</span>
                             {correctSound && (
                               <p>
@@ -824,16 +1059,16 @@ const handlePlay = (audioUrl, button) => {
                                     onClick={(e) => handlePlay(correctSound, e.target)}
                                     disabled={isPlayDisabled}
                                 >
-                                    音声 <FaPlay style={{ marginLeft: '10px' }} />
+                                    {isEnglish ? "Play sound" : "音声"} <FaPlay style={{ marginLeft: '10px' }} />
                                 </button>
                               </p>
                             )}
-                            <h1>正解は：{correctLabel !== null ? correctLabel : correctWord !== null ? correctWord : correctAnswerKey}</h1>
+                            <h1>{isEnglish ? "Correct answer:" : "正解は："}{correctLabel !== null ? correctLabel : correctWord !== null ? correctWord : correctAnswerKey}</h1>
                         </div>
                     ) : null}
                 </div>
-                <h1>連続正解：{currentCorrectAudioIndex}</h1>
-                {isCorrect? <h1>点数：{scoreCounter}</h1> : null}
+                <h1>{isEnglish ? "Correct streak: " : "連続正解："}{currentCorrectAudioIndex}</h1>
+                {isCorrect? <h1>{isEnglish ? "Points: " : "点数："}{scoreCounter}</h1> : null}
                 </>
             )}
         </Modal.Body>
@@ -841,6 +1076,15 @@ const handlePlay = (audioUrl, button) => {
           <Button variant="secondary" onClick={closeModal}>
             Next!
           </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={modalIsOpen} onHide={closeReturnModal}>
+        <Modal.Body>
+          <p>まだテスト終わっていない。終わっていないまま戻ったら今までの点数しか記録されない。それでももどる？</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeReturnModal}>いいえ</Button>
+          <Button variant="primary" onClick={handleBackClick}>はい</Button>
         </Modal.Footer>
       </Modal>
     </div>

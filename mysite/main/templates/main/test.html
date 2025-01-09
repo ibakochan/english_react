@@ -1,34 +1,52 @@
 {% load static %}
 {% load my_tags %}
 <html lang="en-JP">
-<link href="{% static 'main/test.css' %}" rel="stylesheet">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <script>
-    // Define a global variable for the static file URL
-    window.staticFileUrl = "{% static 'main/WhatsApp画像 2024-02-14 13.27.37_9343389c.jpg' %}"
-    window.staticFileUrl1 = "{% static 'main/openart-12ba3e00450f41cc899c83c6a484c79f_raw.jpg' %}";
-    window.staticFileUrl2 = "{% static 'main/openart-42849cd925af4fdba5bc73bf93394019_raw.jpg' %}";
-    window.staticFileUrl3 = "{% static 'main/openart-5eda95374c2140e3a6dad00334c41fef_raw.jpg' %}";
-    window.staticFileUrl4 = "{% static 'main/openart-6cf0de3a89b84f87983d9234bf1fa9d5_raw.jpg' %}";
-  </script>
-    <script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <link href="{% static 'main/test.css' %}" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>威張る英語</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+</head>
+<script>
         window.correctAudioUrls = [
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (17).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (18).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (19).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (20).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (21).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (22).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (23).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (24).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (25).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (25).mp3' %}"
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(17)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(18)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(19)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(20)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(21)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(22)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(23)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(24)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(25)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(25)%20(1).mp3"
         ];
+
+        window.correctEnglishAudioUrls = [
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(17)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_44_01_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_44_07_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_44_43_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_44_49_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_44_56_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_45_01_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_45_20_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_45_28_1.mp3"
+        ];
+
         window.wrongAudioUrls = [
-            "{% static 'main/soundfiles/sound13.mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (27).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (28).mp3' %}",
-            "{% static 'main/soundfiles/Record (online-voice-recorder.com) (29).mp3' %}"
+            "https://storage.googleapis.com/ivar_reactions/sound13%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(27)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(28)%20(1).mp3",
+            "https://storage.googleapis.com/ivar_reactions/Record%20(online-voice-recorder.com)%20(29)%20(1).mp3"
+        ];
+
+        window.wrongEnglishAudioUrls = [
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_36_49_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_36_54_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_37_00_1.mp3",
+            "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_37_30_1.mp3"
         ];
     </script>
 
@@ -65,7 +83,6 @@
             {% if not classroom.character_voice %}
             <audio id="audio" src="{{ profile_audio }}" preload="auto"></audio>
             {% endif %}
-
             <div id="user-test-records"></div>
             {% if join_form %}
             <form id="join-classroom-form" method="post" action="{% url 'main:join_classroom' %}">
@@ -75,6 +92,8 @@
             </form>
             {% endif %}
             {% if request.user.teacher %}
+
+
             <div style="font-size: 2em; font-weight: bold;">教室を作る！</div>
             <form class="createClassroomForm" method="post" action="{% url 'main:classroom_create' %}" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -109,10 +128,6 @@
                 </a>
             </div>
         </div>
-
-
-
-
         {% if request.user.is_superuser %}
         <div style="font-size: 2em; font-weight: bold;">Create school!</div>
         <form class="createClassroomForm" method="post" action="{% url 'main:school_create' %}" enctype="multipart/form-data">
@@ -131,7 +146,7 @@
     </div>
 </div>
 </body>
-<script type="module" src="{% static 'my-vite-app/dist/assets/index-CCICZosM.js' %}"></script>
+<script type="module" src="{% static 'my-vite-app/dist/assets/index-DTu_eARI.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>

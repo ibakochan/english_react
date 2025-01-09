@@ -28,137 +28,63 @@ alphabet_sounds = {
 }
 
 alphabet_sounds2 = {
-    'a': {
-        'word': 'a',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_01_59_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_02_04_1.mp3'
-    },
-    'b': {
-        'word': 'b',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_02_09_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_02_14_1.mp3'
-    },
-    'c': {
-        'word': 'c',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_02_19_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_09_1.mp3'
-    },
-    'd': {
-        'word': 'd',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_16_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_21_1.mp3'
-    },
-    'e': {
-        'word': 'e',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_27_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_36_1.mp3'
-    },
-    'f': {
-        'word': 'f',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_49_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_54_1.mp3'
-    },
-    'g': {
-        'word': 'g',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_06_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_11_1.mp3'
-    },
-    'h': {
-        'word': 'h',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_19_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_25_1.mp3'
-    },
-    'i': {
-        'word': 'i',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_34_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_44_1.mp3'
-    },
-    'j': {
-        'word': 'j',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_50_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_59_1.mp3'
-    },
-    'k': {
-        'word': 'k',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_05_04_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_05_50_1.mp3'
-    },
-    'l': {
-        'word': 'l',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_00_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_12_1.mp3'
-    },
-    'm': {
-        'word': 'm',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_22_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_27_1.mp3'
-    },
-    'n': {
-        'word': 'n',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_33_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_38_1.mp3'
-    },
-    'o': {
-        'word': 'o',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_49_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_54_1.mp3'
-    },
-    'p': {
-        'word': 'p',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_08_50_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_00_1.mp3'
-    },
-    'q': {
-        'word': 'q',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_14_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_18_1.mp3'
-    },
-    'r': {
-        'word': 'r',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_25_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_30_1.mp3'
-    },
-    's': {
-        'word': 's',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_37_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_45_1.mp3'
-    },
-    't': {
-        'word': 't',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_07_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_14_1.mp3'
-    },
-    'u': {
-        'word': 'u',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_47_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_52_1.mp3'
-    },
-    'v': {
-        'word': 'v',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_57_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_11_08_1.mp3'
-    },
-    'w': {
-        'word': 'w',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_11_14_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_11_19_1.mp3'
-    },
-    'x': {
-        'word': 'x',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_12_50_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_12_57_1.mp3'
-    },
-    'y': {
-        'word': 'y',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_13_11_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_13_17_1.mp3'
-    },
-    'z': {
-        'word': 'z',
-        'sound': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_13_28_1.mp3',
-        'sound2': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_13_49_1.mp3'
-    }
+    'a': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_01_59_1.mp3',
+    'b': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_02_09_1.mp3',
+    'c': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_02_19_1.mp3',
+    'd': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_16_1.mp3',
+    'e': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_27_1.mp3',
+    'f': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_49_1.mp3',
+    'g': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_06_1.mp3',
+    'h': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_19_1.mp3',
+    'i': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_34_1.mp3',
+    'j': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_50_1.mp3',
+    'k': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_05_04_1.mp3',
+    'l': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_00_1.mp3',
+    'm': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_22_1.mp3',
+    'n': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_33_1.mp3',
+    'o': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_49_1.mp3',
+    'p': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_08_50_1.mp3',
+    'q': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_14_1.mp3',
+    'r': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_25_1.mp3',
+    's': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_37_1.mp3',
+    't': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_07_1.mp3',
+    'u': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_47_1.mp3',
+    'v': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_57_1.mp3',
+    'w': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_11_14_1.mp3',
+    'x': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_12_50_1.mp3',
+    'y': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_13_11_1.mp3',
+    'z': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_13_28_1.mp3'
 }
+
+alphabet_sounds3 = {
+    'a': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_02_04_1.mp3',
+    'b': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_02_14_1.mp3',
+    'c': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_09_1.mp3',
+    'd': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_21_1.mp3',
+    'e': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_36_1.mp3',
+    'f': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_03_54_1.mp3',
+    'g': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_11_1.mp3',
+    'h': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_25_1.mp3',
+    'i': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_44_1.mp3',
+    'j': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_04_59_1.mp3',
+    'k': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_05_50_1.mp3',
+    'l': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_12_1.mp3',
+    'm': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_27_1.mp3',
+    'n': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_38_1.mp3',
+    'o': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_06_54_1.mp3',
+    'p': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_00_1.mp3',
+    'q': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_18_1.mp3',
+    'r': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_30_1.mp3',
+    's': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_09_45_1.mp3',
+    't': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_14_1.mp3',
+    'u': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_10_52_1.mp3',
+    'v': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_11_08_1.mp3',
+    'w': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_11_19_1.mp3',
+    'x': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_12_57_1.mp3',
+    'y': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_13_17_1.mp3',
+    'z': 'https://storage.googleapis.com/alphabet_sounds2/2024_11_03_20_13_49_1.mp3'
+}
+
 
 
 small_alphabet_sounds = {
@@ -283,215 +209,241 @@ phonics_2 = {
     'mop': 'https://storage.googleapis.com/phonics-2/Record%20(online-voice-recorder.com)%20(57).mp3'
 }
 
+phonics3 = {
+    'can': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_08_1.mp3',
+    'bat': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_12_1.mp3',
+    'fin': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_22_1.mp3',
+    'dot': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_26_1.mp3',
+    'jam': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_30_1.mp3',
+    'pet': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_35_1.mp3',
+    'run': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_39_1.mp3',
+    'cup': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_44_1.mp3',
+    'fig': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_49_1.mp3',
+    'mop': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_53_1.mp3',
+    'lid': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_04_59_1.mp3',
+    'net': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_03_1.mp3',
+    'hug': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_07_1.mp3',
+    'frog': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_30_1.mp3',
+    'mask': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_35_1.mp3',
+    'lamp': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_39_1.mp3',
+    'hand': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_44_1.mp3',
+    'crab': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_49_1.mp3',
+    'nest': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_54_1.mp3',
+    'wind': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_05_59_1.mp3',
+    'jump': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_06_03_1.mp3',
+    'ship': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_06_09_1.mp3',
+    'desk': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_06_15_1.mp3',
+    'flag': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_07_18_1.mp3',
+    'bend': 'https://storage.googleapis.com/phonics-3/2024_11_13_16_07_23_1.mp3',
+}
+
+
 
 jlpt_n5_vocabulary = {
-    'あう': 'to meet',
-    'あおい': 'blue',
-    'あか': 'red',
-    'あかるい': 'bright',
-    'あき': 'autumn',
-    'あく': 'to open',
-    'あける': 'to open (something)',
-    'あげる': 'to give',
-    'あさ': 'morning',
-    'あし': 'foot',
-    'あそぶ': 'to play',
-    'あたたかい': 'warm',
-    'あたま': 'head',
-    'あたらしい': 'new',
-    'あちら': 'over there',
-    'あつい (暑い)': 'hot (weather)',
-    'あつい (熱い)': 'hot (thing)',
-    'あに': 'older brother',
-    'あね': 'older sister',
-    'あの': 'that (over there)',
-    'アパート': 'apartment',
-    'あびる': 'to bathe, to shower',
-    'あぶない': 'dangerous',
-    'あまい': 'sweet',
-    'あまり': 'not very',
-    'あめ': 'rain',
-    'あらう': 'to wash',
-    'ある': 'to be, to exist',
-    'あるく': 'to walk',
-    'あれ': 'that (over there)',
-    'いいえ': 'no',
-    'いう': 'to say',
-    'いえ': 'house',
-    'いく': 'to go',
-    'いけ': 'pond',
-    'いしゃ': 'doctor',
-    'いす': 'chair',
-    'いそがしい': 'busy',
-    'いたい': 'painful',
-    'いち': 'one',
-    'いちにち': 'one day',
-    'いちばん': 'best, first',
-    'いつ': 'when',
-    'いつか': 'sometime',
-    'いっしょに': 'together',
-    'いつつ': 'five (things)',
-    'いぬ': 'dog',
-    'いま': 'now',
-    'いみ': 'meaning',
-    'いもうと': 'younger sister',
-    'いや': 'disagreeable',
-    'いりぐち': 'entrance',
-    'いる': 'to be, to exist (living things)',
-    'いれる': 'to put in',
-    'いろ': 'color',
-    'うえ': 'above',
-    'うしろ': 'behind',
-    'うすい': 'thin',
-    'うた': 'song',
-    'うたう': 'to sing',
-    'うち': 'house, home',
-    'うまれる': 'to be born',
-    'うみ': 'sea',
-    'うる': 'to sell',
-    'うるさい': 'noisy',
-    'うわぎ': 'coat',
-    'え': 'picture',
-    'えいが': 'movie',
-    'えいご': 'English (language)',
-    'ええ': 'yes',
-    'えき': 'station',
-    'エレベーター': 'elevator',
-    'えんぴつ': 'pencil',
-    'おいしい': 'delicious',
-    'おおい': 'many',
-    'おおきい': 'big',
-    'おおきな': 'big',
-    'おおぜい': 'many people',
-    'おかあさん': 'mother',
-    'おかし': 'sweets, candy',
-    'おかね': 'money',
-    'おきる': 'to get up',
-    'おく': 'to put',
-    'おくさん': 'wife',
-    'おさけ': 'alcohol, sake',
-    'おさら': 'plate',
-    'おじいさん': 'grandfather',
-    'おしえる': 'to teach',
-    'おす': 'to push',
-    'おそい': 'late, slow',
-    'おちゃ': 'tea',
-    'おてあらい': 'bathroom',
-    'おとうさん': 'father',
-    'おとうと': 'younger brother',
-    'おとこ': 'man',
-    'おとこのこ': 'boy',
-    'おとな': 'adult',
-    'おなか': 'stomach',
-    'おなじ': 'same',
-    'おにいさん': 'older brother',
-    'おねえさん': 'older sister',
-    'おばあさん': 'grandmother',
-    'おばさん': 'aunt'
+    'あう': ['to meet', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_15_1.mp3'],
+    'あおい': ['blue', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_18_1.mp3'],
+    'あか': ['red', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_22_1.mp3'],
+    'あかるい': ['bright', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_26_1.mp3'],
+    'あき': ['autumn', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_30_1.mp3'],
+    'あく': ['to open', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_35_1.mp3'],
+    'あける': ['to open (something)', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_38_1.mp3'],
+    'あげる': ['to give', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_44_1.mp3'],
+    'あさ': ['morning', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_49_1.mp3'],
+    'あし': ['foot', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_54_1.mp3'],
+    'あそぶ': ['to play', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_14_58_1.mp3'],
+    'あたたかい': ['warm', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_15_03_1.mp3'],
+    'あたま': ['head', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_15_08_1.mp3'],
+    'あたらしい': ['new', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_15_14_1.mp3'],
+    'あちら': ['over there', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_15_22_1.mp3'],
+    'あつい': ['hot', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_15_27_1.mp3'],
+    'あの': ['that (over there)', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_16_38_1.mp3'],
+    'アパート': ['apartment', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_16_42_1.mp3'],
+    'あびる': ['to bathe, to shower', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_16_46_1.mp3'],
+    'あぶない': ['dangerous', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_16_50_1.mp3'],
+    'あまい': ['sweet', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_16_57_1.mp3'],
+    'あまり': ['not very', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_02_1.mp3'],
+    'あめ': ['rain', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_12_1.mp3'],
+    'あらう': ['to wash', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_17_1.mp3'],
+    'ある': ['to be, to exist', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_22_1.mp3'],
+    'あるく': ['to walk', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_28_1.mp3'],
+    'あれ': ['that (over there)', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_31_1.mp3'],
+    'いいえ': ['no', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_36_1.mp3'],
+    'いう': ['to say', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_39_1.mp3'],
+    'いえ': ['house', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_44_1.mp3'],
+    'いく': ['to go', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_17_51_1.mp3'],
+    'いけ': ['pond', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_02_1.mp3'],
+    'いしゃ': ['doctor', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_14_1.mp3'],
+    'いす': ['chair', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_19_1.mp3'],
+    'いそがしい': ['busy', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_24_1.mp3'],
+    'いたい': ['painful', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_31_1.mp3'],
+    'いち': ['one', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_35_1.mp3'],
+    'いちにち': ['one day', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_40_1.mp3'],
+    'いちばん': ['best, first', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_45_1.mp3'],
+    'いつ': ['when', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_18_50_1.mp3'],
+    'いつか': ['sometime', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_02_1.mp3'],
+    'いっしょに': ['together', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_06_1.mp3'],
+    'いつつ': ['five (things)', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_11_1.mp3'],
+    'いぬ': ['dog', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_16_1.mp3'],
+    'いま': ['now', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_19_1.mp3'],
+    'いみ': ['meaning', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_23_1.mp3'],
+    'いもうと': ['younger sister', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_28_1.mp3'],
+    'いや': ['disagreeable', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_33_1.mp3'],
+    'いりぐち': ['entrance', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_37_1.mp3'],
+    'いる': ['to be, to exist (living things)', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_41_1.mp3'],
+    'いれる': ['to put in', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_47_1.mp3'],
+    'いろ': ['color', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_51_1.mp3'],
+    'うえ': ['above', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_19_56_1.mp3'],
+    'うしろ': ['behind', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_20_00_1.mp3'],
+    'うすい': ['thin', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_20_08_1.mp3'],
+    'うた': ['song', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_20_15_1.mp3'],
+    'うたう': ['to sing', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_20_22_1.mp3'],
+    'うち': ['house, home', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_20_27_1.mp3'],
+    'うまれる': ['to be born', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_09_1.mp3'],
+    'うみ': ['sea', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_13_1.mp3'],
+    'うる': ['to sell', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_17_1.mp3'],
+    'うるさい': ['noisy', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_21_1.mp3'],
+    'うわぎ': ['coat', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_27_1.mp3'],
+    'え': ['picture', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_31_1.mp3'],
+    'えいが': ['movie', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_35_1.mp3'],
+    'えいご': ['English (language)', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_40_1.mp3'],
+    'ええ': ['yes', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_45_1.mp3'],
+    'えき': ['station', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_49_1.mp3'],
+    'エレベーター': ['elevator', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_52_1.mp3'],
+    'えんぴつ': ['pencil', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_42_57_1.mp3'],
+    'おいしい': ['delicious', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_43_24_1.mp3'],
+    'おおい': ['many', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_43_30_1.mp3'],
+    'おおきい': ['big', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_43_35_1.mp3'],
+    'おおぜい': ['many people', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_07_1.mp3'],
+    'おかあさん': ['mother', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_14_1.mp3'],
+    'おかし': ['sweets, candy', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_20_1.mp3'],
+    'おかね': ['money', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_27_1.mp3'],
+    'おきる': ['to get up', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_33_1.mp3'],
+    'おく': ['to put', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_37_1.mp3'],
+    'おくさん': ['wife', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_40_1.mp3'],
+    'おさけ': ['alcohol, sake', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_47_1.mp3'],
+    'おさら': ['plate', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_44_55_1.mp3'],
+    'おじいさん': ['grandfather', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_02_1.mp3'],
+    'おしえる': ['to teach', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_06_1.mp3'],
+    'おす': ['to push', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_10_1.mp3'],
+    'おそい': ['late, slow', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_15_1.mp3'],
+    'おちゃ': ['tea', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_19_1.mp3'],
+    'おてあらい': ['bathroom', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_26_1.mp3'],
+    'おとうさん': ['father', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_32_1.mp3'],
+    'おとうと': ['younger brother', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_40_1.mp3'],
+    'おとこ': ['man', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_49_1.mp3'],
+    'おとこのこ': ['boy', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_45_55_1.mp3'],
+    'おとな': ['adult', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_46_00_1.mp3'],
+    'おなか': ['stomach', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_46_04_1.mp3'],
+    'おなじ': ['same', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_46_09_1.mp3'],
+    'おにいさん': ['older brother', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_46_14_1.mp3'],
+    'おねえさん': ['older sister', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_46_18_1.mp3'],
+    'おばあさん': ['grandmother', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_46_23_1.mp3'],
+    'おばさん': ['aunt', 'https://storage.googleapis.com/jlpt5/2024_12_18_00_46_29_1.mp3']
 }
 
 lesson4_list = {
     'a': {
         'word': 'sing',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_6ml85RlU_1725600158752_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(28).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_53_34_1.mp3'
     },
     'b': {
         'word': 'play baseball',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_7U7Wxhp9_1725599103556_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(29).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_53_39_1.mp3'
     },
     'c': {
         'word': 'play soccer',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_AY2LMYR1_1725600236297_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(30).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_53_42_1.mp3'
     },
     'd': {
         'word': 'play the violin',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_E7q7fGDM_1725599660339_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(31).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_05_1.mp3'
     },
     'e': {
         'word': 'play badminton',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_K9krXm7x_1725599155230_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(32).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_11_1.mp3'
     },
     'f': {
         'word': 'cook',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_N8wNSMv6_1725598993955_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(33).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_20_1.mp3'
     },
     'g': {
         'word': 'run',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_PKSK0bUW_1725599223147_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(34).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_23_1.mp3'
     },
     'h': {
         'word': 'play chess',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_PLxNLRAi_1725601342566_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(35).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_27_1.mp3'
     },
     'i': {
         'word': 'ride a unicycle',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_S20G6V8b_1725600924377_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(36).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_30_1.mp3'
     },
     'j': {
         'word': 'play volleyball',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_UNl4C3yN_1725599274064_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(37).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_36_1.mp3'
     },
     'k': {
         'word': 'draw pictures',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_ZMDeIJan_1725601154115_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(38).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_47_1.mp3'
     },
     'l': {
         'word': 'play video games',
         'picture': 'https://storage.googleapis.com/can_image/openart-image__FDWwEuI_1725600378072_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(39).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_53_1.mp3'
     },
     'm': {
         'word': 'do judo',
         'picture': 'https://storage.googleapis.com/can_image/openart-image__GvYXSXB_1725600052389_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(40).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_54_59_1.mp3'
     },
     'n': {
         'word': 'dance',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_cuEZ0xtK_1725600270128_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(41).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_55_04_1.mp3'
     },
     'o': {
         'word': 'play tennis',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_i_Tgo8Xx_1725601678480_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(42).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_55_08_1.mp3'
     },
     'p': {
         'word': 'play basketball',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_jAEViw0e_1725599475723_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(43).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_55_13_1.mp3'
     },
     'q': {
         'word': 'play shogi',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_jFu4BjoL_1725599198340_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(44).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_55_18_1.mp3'
     },
     'r': {
         'word': 'play the piano',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_k6ZM9WLE_1725599617583_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(45).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_55_25_1.mp3'
     },
     's': {
         'word': 'swim',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_l16_5g7__1725582938340_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(46).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_55_30_1.mp3'
     },
     't': {
         'word': 'skateboard',
         'picture': 'https://storage.googleapis.com/can_image/openart-image_tAyl7U4n_1725600100456_raw.jpg',
-        'sound': 'https://storage.googleapis.com/can_sound/Record%20(online-voice-recorder.com)%20(47).mp3'
+        'sound': 'https://storage.googleapis.com/can_sound/2024_12_16_09_55_34_1.mp3'
     }
 }
+
 
 
 lesson4_grade6_dict = {
@@ -696,6 +648,277 @@ grade_6_lesson_5 = {
     }
 }
 
+grade5_lesson1_names = {
+    'Ren': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_23_29_1.mp3',
+    'Miya': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_23_41_1.mp3',
+    'Yuki': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_23_55_1.mp3',
+    'Riku': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_24_09_1.mp3',
+    'Sora': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_24_51_1.mp3',
+    'Haruto': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_25_32_1.mp3',
+    'Aiko': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_25_48_1.mp3',
+    'Kaito': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_26_04_1.mp3',
+    'Chihiro': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_26_19_1.mp3',
+    'Ivar': 'https://storage.googleapis.com/grade5_lesson1/2024_12_16_10_26_36_1.mp3'
+}
+
+
+
+grade5_lesson1_words = {
+    'a': {
+        'word': 'apples',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/apples.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_04_1.mp3'
+    },
+    'b': {
+        'word': 'bananas',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/bananas.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_07_1.mp3'
+    },
+    'c': {
+        'word': 'baseball',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/baseball.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_12_1.mp3'
+    },
+    'd': {
+        'word': 'basketball',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/basketball.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_16_1.mp3'
+    },
+    'e': {
+        'word': 'black',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/black.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_20_1.mp3'
+    },
+    'f': {
+        'word': 'blue',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/blue.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_24_1.mp3'
+    },
+    'g': {
+        'word': 'e-sports',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/e-sports.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_28_1.mp3'
+    },
+    'h': {
+        'word': 'golf',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/golf.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_33_1.mp3'
+    },
+    'i': {
+        'word': 'grapes',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/grapes.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_37_1.mp3'
+    },
+    'j': {
+        'word': 'green',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/green.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_41_1.mp3'
+    },
+    'k': {
+        'word': 'lemons',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/lemons.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_46_1.mp3'
+    },
+    'l': {
+        'word': 'oranges',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/oranges.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_50_1.mp3'
+    },
+    'm': {
+        'word': 'pineapples',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/pineapples.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_53_1.mp3'
+    },
+    'n': {
+        'word': 'purple',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/purple.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_20_58_1.mp3'
+    },
+    'o': {
+        'word': 'red',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/red.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_21_04_1.mp3'
+    },
+    'p': {
+        'word': 'soccer',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/soccer.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_21_08_1.mp3'
+    },
+    'q': {
+        'word': 'strawberries',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/strawberries.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_21_12_1.mp3'
+    },
+    'r': {
+        'word': 'table tennis',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/table_tennis.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_21_16_1.mp3'
+    },
+    's': {
+        'word': 'tennis',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/tennis.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_21_20_1.mp3'
+    },
+    't': {
+        'word': 'white',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/white.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_21_23_1.mp3'
+    },
+    'u': {
+        'word': 'yellow',
+        'picture': 'https://storage.googleapis.com/grade5_lesson1/yellow.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson1/2024_12_04_14_21_26_1.mp3'
+    }
+}
+
+grade5_lesson1_sentence = {
+    '黒、スマホ': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_14_56_20_1.mp3',
+    'サッカー、新しい靴': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_14_56_44_1.mp3',
+    'ゴルフ、犬': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_14_58_03_1.mp3',
+    'リンゴ、大きなリンゴ': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_14_58_23_1.mp3',
+    '赤、赤い猫': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_14_58_52_1.mp3',
+    'テニス、新しいラケット': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_14_59_26_1.mp3',
+    '黄、ジューシーなレモン': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_14_59_56_1.mp3',
+    '紫、紫色のヘルメット': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_15_01_11_1.mp3',
+    '青、青い色の車': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_15_01_31_1.mp3',
+    'パイナップル、パイナップルピザ': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_15_02_18_1.mp3'
+}
+
+
+grade5_lesson2 = {
+    '1/21': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_07_40_1.mp3',
+    '2/15': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_08_58_1.mp3',
+    '3/30': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_09_09_1.mp3',
+    '4/12': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_09_21_1.mp3',
+    '5/7': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_09_37_1.mp3',
+    '6/20': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_09_47_1.mp3',
+    '7/11': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_09_59_1.mp3',
+    '8/3': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_10_19_1.mp3',
+    '9/22': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_10_28_1.mp3',
+    '10/14': 'https://storage.googleapis.com/grade5_lesson1/2024_12_05_16_10_42_1.mp3'
+}
+
+grade5_lesson3 = {
+    1: {
+        'word': 'PE',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/PE.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_09_31_52_1.mp3'
+    },
+    2: {
+        'word': 'arts',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/arts.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_09_31_55_1.mp3'
+    },
+    3: {
+        'word': 'caligraphy',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/caligraphy.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_09_32_00_1.mp3'
+    },
+    4: {
+        'word': 'class activities',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/class_activities.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_09_32_08_1.mp3'
+    },
+    5: {
+        'word': 'english',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/english.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_09_32_13_1.mp3'
+    },
+    6: {
+        'word': 'home economics',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/home_economics.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_09_32_17_1.mp3'
+    },
+    7: {
+        'word': 'integrated',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/integrated.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_09_32_24_1.mp3'
+    },
+    8: {
+        'word': 'japanese',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/japanese.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_13_29_02_1.mp3'
+    },
+    9: {
+        'word': 'math',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/matth.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_13_29_07_1.mp3'
+    },
+    10: {
+        'word': 'moral education',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/moral_education.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_13_29_11_1.mp3'
+    },
+    11: {
+        'word': 'music',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/music.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_13_29_15_1.mp3'
+    },
+    12: {
+        'word': 'science',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/science.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_13_29_20_1.mp3'
+    },
+    13: {
+        'word': 'social studies',
+        'picture': 'https://storage.googleapis.com/grade5_lesson3/social_studies.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson3/2024_12_06_13_29_25_1.mp3'
+    }
+}
+
+grade5_lesson3_occupations = {
+    1: {
+        'word': 'baker',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/baker.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_16_57_1.mp3'
+    },
+    2: {
+        'word': 'cook',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/cook.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_10_1.mp3'
+    },
+    3: {
+        'word': 'doctor',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/doctor.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_15_1.mp3'
+    },
+    4: {
+        'word': 'nurse',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/nurse.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_38_1.mp3'
+    },
+    5: {
+        'word': 'pro gamer',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/pro_gamer.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_42_1.mp3'
+    },
+    6: {
+        'word': 'scientist',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/scientist.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_47_1.mp3'
+    },
+    7: {
+        'word': 'singer',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/singer.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_51_1.mp3'
+    },
+    8: {
+        'word': 'soccer player',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/soccer_player.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_56_1.mp3'
+    },
+    9: {
+        'word': 'teacher',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/teacher.jpg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_18_00_1.mp3'
+    },
+    10: {
+        'word': 'vet',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/vet.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_18_04_1.mp3'
+    }
+}
+
 
 grade_5_lesson_5 = {
     'a': {
@@ -794,173 +1017,571 @@ grade_5_lesson_5 = {
 grade_5_lesson_6 = {
   'a': {
     'word': 'borscht',
+    'word2': '900',
+    'picture2': 'https://storage.googleapis.com/5-grade-food/sour.png',
     'picture': 'https://storage.googleapis.com/5-grade-food/borscht.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_00_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_29_13_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_02_42_1.mp3',
+    'sound4': '',
     'label': '750'
   },
   'b': {
     'word': 'bread',
+    'word2': '750',
+    'picture2': 'https://storage.googleapis.com/5-grade-food/soft.png',
     'picture': 'https://storage.googleapis.com/5-grade-food/bread.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_10_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_29_23_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_03_34_1.mp3',
+    'sound4': '',
     'label': '150'
   },
   'c': {
     'word': 'burger',
+    'word2': '1000',
+    'picture2': 'https://storage.googleapis.com/5-grade-food/delicious.png',
     'picture': 'https://storage.googleapis.com/5-grade-food/burger.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_16_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_29_44_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_04_04_1.mp3',
+    'sound4': '',
     'label': '600'
   },
   'd': {
     'word': 'cake',
+    'word2': '650',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/cake.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_23_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_29_52_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_04_38_1.mp3',
+    'sound4': '',
     'label': '400'
   },
   'e': {
     'word': 'coffee',
+    'word2': '800',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/coffee.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_30_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_30_04_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_05_11_1.mp3',
+    'sound4': '',
     'label': '250'
   },
   'f': {
     'word': 'curry',
+    'word2': '1250',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/curry.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_36_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_30_12_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_05_44_1.mp3',
+    'sound4': '',
     'label': '550'
   },
   'g': {
     'word': 'fish and chips',
+    'word2': '900',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/fish-and-chips.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_44_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_30_25_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_06_13_1.mp3',
+    'sound4': '',
     'label': '700'
   },
   'h': {
+    'picture2': '',
     'word': 'french fries',
+    'word2': '1000',
     'picture': 'https://storage.googleapis.com/5-grade-food/french-fries.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_52_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_30_36_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_07_35_1.mp3',
+    'sound4': '',
     'label': '200'
   },
   'i': {
     'word': 'grilled fish',
+    'picture2': '',
+    'word2': '1100',
     'picture': 'https://storage.googleapis.com/5-grade-food/grilled-fish.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_10_59_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_30_46_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_07_55_1.mp3',
+    'sound4': '',
     'label': '800'
   },
   'j': {
     'word': 'ice cream',
+    'word2': '400',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/ice-cream.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_11_06_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_30_57_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_08_28_1.mp3',
+    'sound4': '',
     'label': '300'
   },
   'k': {
     'word': 'milk',
+    'word2': '280',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/milk.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_11_15_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_31_10_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_08_51_1.mp3',
+    'sound4': '',
     'label': '100'
   },
   'l': {
     'word': 'orange juice',
+    'word2': '830',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/orange-juice.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_11_21_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_31_18_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_09_16_1.mp3',
+    'sound4': '',
     'label': '180'
   },
   'm': {
     'word': 'parfait',
+    'word2': '950',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/parfait.png',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_11_38_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_31_27_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_11_16_09_43_1.mp3',
+    'sound4': '',
     'label': '650'
   },
   'n': {
     'word': 'rice',
+    'word2': '700',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/rice.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_11_46_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_31_38_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_27_00_1.mp3',
+    'sound4': '',
     'label': '300'
   },
   'o': {
     'word': 'salad',
+    'word2': '520',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/salad.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_12_06_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_31_46_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_28_24_1.mp3',
+    'sound4': '',
     'label': '400'
   },
   'p': {
     'word': 'soda',
+    'word2': '620',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/soag.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_12_14_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_31_58_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_28_46_1.mp3',
+    'sound4': '',
     'label': '120'
   },
   'q': {
     'word': 'soup',
+    'word2': '1050',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/soup.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_12_28_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_32_09_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_29_08_1.mp3',
+    'sound4': '',
     'label': '500'
   },
   'r': {
     'word': 'spaghetti',
+    'word2': '1450',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/spagetthi.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_12_45_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_32_18_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_31_41_1.mp3',
+    'sound4': '',
     'label': '550'
   },
   's': {
     'word': 'steak',
+    'word2': '1700',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/steak.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_12_54_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_32_27_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_32_03_1.mp3',
+    'sound4': '',
     'label': '900'
   },
   't': {
     'word': 'sushi',
+    'word2': '1200',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/sushi.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_13_01_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_32_36_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_32_27_1.mp3',
+    'sound4': '',
     'label': '800'
   },
   'u': {
     'word': 'tacos',
+    'word2': '550',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/tacos.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_13_09_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_32_49_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_32_51_1.mp3',
+    'sound4': '',
     'label': '400'
   },
   'v': {
     'word': 'tea',
+    'word2': '850',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/tea.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_13_17_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_32_57_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_33_12_1.mp3',
+    'sound4': '',
     'label': '150'
   },
   'w': {
     'word': 'tempura',
+    'word2': '800',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/tempura.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_13_24_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_33_07_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_33_30_1.mp3',
+    'sound4': '',
     'label': '700'
   },
   'x': {
     'word': 'water',
+    'word2': '250',
+    'picture2': '',
     'picture': 'https://storage.googleapis.com/5-grade-food/water.jpeg',
     'sound': 'https://storage.googleapis.com/5-grade-food/2024_10_23_09_13_32_1.mp3',
     'sound2': 'https://storage.googleapis.com/5-grade-food/2024_11_08_09_33_16_1.mp3',
+    'sound3': 'https://storage.googleapis.com/5-grade-food/2024_11_12_08_36_59_1.mp3',
+    'sound4': '',
     'label': '100'
   }
 }
+
+grade5_lesson7 = {
+    'a': {
+        'word': 'big',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/big.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_26_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_10_39_57_1.mp3'
+    },
+    'b': {
+        'word': 'cold',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/cold.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_29_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_10_42_14_1.mp3'
+    },
+    'c': {
+        'word': 'hot',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/hot.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_33_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_10_45_14_1.mp3'
+    },
+    'd': {
+        'word': 'long',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/long.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_37_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_10_48_28_1.mp3'
+    },
+    'e': {
+        'word': 'new',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/new.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_40_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_10_52_33_1.mp3'
+    },
+    'f': {
+        'word': 'old',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/old.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_45_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_10_57_38_1.mp3'
+    },
+    'g': {
+        'word': 'scary',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/scary.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_48_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_10_58_57_1.mp3'
+    },
+    'h': {
+        'word': 'short',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/short.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_52_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_11_32_46_1.mp3'
+    },
+    'i': {
+        'word': 'small',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/small.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_55_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_11_33_06_1.mp3'
+    },
+    'j': {
+        'word': 'strong',
+        'picture': 'https://storage.googleapis.com/grade5_lesson7/strong.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_09_48_59_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade5_lesson7/2025_01_08_11_34_41_1.mp3'
+    },
+}
+
+grade5_lesson8 = {
+    'a': {
+        'word': 'Bilbert Weinstein',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/bilbertweinstein.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_03_18_1.mp3'
+    },
+    'b': {
+        'word': 'Elan Husky',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/elanhusky.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_06_00_1.mp3'
+    },
+    'c': {
+        'word': 'Farmer B. Duffy',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/farmerbduffy.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_07_16_1.mp3'
+    },
+    'd': {
+        'word': 'Heisho Tanio',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/heishotanio.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_08_45_1.mp3'
+    },
+    'e': {
+        'word': 'Ivar',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/ivar.jpg',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_10_17_1.mp3'
+    },
+    'f': {
+        'word': 'Jeng Rock',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/jengrock.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_10_56_1.mp3'
+    },
+    'g': {
+        'word': 'Kyuri Pomipomi',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/kyuripomipomi.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_11_23_1.mp3'
+    },
+    'h': {
+        'word': 'Ozaki Nami',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/oszakinami.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_12_38_1.mp3'
+    },
+    'i': {
+        'word': 'Woffie',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/woffie].png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_43_47_1.mp3'
+    },
+    'j': {
+        'word': 'Yamada Kazuma',
+        'picture': 'https://storage.googleapis.com/grade5_lesson8/yamadakazuma.png',
+        'sound': 'https://storage.googleapis.com/grade5_lesson8/2025_01_08_14_16_14_1.mp3'
+    },
+}
+
+
+grade6_lesson1 = {
+    'a': {
+        'word': 'aapo',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/aapo_finland.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_45_31_1.mp3'
+    },
+    'b': {
+        'word': 'ae-cha',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/ae-cha_korea.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_48_14_1.mp3'
+    },
+    'c': {
+        'word': 'ananya',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/ananya_indian.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_49_08_1.mp3'
+    },
+    'd': {
+        'word': 'boris',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/boris_uk.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_50_14_1.mp3'
+    },
+    'e': {
+        'word': 'chen',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/chen_china.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_53_35_1.mp3'
+    },
+    'f': {
+        'word': 'gabriella',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/gabriella_brazil.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_54_28_1.mp3'
+    },
+    'g': {
+        'word': 'johan',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/johan_sweden.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_55_06_1.mp3'
+    },
+    'h': {
+        'word': 'jon',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/jon_america.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_56_09_1.mp3'
+    },
+    'i': {
+        'word': 'noah',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/noah_canada.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_56_59_1.mp3'
+    },
+    'j': {
+        'word': 'otgonbayaar',
+        'picture': 'https://storage.googleapis.com/grade6_lesson1/otgonbayaar_mongolia.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson1/2024_11_21_12_57_47_1.mp3'
+    }
+}
+
+
+grade6_lesson2 = {
+    'a': {
+        'word': 'festival',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/festival.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_10_12_1.mp3'
+    },
+    'b': {
+        'word': 'Fushimi Inari Shrine',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/fushimi.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_10_50_1.mp3'
+    },
+    'c': {
+        'word': 'game center',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/gamecenter.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_11_29_1.mp3'
+    },
+    'd': {
+        'word': 'Kōyasan',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/kouyasan.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_12_18_1.mp3'
+    },
+    'e': {
+        'word': 'manga',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/manga.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_13_24_1.mp3'
+    },
+    'f': {
+        'word': 'Mount Fuji',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/mt_fuji.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_14_45_1.mp3'
+    },
+    'g': {
+        'word': 'sakura',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/sakura.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_16_22_1.mp3'
+    },
+    'h': {
+        'word': 'snow festival',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/snowfestival.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_18_21_1.mp3'
+    },
+    'i': {
+        'word': 'sumo',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/sumo.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_19_20_1.mp3'
+    },
+    'j': {
+        'word': 'sushi',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/sushi.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_20_04_1.mp3'
+    },
+    'k': {
+        'word': 'takoyaki',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/takoyaki.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_20_48_1.mp3'
+    },
+    'l': {
+        'word': 'yakiniku',
+        'picture': 'https://storage.googleapis.com/grade6_lesson2/yakiniku.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson2/2024_11_27_14_22_40_1.mp3'
+    }
+}
+
+
+grade6_lesson3 = {
+    'a': {
+        'word': 'do my homework',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/domyhomework.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_02_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_29_04_1.mp3',
+        'label': '17:45'
+    },
+    'b': {
+        'word': 'eat breakfast',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/eatbreakfast.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_08_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_29_18_1.mp3',
+        'label': '07:00'
+    },
+    'c': {
+        'word': 'eat lunch',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/eatlunch.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_13_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_29_34_1.mp3',
+        'label': '12:30'
+    },
+    'd': {
+        'word': 'get up',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/getup.jpeg',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_18_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_29_45_1.mp3',
+        'label': '06:45'
+    },
+    'e': {
+        'word': 'go home',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/gohome.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_23_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_29_56_1.mp3',
+        'label': '17:00'
+    },
+    'f': {
+        'word': 'go to school',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/gotoschool.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_28_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_30_13_1.mp3',
+        'label': '09:15'
+    },
+    'g': {
+        'word': 'play with my dog',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/playwithmydog.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_33_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_31_17_1.mp3',
+        'label': '19:40'
+    },
+    'h': {
+        'word': 'practice karate',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/practicekarate.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_39_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_32_18_1.mp3',
+        'label': '20:00'
+    },
+    'i': {
+        'word': 'wash my face',
+        'picture': 'https://storage.googleapis.com/grade6_lesson3/washmyface.png',
+        'sound': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_26_46_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade6_lesson3/2024_11_27_14_32_50_1.mp3',
+        'label': '06:50'
+    }
+}
+
 
 grade_6_lesson_6 = {
     'a': {
@@ -1027,6 +1648,306 @@ grade_6_lesson_6 = {
         'sound2': 'https://storage.googleapis.com/6th-grade-events/2024_11_01_09_23_49_1.mp3'
     }
 }
+
+grade_6_lesson_7 = {
+    'a': {
+        'word': 'baker',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/baker.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_16_57_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_16_34_1.mp3'
+    },
+    'b': {
+        'word': 'carpenter',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/carpenter.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_02_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_16_46_1.mp3'
+    },
+    'c': {
+        'word': 'comedian',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/comedian.jpg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_06_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_25_41_1.mp3'
+    },
+    'd': {
+        'word': 'cook',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/cook.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_10_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_30_17_1.mp3'
+    },
+    'e': {
+        'word': 'doctor',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/doctor.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_15_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_30_55_1.mp3'
+    },
+    'f': {
+        'word': 'farmer',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/farmer.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_19_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_31_42_1.mp3'
+    },
+    'g': {
+        'word': 'fire fighter',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/fire_fighter.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_24_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_32_31_1.mp3'
+    },
+    'h': {
+        'word': 'game creator',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/game_creator.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_29_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_33_24_1.mp3'
+    },
+    'i': {
+        'word': 'nurse',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/nurse.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_38_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_33_49_1.mp3'
+    },
+    'j': {
+        'word': 'pro gamer',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/pro_gamer.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_42_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_34_11_1.mp3'
+    },
+    'k': {
+        'word': 'scientist',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/scientist.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_47_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_36_11_1.mp3'
+    },
+    'l': {
+        'word': 'singer',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/singer.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_51_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_36_54_1.mp3'
+    },
+    'm': {
+        'word': 'soccer player',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/soccer_player.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_17_56_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_37_27_1.mp3'
+    },
+    'n': {
+        'word': 'teacher',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/teacher.jpg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_18_00_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_37_38_1.mp3'
+    },
+    'o': {
+        'word': 'vet',
+        'picture': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/vet.jpeg',
+        'sound': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_14_18_04_1.mp3',
+        'sound2': 'https://storage.googleapis.com/grade_6_lesson_7_occupations/2024_11_14_15_37_54_1.mp3'
+    }
+}
+
+
+grade_6_lesson_8 = {
+    'a': {
+        'word': 'art club',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/art_club.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_58_17_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_06_17_1.mp3'
+    },
+    'b': {
+        'word': 'baseball team',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/baseball_team.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_58_22_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_09_12_1.mp3'
+    },
+    'c': {
+        'word': 'brass band',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/brass_band.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_58_27_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_12_49_1.mp3'
+    },
+    'd': {
+        'word': 'chorus',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/chorus.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_58_31_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_14_03_1.mp3'
+    },
+    'e': {
+        'word': 'kendo club',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/kendo_club.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_58_35_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_14_34_1.mp3'
+    },
+    'f': {
+        'word': 'science club',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/science_club.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_58_41_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_16_31_1.mp3'
+    },
+    'g': {
+        'word': 'soccer team',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/soccer_team.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_58_45_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_17_29_1.mp3'
+    },
+    'h': {
+        'word': 'tennis club',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/tennis_club.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_58_55_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_18_32_1.mp3'
+    },
+    'i': {
+        'word': 'track and field team',
+        'picture': 'https://storage.googleapis.com/6grade_lesson8/track_and_field_team.png',
+        'sound': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_13_59_00_1.mp3',
+        'sound2': 'https://storage.googleapis.com/6grade_lesson8/2024_11_18_14_19_12_1.mp3'
+    }
+}
+
+months = {
+    'a': {
+        'word': 'January',
+        'numbers': 1,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_02_12_40_36_1.mp3',
+    },
+    'b': {
+        'word': 'February',
+        'numbers': 2,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_02_12_40_40_1.mp3',
+    },
+    'c': {
+        'word': 'March',
+        'numbers': 3,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_02_12_40_43_1.mp3',
+    },
+    'd': {
+        'word': 'April',
+        'numbers': 4,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_02_12_40_46_1.mp3',
+    },
+    'e': {
+        'word': 'May',
+        'numbers': 5,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_03_12_49_56_1.mp3',
+    },
+    'f': {
+        'word': 'June',
+        'numbers': 6,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_03_09_34_57_1.mp3',
+    },
+    'g': {
+        'word': 'July',
+        'numbers': 7,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_03_09_36_39_1.mp3',
+    },
+    'h': {
+        'word': 'August',
+        'numbers': 8,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_03_09_36_42_1.mp3',
+    },
+    'i': {
+        'word': 'September',
+        'numbers': 9,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_03_09_36_45_1.mp3',
+    },
+    'j': {
+        'word': 'October',
+        'numbers': 10,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_03_09_36_49_1.mp3',
+    },
+    'k': {
+        'word': 'November',
+        'numbers': 11,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_03_09_36_52_1.mp3',
+    },
+    'l': {
+        'word': 'December',
+        'numbers': 12,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_03_09_36_56_1.mp3',
+    },
+    'm': {
+        'word': 'Ivarember',
+        'numbers': 13,
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_10_11_44_08_1.mp3',
+    },
+}
+
+
+
+dates = {
+    '1st': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_50_58_1.mp3',
+    '2nd': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_03_1.mp3',
+    '3rd': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_06_1.mp3',
+    '4th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_09_1.mp3',
+    '5th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_12_1.mp3',
+    '6th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_43_1.mp3',
+    '7th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_46_1.mp3',
+    '8th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_49_1.mp3',
+    '9th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_51_1.mp3',
+    '10th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_54_1.mp3',
+    '11th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_51_58_1.mp3',
+    '12th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_10_30_1.mp3',
+    '13th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_52_01_1.mp3',
+    '14th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_52_04_1.mp3',
+    '15th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_52_07_1.mp3',
+    '16th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_52_12_1.mp3',
+    '17th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_52_15_1.mp3',
+    '18th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_52_19_1.mp3',
+    '19th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_52_22_1.mp3',
+    '20th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_53_52_1.mp3',
+    '21st': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_53_55_1.mp3',
+    '22nd': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_53_59_1.mp3',
+    '23rd': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_02_1.mp3',
+    '24th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_05_1.mp3',
+    '25th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_08_1.mp3',
+    '26th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_11_1.mp3',
+    '27th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_14_1.mp3',
+    '28th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_17_1.mp3',
+    '29th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_20_1.mp3',
+    '30th': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_24_1.mp3',
+    '31st': 'https://storage.googleapis.com/month_dates_days/2024_12_04_08_54_27_1.mp3'
+}
+
+days = {
+    'a': {
+        'word': 'Sunday',
+        'japanese': '日曜日',
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_35_34_1.mp3'
+    },
+    'b': {
+        'word': 'Monday',
+        'japanese': '月曜日',
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_35_37_1.mp3'
+    },
+    'c': {
+        'word': 'Tuesday',
+        'japanese': '火曜日',
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_35_39_1.mp3'
+    },
+    'd': {
+        'word': 'Wednesday',
+        'japanese': '水曜日',
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_35_42_1.mp3'
+    },
+    'e': {
+        'word': 'Thursday',
+        'japanese': '木曜日',
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_36_16_1.mp3'
+    },
+    'f': {
+        'word': 'Friday',
+        'japanese': '金曜日',
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_36_19_1.mp3'
+    },
+    'g': {
+        'word': 'Saturday',
+        'japanese': '土曜日',
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_36_22_1.mp3'
+    },
+    'h': {
+        'word': 'Ivarday',
+        'japanese': 'イバル曜日',
+        'sound': 'https://storage.googleapis.com/month_dates_days/2024_12_04_09_36_28_1.mp3'
+    }
+}
+
+
 
 one_twenty = {
     1: 'https://storage.googleapis.com/english-numbers/2024_10_23_09_15_25_1.mp3',

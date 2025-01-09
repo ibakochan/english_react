@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 
 const UserTestRecords = () => {
   const [classrooms, setClassrooms] = useState([]);
@@ -16,12 +16,27 @@ const UserTestRecords = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeClassroomId, setActiveClassroomId] = useState(null);
   const [activeTestId, setActiveTestId] = useState(null);
+  const [activeUserDeleteId, setActiveUserDeleteId] = useState(null);
   const [activeUserId, setActiveUserId] = useState(null);
   const [activeSessionId, setActiveSessionId] = useState(null);
   const [userDetailButtonActive, setUserDetailButtonActive] = useState(false);
-  const [activeUserToUpdate, setActiveUserToUpdate] = useState(null);
   const [formData, setFormData] = useState({});
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const openModal = (userId) => {
+    setActiveUserDeleteId(userId);
+    setModalIsOpen(true);
+  };
+
+  const closeReturnModal = () => {
+    setModalIsOpen(false);
+    setActiveUserDeleteId(null);
+  };
+
+  const handleBackClick = () => {
+    closeReturnModal();
+    handleAccountDelete(activeUserDeleteId);
+  };
 
   useEffect(() => {
     axios.get('/api/classrooms/my-classroom-teacher/')
@@ -41,6 +56,30 @@ const UserTestRecords = () => {
       });
   }, []);
 
+
+  const handleAccountDelete = async (userId) => {
+    try {
+      const csrfToken = cookies.csrftoken;
+      const response = await axios.post(
+        `/remove/account/${userId}/`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            'X-CSRFToken': csrfToken,
+          },
+        }
+      );
+
+      setUsers(prevUsers =>
+          prevUsers.filter(user => user.id !== userId)
+      );
+
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      alert('An error occurred while deleting the account.');
+    }
+  };
 
   const fetchTests = async (classroomId) => {
     try {
@@ -220,28 +259,7 @@ const UserTestRecords = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (userId, e) => {
-    e.preventDefault();
-    const { username, password, student_number } = formData;
 
-    if (!username || !password || !student_number) {
-      setError('全てのフィールドを入力してください');
-      return;
-    }
-    try {
-      const csrfToken = cookies.csrftoken;
-      const response = await axios.post(`accounts/update-student/${userId}/`, formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-          'X-CSRFToken': csrfToken
-        }
-      });
-      console.log('Student updated successfully:', response.data);
-      alert('Student info updated successfully!');
-    } catch (error) {
-      console.error('Error updating student:', error.response ? error.response.data : error.message);
-    }
-  };
 
   const toggleSessionDetails = async (sessionId) => {
     if (activeSessionId === sessionId) {
@@ -299,58 +317,18 @@ const UserTestRecords = () => {
                 {userDetailButtonActive && (
                   <div className="user-list">
                     {users.map(user => (
-                      <div key={user.id}>
+                      <span key={user.id}>
                       <button
-                        style={{ height: '60px', width: '200px', padding: '10px', margin: '5px', border: '5px solid black' }}
+                        style={{ height: '120px', width: '250px', padding: '10px', margin: '5px', border: '5px solid black' }}
                         className={`btn btn-success mb-3`}
-                        onClick={() => setActiveUserToUpdate(user.id)}
                       >
-                        {user.username} - {user.student.student_number}
+                        <h5>{user.username} - {user.student.student_number}</h5>
+                        <h5>最大記録トータル＝{user.total_max_scores}</h5>
+                      <button className={`btn btn-danger`} onClick={() => openModal(user.id)}>
+                        Delete Account
                       </button>
-                      {activeUserToUpdate == user.id ? (
-                      <form onSubmit={(e) => handleSubmit(user.id, e)}>
-                      <div>
-                        <input
-                          type="text"
-                          name="username"
-                          value={formData.username}
-                          onChange={handleInputChange}
-                          className="form-control"
-                          placeholder="ユーザーネーム"
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          name="password"
-                          value={formData.password}
-                          onChange={handleInputChange}
-                          className="form-control"
-                          placeholder="パスワード"
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="text"
-                          name="student_number"
-                          value={formData.student_number}
-                          onChange={handleInputChange}
-                          className="form-control"
-                          placeholder="出席番号"
-                        />
-                      </div>
-                      <button
-                        style={{ height: '60px', width: '200px', padding: '10px', margin: '5px', border: '5px solid black' }}
-                        className={`btn btn-dark mb-3 `}
-                        onClick={() => setActiveUserToUpdate(user.id)}
-                      >
-                      更新
                       </button>
-                      </form>
-                      ) : (
-                      null
-                      )}
-                      </div>
+                      </span>
                     ))}
                   </div>
                 )}
@@ -493,6 +471,15 @@ const UserTestRecords = () => {
               </div>
             ))}
           </ul>
+      <Modal show={modalIsOpen} onHide={closeReturnModal}>
+        <Modal.Body>
+          <p>このアカウントを本当に削除しますか？</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeReturnModal}>いいえ</Button>
+          <Button variant="primary" onClick={handleBackClick}>はい</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
