@@ -125,7 +125,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'id', 'total_max_scores', 'total_japanese_score', 'total_english_5_score', 'total_english_6_score', 'total_phonics_score', 'total_numbers_score', 'teacher', 'student']
+        fields = ['username', 'total_eiken_score', 'id', 'total_max_scores', 'total_japanese_score', 'total_english_5_score', 'total_english_6_score', 'total_phonics_score', 'total_numbers_score', 'teacher', 'student']
 
 class TeacherSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()

@@ -27,6 +27,7 @@ const Test = () => {
   const [activeTestDescriptionSound, setActiveTestDescriptionSound] = useState('');
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeMemories, setActiveMemories] = useState(false);
+  const [activeEikenMemories, setActiveEikenMemories] = useState(false);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -41,6 +42,7 @@ const Test = () => {
   const [correctSound, setCorrectSound] = useState('');
   const [correctPicture, setCorrectPicture] = useState('');
   const [correctLabel, setCorrectLabel] = useState('');
+  const [correctEikenWord, setCorrectEikenWord] = useState('');
   const [randomizedValues, setRandomizedValues] = useState({});
   const [randomizedOptions, setRandomizedOptions] = useState({});
   const [correctOption, setCorrectOption] = useState(false);
@@ -389,6 +391,10 @@ const Test = () => {
     setActiveMemories(prev => !prev);
   };
 
+  const toggleEikenMemories = () => {
+    setActiveEikenMemories(prev => !prev);
+  };
+
 
   const toggleQuestionDetails = async (testId, testDescription, testDescriptionSound, numberOfQuestions, testName) => {
     setScoreCounter(0)
@@ -464,6 +470,7 @@ const Test = () => {
     setCorrectSound(sound3 ? randomSound3 : sound2 ? randomSound2 : randomSound !== null ? randomSound : randomEikenUrl !== 't' ? randomEikenUrl : randomUrl);
     setCorrectPicture(randomPicture);
     setCorrectLabel(word2 ? randomWord2 : randomLabel);
+    setCorrectEikenWord(randomCorrect);
 
 
     setSelectedOption(null)
@@ -670,16 +677,19 @@ const Test = () => {
                 style={{ height: '150px', width: '150px', border: '5px solid black' }}
                 onClick={() => document.getElementById('pet_audio').play()}
       />
-      <figcaption style={{ fontSize: '30px', marginTop: '5px' }}>
+      <figcaption style={{ fontSize: '20px', marginTop: '5px' }}>
             {isEnglish ? 'you ' : '君は'}{isEnglish ? currentUser?.profile_asset?.english_text : currentUser?.profile_asset?.text}
       </figcaption>
-      <figcaption style={{ fontSize: '30px', marginTop: '5px' }}>
+      <figcaption style={{ fontSize: '20px', marginTop: '5px' }}>
             {isEnglish ? 'your pet is ' : '君のペットは'}{isEnglish ? currentUser?.pets?.english_text : currentUser?.pets?.text}
       </figcaption>
-      <figcaption style={{ fontSize: '45px', marginTop: '5px' }}>
-                <strong>{isEnglish ? 'Total max scores=' : '最大記録トータル＝'}{currentUser?.total_max_scores}</strong>
+      <figcaption style={{ fontSize: '30px', marginTop: '5px' }}>
+                <strong>{isEnglish ? 'Total max scores=' : '最大記録トータル＝'}{currentUser?.total_max_scores}    {isEnglish ? 'points untill growth=' : '成長まで＝'} {20 - (currentUser?.total_max_scores % 20)}{isEnglish ? 'points' : '点'}</strong>
       </figcaption>
-      <figcaption style={{ fontSize: '45px', marginTop: '5px' }}>
+      <figcaption style={{ fontSize: '30px', marginTop: '5px' }}>
+                <strong>{isEnglish ? 'Total Eiken score=' : '英検最大記録トータル＝'}{currentUser?.total_eiken_score}    {isEnglish ? 'points untill evolution=' : '進化まで＝'} {50 - (currentUser?.total_eiken_score % 50)}{isEnglish ? 'points' : '点'}</strong>
+      </figcaption>
+      <figcaption style={{ fontSize: '30px', marginTop: '5px' }}>
           {isEnglish ? "classroom: " : "教室："}{classroom?.name}
       </figcaption>
       {!classroom?.character_voice ? (<audio id="audio" src={isEnglish ? currentUser?.profile_asset?.english_audio : currentUser?.profile_asset?.audio} />) : (null)}
@@ -689,11 +699,20 @@ const Test = () => {
         <div className="quiz-header" style={{ height: 'auto', overflowY: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <div>
           <div>
+          {!activeEikenMemories && (
           <button
             onClick={() => toggleMemories()}
             className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
             style={{ height: !activeMemories ? '100px' : '50px', width: !activeMemories ? '220px' : '290px', padding: '10px', border: '5px solid black' }}
           ><h5 className="text-white">{!activeMemories ? (isEnglish ? 'Memories' : '思い出を見る') : (isEnglish ? 'Go back' : '戻る！')}</h5></button>
+          )}
+          {!activeMemories && (
+          <button
+            onClick={() => toggleEikenMemories()}
+            className={`btn btn-success mb-3 ${activeCategory === null ? 'active' : 'd-none'}`}
+            style={{ height: !activeEikenMemories ? '100px' : '50px', width: !activeEikenMemories ? '220px' : '290px', padding: '10px', border: '5px solid black' }}
+          ><h5 className="text-white">{!activeEikenMemories ? (isEnglish ? 'Pet memories' : 'ペットの思い出を見る') : (isEnglish ? 'Go back' : '戻る！')}</h5></button>
+          )}
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {activeMemories && (
@@ -709,8 +728,21 @@ const Test = () => {
               </span>
             ))
           )}
+          {activeEikenMemories && (
+            Object.keys(currentUser?.eiken_memories || {}).map((key) => (
+              <span key={key}>
+                <img
+                  src={currentUser?.eiken_memories[key].image}
+                  alt={`Level ${key} Image`}
+                  style={{ height: '220px', width: '220px', border: '5px solid black' }}
+                  onClick={() => document.getElementById(`audio-${key}`).play()}
+                />
+                {!classroom?.character_voice ? (<audio id={`audio-${key}`} src={isEnglish ? currentUser?.eiken_memories[key].audio : currentUser?.eiken_memories[key].audio} />) : (null)}
+              </span>
+            ))
+          )}
           </div>
-          {!activeMemories && (
+          {!activeMemories && !activeEikenMemories && (
           <>
           {currentUser?.username === 'Sarah' ? <button
             onClick={() => toggleCategories('japanese')}
@@ -754,6 +786,7 @@ const Test = () => {
             <FaArrowLeft style={{ marginRight: '10px' }} /> {isEnglish ? 'Go back!' : '戻る！'}
             </span>
           </button>
+          {activeCategory === 'eiken' ? <h4>最大２５点の語彙テスト以外７割以上とれたら次のテストが現れる</h4> : ''}
           </>
           )}
             {loading && <p>Loading...</p>}
@@ -822,7 +855,7 @@ const Test = () => {
                       {activeTestDescriptionSound ? (<audio controls> <source src={activeTestDescriptionSound} type="audio/mpeg" /> Your browser does not support the audio element. </audio>) : null}
                 　</div>
                   <div className="test-details" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
-                  {isPractice && questions && ((activeCategory === 'eiken' && activeTestName === '英検５-語彙') || activeCategory !== 'eiken') && (
+                  {isPractice && questions && ((activeCategory === 'eiken' && activeTestName.includes('英検５-語彙')) || activeCategory !== 'eiken') && (
                     <div key={questions.id} style={{ display: 'flex', flexWrap: 'wrap' }}>
                       {(() => {
                         const keys = Object.keys(questions.question_list);
@@ -843,7 +876,15 @@ const Test = () => {
                                 className={`${value.picture ? 'text-center' : ''} text-white`}
                                 style={!value.picture ? { fontSize: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' } : { background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px', justifyContent: 'center', fontSize: '15px' }}
                               >
-                                {value.numbers ? value.numbers : value.label ? value.label : value.word ? value.word : key}{value[0] !== undefined ? ` = ${value[0]}` : ""}
+                                {value.numbers ? value.numbers : value.label ? value.label : value.word ? value.word : key}{value[0] !== undefined && value[0] !== 'h'  ? ` = ${value[0]}` : ""}
+                              </span>
+                              )}
+                              {!value.picture && value.word && (
+                              <span
+                                className={`${value.picture ? 'text-center' : ''} text-white`}
+                                style={!value.picture ? { fontSize: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' } : { background: 'rgba(0, 0, 0, 0.5)', padding: '5px', borderRadius: '5px', marginBottom: '10px', justifyContent: 'center', fontSize: '15px' }}
+                              >
+                                {value.numbers ? value.numbers : ''}{value.word}
                               </span>
                               )}
                               {value.picture ? <img src={value.picture} alt={`Picture of ${value.word || key}`} width="120" height="120" /> : null}
@@ -1063,7 +1104,7 @@ const Test = () => {
                                 </button>
                               </p>
                             )}
-                            <h1>{isEnglish ? "Correct answer:" : "正解は："}{correctLabel !== null ? correctLabel : correctWord !== null ? correctWord : correctAnswerKey}</h1>
+                            <h1>{isEnglish ? "Correct answer:" : "正解は："}{correctLabel !== null ? correctLabel : correctWord !== null ? correctWord : correctEikenWord ? correctEikenWord : correctAnswerKey}</h1>
                         </div>
                     ) : null}
                 </div>

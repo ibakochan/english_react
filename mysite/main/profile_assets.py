@@ -34,7 +34,7 @@ def get_profile_assets(total_max_scores):
         23: {"english_audio": "https://storage.googleapis.com/profile_assets/2024_12_07_19_03_08_1.mp3", "image": "https://storage.googleapis.com/profile_assets/neutronstar.png", "text": "普段から朝ごはんに中性子星を食べる", "english_text" : "eat neutronstars for breakfast", "audio": "https://storage.googleapis.com/profile_assets/2024_11_16_12_00_40_1.mp3"},
         24: {"english_audio": "https://storage.googleapis.com/profile_assets/2024_12_07_19_03_21_1.mp3", "image": "https://storage.googleapis.com/profile_assets/blackholedrinker.png", "text": "喉乾いたときブラックホールをストローで飲む", "english_text" : "drink blackholes with a straw whenever you are thirsty", "audio": "https://storage.googleapis.com/profile_assets/2024_11_16_12_02_15_1.mp3"},
         25: {"english_audio": "https://storage.googleapis.com/profile_assets/2024_12_07_19_03_31_1.mp3", "image": "https://storage.googleapis.com/profile_assets/m-uni.jpeg", "text": "宇宙のすべてを１秒で破壊できる存在", "english_text" : "are a being that can destroy the whole universe in 1 second", "audio": "https://storage.googleapis.com/profile_assets/2024_10_29_16_05_21_1.mp3"},
-        26: {"english_audio": "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_36_49_1.mp3", "image": "https://storage.googleapis.com/profile_assets/n-ivar.jpg", "text": "このサイトの理解を超えてる存在", "english_text" : "are a being that is beyond the comprehension of this site", "audio": "https://storage.googleapis.com/profile_assets/sound13.mp3"},
+        26: {"english_audio": "https://storage.googleapis.com/ivar_reactions/2024_12_07_19_36_49_1.mp3", "image": "https://storage.googleapis.com/profile_assets/n-ivar.jpg", "text": "このサイトの理解を超えてる存在", "english_text" : "are a being that is beyond the comprehension of this site", "audio": "https://storage.googleapis.com/ivar_reactions/sound13%20(1).mp3"},
     }
 
 
@@ -44,7 +44,7 @@ def get_profile_assets(total_max_scores):
         return assets.get(level, assets[max(assets)])
 
 def get_eiken_pet(total_eiken_scores):
-    levels = int(total_eiken_scores // 40)
+    levels = int(total_eiken_scores // 50)
 
     pets = {
         0: {"image": 'https://storage.googleapis.com/profile_pets/one_cell.png', "text": 'まだ細胞一つしかない生物', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_14_25_1.mp3', "english_text": 'still only a one celled organism'},
@@ -52,12 +52,36 @@ def get_eiken_pet(total_eiken_scores):
         2: {"image": 'https://storage.googleapis.com/profile_pets/plancton.png', "text": 'プランクトンまで進化した', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_14_47_1.mp3', "english_text": 'has evolved into a plancton'},
         3: {"image": 'https://storage.googleapis.com/profile_pets/tiny_fish.png', "text": '少し泳げる小さな魚', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_14_55_1.mp3', "english_text": 'a tiny fish that can swim a little bit'},
         4: {"image": 'https://storage.googleapis.com/profile_pets/turtle.png', "text": '地上で歩ける亀', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_16_47_1.mp3', "english_text": 'a turtle that can walk on land'},
-        5: {"image": 'https://storage.googleapis.com/profile_pets/mouse.png', "text": 'チーズを食べれるネズミ', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_17_16_1.mp3', "english_text": 'a mouse that can eat cheese'}
+        5: {"image": 'https://storage.googleapis.com/profile_pets/mouse.png', "text": 'チーズを食べれるネズミ', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_17_16_1.mp3', "english_text": 'a mouse that can eat cheese'},
+        6: {"image": 'https://storage.googleapis.com/profile_pets/squirel.png', "text": '木を登ってナッツを食べることができるリス', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_19_17_26_1.mp3', "english_text": 'a squirrel that can climb trees and eat nuts'},
+        7: {"image": 'https://storage.googleapis.com/profile_pets/hedge_hog.jpeg', "text": '普通のハリネズミ', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_19_18_19_1.mp3', "english_text": 'a regular hedge hog'},
+        8: {"image": 'https://storage.googleapis.com/profile_pets/rabbit.png', "text": 'IQ１２０のウサギ', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_19_46_16_1.mp3', "english_text": 'a rabbit with in IQ of 120'},
+        9: {"image": 'https://storage.googleapis.com/profile_pets/frog.png', "text": 'イバルの里で修行を受けたカエル', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_22_40_21_1.mp3', "english_text": 'a frog that has been trained in The Village Of Ivar'},
+        10: {"image": 'https://storage.googleapis.com/profile_pets/lesser_panda.png', "text": 'ちょっとオーラがあるレッサーパンダ', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_22_40_44_1.mp3', "english_text": 'a lesser panda with a bit of aura'},
     }
 
 
     return pets.get(levels, pets[max(pets)])
 
+def get_eiken_memories(total_eiken_scores):
+    levels = int(total_eiken_scores // 50)
+
+    pets = {
+        1: {"image": 'https://storage.googleapis.com/profile_pets/one_cellframe.png', "text": 'まだ細胞一つしかない生物', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_14_25_1.mp3', "english_text": 'still only a one celled organism'},
+        2: {"image": 'https://storage.googleapis.com/profile_pets/multi_cellframe.png', "text": '複数の細胞からできている生物', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_14_35_1.mp3', "english_text": 'an organism made up of multiple cells'},
+        3: {"image": 'https://storage.googleapis.com/profile_pets/planctonframe.png', "text": 'プランクトンまで進化した', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_14_47_1.mp3', "english_text": 'has evolved into a plancton'},
+        4: {"image": 'https://storage.googleapis.com/profile_pets/tiny_fishframe.png', "text": '少し泳げる小さな魚', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_14_55_1.mp3', "english_text": 'a tiny fish that can swim a little bit'},
+        5: {"image": 'https://storage.googleapis.com/profile_pets/turtleframe.png', "text": '地上で歩ける亀', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_16_47_1.mp3', "english_text": 'a turtle that can walk on land'},
+        6: {"image": 'https://storage.googleapis.com/profile_pets/mouseframe.png', "text": 'チーズを食べれるネズミ', "audio": 'https://storage.googleapis.com/profile_pets/2024_12_23_12_17_16_1.mp3', "english_text": 'a mouse that can eat cheese'},
+        7: {"image": 'https://storage.googleapis.com/profile_pets/squirelframe.png', "text": '木を登ってナッツを食べることができるリス', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_19_17_26_1.mp3', "english_text": 'a squirrel that can climb trees and eat nuts'},
+        8: {"image": 'https://storage.googleapis.com/profile_pets/hedge_hogframe.png', "text": '普通のハリネズミ', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_19_18_19_1.mp3', "english_text": 'a regular hedge hog'},
+        9: {"image": 'https://storage.googleapis.com/profile_pets/rabbitframe.png', "text": 'IQ１２０のウサギ', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_19_46_16_1.mp3', "english_text": 'a rabbit with in IQ of 120'},
+        10: {"image": 'https://storage.googleapis.com/profile_pets/frogframe.png', "text": 'イバルの里で修行を受けたカエル', "audio": 'https://storage.googleapis.com/profile_pets/2025_01_13_22_40_21_1.mp3', "english_text": 'a frog that has been trained in The Village Of Ivar'},
+    }
+
+
+    result = {level: pets[level] for level in range(1, levels + 1) if level in pets}
+    return result
 
 def get_memories(total_max_scores):
     levels = int(total_max_scores // 20)

@@ -319,11 +319,12 @@ const UserTestRecords = () => {
                     {users.map(user => (
                       <span key={user.id}>
                       <button
-                        style={{ height: '120px', width: '250px', padding: '10px', margin: '5px', border: '5px solid black' }}
+                        style={{ height: '180px', width: '250px', padding: '10px', margin: '5px', border: '5px solid black' }}
                         className={`btn btn-success mb-3`}
                       >
                         <h5>{user.username} - {user.student.student_number}</h5>
                         <h5>最大記録トータル＝{user.total_max_scores}</h5>
+                        <h5>英検トータル＝{user.total_eiken_score}</h5>
                       <button className={`btn btn-danger`} onClick={() => openModal(user.id)}>
                         Delete Account
                       </button>

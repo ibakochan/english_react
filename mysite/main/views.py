@@ -13,7 +13,7 @@ from django.utils import timezone
 from rest_framework.decorators import action
 from django.contrib import messages
 import json
-from .profile_assets import get_profile_assets, get_memories, get_total_questions, get_total_category_scores, get_eiken_pet
+from .profile_assets import get_profile_assets, get_memories, get_total_questions, get_total_category_scores, get_eiken_pet, get_eiken_memories
 from django.db.models import Sum
 
 
@@ -169,7 +169,7 @@ class NameIdTestViewSet(viewsets.ModelViewSet):
     serializer_class = TestByClassroomSerializer
 
     def filter_eiken_tests(self, tests, user):
-        eiken_tests = tests.filter(category='eiken')
+        eiken_tests = tests.filter(category='eiken').exclude(lesson_number=0)
         for test in eiken_tests:
             try:
 
@@ -273,18 +273,20 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         question_counts = get_total_questions()
         total_category_scores = get_total_category_scores(user)
         total_max_scores = user.total_max_scores
-        if user.username == 'ivar':
+        if user.username == 'ivar' or user.username == 'gund':
             total_eiken_scores = 9999
         else:
             total_eiken_scores = user.total_eiken_score
         memories = get_memories(total_max_scores)
         asset = get_profile_assets(total_max_scores)
         pets = get_eiken_pet(total_eiken_scores)
+        eiken_memories = get_eiken_memories(total_eiken_scores)
         user_data = self.get_serializer(user).data
         user_data['question_counts'] = question_counts
         user_data['profile_asset'] = asset
         user_data['memories'] = memories
         user_data['pets'] = pets
+        user_data['eiken_memories'] = eiken_memories
         user_data['total_category_scores'] = total_category_scores
 
         return Response(user_data)

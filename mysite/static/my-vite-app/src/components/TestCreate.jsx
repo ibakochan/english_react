@@ -132,6 +132,7 @@ const TestCreate = () => {
       data.append('picture_url', formData.picture_url);
       data.append('sound_url', formData.sound_url || "");
       data.append('score_multiplier', formData.score_multiplier);
+      data.append('number_of_questions', formData.number_of_questions);
 
       try {
           const response = await fetch(`/test/${classroomId}/create/`, {
@@ -491,6 +492,14 @@ const TestCreate = () => {
               placeholder="score multiplier"
               className="form-control"
             />
+            <input
+              type="number"
+              name="number_of_questions"
+              value={formData.number_of_questions}
+              onChange={handleTestCreateInputChange}
+              placeholder="number_of_questions"
+              className="form-control"
+            />
             <select name="category" value={formData.category} onChange={handleTestCreateInputChange} className="form-control">
                 <option value="">Select Category</option>
                 <option value="japanese">Japanese</option>
@@ -601,9 +610,18 @@ const TestCreate = () => {
                         <option value="alphabet_sounds2">Alphabet Sounds2</option>
                         <option value="alphabet_sounds3">Alphabet Sounds3</option>
                         <option value="alphabet_sounds3">Alphabet Sounds3</option>
+                        <option value="eiken5_vocab1">Eiken5 Vocab1</option>
+                        <option value="eiken5_vocab2">Eiken5 Vocab2</option>
+                        <option value="eiken5_vocab3">Eiken5 Vocab3</option>
+                        <option value="eiken5_vocab4">Eiken5 Vocab4</option>
+                        <option value="eiken5_vocab5">Eiken5 Vocab5</option>
+                        <option value="eiken5_vocab6">Eiken5 Vocab6</option>
+                        <option value="eiken5_vocab7">Eiken5 Vocab7</option>
+                        <option value="eiken5_vocab8">Eiken5 Vocab8</option>
                         <option value="eiken5_vocab">Eiken5 Vocab</option>
                         <option value="eiken5_vocab_practice">Eiken5 Vocab Practice</option>
                         <option value="eiken5_grammar_practice">Eiken5 Grammar Practice</option>
+                        <option value="eiken5_grammar_conversation">Eiken5 Grammar Conversation</option>
                         <option value="eiken5_conversation_vocab_practice">Eiken5 Conversation Vocab Practice</option>
 
                     </select>
